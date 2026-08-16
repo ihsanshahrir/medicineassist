@@ -33,10 +33,7 @@
 <main>
 	<div class="header">
 		<h1 class="t-title">My Medicines</h1>
-		<nav class="header-links" aria-label="Main">
-			<a class="btn-text" href={resolve('/today')}>Today</a>
-			<a class="btn-text" href={resolve('/medicines/add')}>+ Add</a>
-		</nav>
+		<a class="btn btn-secondary add-btn" href={resolve('/medicines/add')}>+ Add</a>
 	</div>
 
 	{#if loading}
@@ -75,9 +72,10 @@
 		justify-content: space-between;
 		margin-bottom: var(--sp-4);
 	}
-	.header-links {
-		display: flex;
-		gap: var(--sp-2);
+	.add-btn {
+		width: auto;
+		min-height: var(--tap-min);
+		padding: 0 var(--sp-4);
 	}
 	.loading {
 		text-align: center;
@@ -126,7 +124,8 @@
 	}
 	.info b {
 		display: block;
-		font-size: 16px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 	}
 	.info span {
 		color: var(--ink-2);

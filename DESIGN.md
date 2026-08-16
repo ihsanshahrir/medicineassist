@@ -36,6 +36,13 @@ consistent with the design system instead of drifting.
    follow-ups in `design/README.md` before swapping fonts.
 8. **Pictograms are an unvalidated first pass** — don't treat them as final; flag if a
    new screen needs a symbol that doesn't exist yet rather than drawing one ad hoc.
+9. **`.btn-text` is self-sufficient** — it already sets `display: inline-flex`,
+   sizing, and `cursor: pointer` on its own, so use it alone (`class="btn-text"`),
+   not paired with `.btn`. Pairing them double-applies conflicting padding. This
+   is also true of every other `.btn-*` variant.
+10. **Every sub-page needs a way back.** Top-level screens (`/today`, `/medicines`,
+    `/settings`) get the bottom tab bar; everything else gets the sticky back app bar
+    — see `components-navigation.html`. A screen with neither is a dead end.
 
 ## When the design system changes upstream
 

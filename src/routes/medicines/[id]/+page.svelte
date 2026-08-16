@@ -318,11 +318,12 @@
 	}
 	.what-for {
 		padding: var(--sp-4);
-		font-size: 16px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 	}
 	.tile-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
 		gap: var(--sp-2);
 	}
 	.tile {
@@ -330,14 +331,16 @@
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 5px;
+		gap: var(--sp-1);
 		text-align: center;
 		color: var(--sage-700);
+		min-height: var(--tap-min);
 	}
 	.tile span {
-		font-size: 11.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 600;
 		color: var(--ink);
+		overflow-wrap: anywhere;
 	}
 	.free-text {
 		margin-top: var(--sp-2);
@@ -364,6 +367,8 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		flex-wrap: wrap;
+		gap: var(--sp-2);
 	}
 	.meter-track {
 		height: 10px;

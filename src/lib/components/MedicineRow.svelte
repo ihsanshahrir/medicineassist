@@ -49,13 +49,13 @@
 		margin-bottom: var(--sp-2);
 	}
 	.icon-badge {
-		width: 30px;
-		height: 30px;
+		width: 34px;
+		height: 34px;
 		border-radius: 50%;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: 13px;
+		font-size: var(--t-caption-size);
 		font-weight: 700;
 		flex: 0 0 auto;
 	}
@@ -76,19 +76,20 @@
 		min-width: 0;
 	}
 	.info b {
-		font-size: 14px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 		display: block;
 	}
 	.info span {
-		font-size: 12px;
+		font-size: var(--t-caption-size);
 		color: var(--ink-2);
 	}
 	.tag {
-		font-size: 11.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.04em;
-		padding: 4px 10px;
+		padding: var(--sp-1) var(--sp-3);
 		border-radius: 999px;
 		white-space: nowrap;
 	}

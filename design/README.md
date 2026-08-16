@@ -10,24 +10,29 @@ without renaming anything.
 ```
 design/
   colors_and_type.css     ← single source of truth for every token
-  pictograms.svg          ← 19-symbol sprite (14 instruction/warning/time marks + 5 dose glyphs)
+  pictograms.svg          ← 23-symbol sprite (14 instruction/warning/time marks,
+                             5 dose glyphs, 4 navigation glyphs)
   preview/
     _card.css             ← shared specimen frame + phone frame
     foundations-*.html    ← 5 cards: color, type, spacing/radius, elevation/targets, dose glyph
     pictograms-*.html     ← 4 cards: how-to-take, warnings, time-of-day, construction spec
-    components-*.html     ← 8 cards: buttons, dose card, medicine row, instruction tile,
-                             OCR confirm row, form controls, supply meter, feedback
+    components-*.html     ← 9 cards: buttons, dose card, medicine row, instruction tile,
+                             OCR confirm row, form controls, supply meter, feedback, navigation
     screens-*.html        ← 6 cards: Today, Medicine Detail, Add–OCR Confirm, Add–Schedule,
                              Settings, and a 200%-text-scale proof of Today
 ```
 
-23 preview files total. Every file's first line is an `@dsCard` comment
+24 preview files total. Every file's first line is an `@dsCard` comment
 (`group`, `name`, `subtitle`, `viewport`) — that's what builds the Claude Design pane
 index, so no manual asset registration is needed.
 
 Icons are referenced from the shared sprite via `<use href="../pictograms.svg#id"/>`
 rather than duplicated inline — standard sprite practice, and it means every card and
-the real app draw from the exact same 19 symbols.
+the real app draw from the exact same symbols. The 4 `nav-*` symbols (back chevron,
+today, medicines, settings) are UI chrome for the bottom tab bar and back app bar, not
+clinical pictograms — added in the same construction spec (48×48 grid, 2.5px stroke,
+currentColor) but exempt from the comprehension-testing note below, since they carry no
+medical instruction.
 
 ## Previewing locally
 

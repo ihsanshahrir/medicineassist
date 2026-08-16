@@ -159,21 +159,13 @@
 		margin-bottom: 2px;
 	}
 	.text-input {
-		width: 100%;
-		min-height: var(--tap-min);
-		border-radius: var(--r-input);
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		padding: 0 var(--sp-4);
-		font-size: var(--t-body-size);
-		color: var(--ink);
 		margin-bottom: var(--sp-4);
 	}
 	.text-input:focus-visible {
 		border-color: var(--sage-700);
 	}
 	.code-input {
-		font-size: 28px;
+		font-size: var(--t-display-size);
 		font-variant-numeric: tabular-nums;
 		letter-spacing: 0.3em;
 		text-align: center;

@@ -36,6 +36,7 @@
 
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import Pictogram from './Pictogram.svelte';
 	import { apiFetch } from '$lib/client/api';
 	import {
@@ -103,8 +104,14 @@
 	let whatFor = $state(seed.whatFor);
 	let instructionsText = $state(seed.instructionsText);
 	let notes = $state(seed.notes);
-	let instructionTags = $state(new Set<string>(seed.instructionTags));
-	let warningTags = $state(new Set<string>(seed.warningTags));
+	// SvelteSet, not a plain Set — $state() only deep-proxies plain
+	// objects/arrays, so in-place .add()/.delete() on a native Set wouldn't
+	// trigger a re-render (matches the SvelteSet already used for pendingKeys
+	// in today/+page.svelte). SvelteSet is reactive on its own, so it's
+	// deliberately NOT also wrapped in $state() — never reassigned wholesale,
+	// only mutated via toggleTag().
+	let instructionTags = new SvelteSet<string>(seed.instructionTags);
+	let warningTags = new SvelteSet<string>(seed.warningTags);
 	let supplyCount = $state<number | null>(seed.supplyCount);
 
 	let doseAmount = $state(seed.doseAmount);
@@ -120,7 +127,7 @@
 			.map((t) => t.anchorLabel)
 			.filter((a): a is Anchor => !!a && a in DEFAULT_ANCHOR_TIMES)
 	);
-	let selectedAnchors = $state(new Set<Anchor>(initialAnchors.size ? initialAnchors : ['morning']));
+	let selectedAnchors = new SvelteSet<Anchor>(initialAnchors.size ? initialAnchors : ['morning']);
 	let anchorTimes = $state<AnchorTimes>({ ...DEFAULT_ANCHOR_TIMES });
 	for (const t of seed.times) {
 		if (t.anchorLabel && t.anchorLabel in anchorTimes) {
@@ -405,17 +412,6 @@
 	.warn-label {
 		margin-top: var(--sp-5);
 	}
-	.text-input {
-		width: 100%;
-		min-height: var(--tap-min);
-		border-radius: var(--r-input);
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		padding: 0 var(--sp-4);
-		font-size: var(--t-body-size);
-		color: var(--ink);
-		font-family: var(--font-sans);
-	}
 	select.text-input {
 		appearance: auto;
 	}
@@ -425,27 +421,29 @@
 	}
 	.tag-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
 		gap: var(--sp-2);
+		margin-top: var(--sp-3);
 	}
 	.tag-chip {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 5px;
+		gap: var(--sp-1);
 		background: var(--surface);
 		border: 1.5px solid var(--line-strong);
 		border-radius: var(--r-inner);
-		padding: var(--sp-3) var(--sp-1);
+		padding: var(--sp-3) var(--sp-2);
 		color: var(--ink-2);
 		cursor: pointer;
 		min-height: var(--tap-min);
 		font-family: var(--font-sans);
 	}
 	.tag-chip span {
-		font-size: 11.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 600;
 		text-align: center;
+		overflow-wrap: anywhere;
 	}
 	.tag-chip.active {
 		background: var(--sage-100);
@@ -458,27 +456,12 @@
 		color: var(--warn-text);
 	}
 	.stepper {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-3);
 		background: var(--surface);
 		border-radius: var(--r-input);
 		padding: var(--sp-2) var(--sp-4);
 		box-shadow: var(--shadow-1);
 	}
-	.stepper button {
-		width: 40px;
-		height: 40px;
-		border-radius: 10px;
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		font-size: 18px;
-		font-weight: 700;
-		color: var(--sage-700);
-		cursor: pointer;
-	}
 	.dose-val {
-		font-size: 20px;
 		min-width: 28px;
 		text-align: center;
 	}
@@ -490,65 +473,6 @@
 		background: var(--surface);
 		padding: 0 var(--sp-2);
 		font-family: var(--font-sans);
-	}
-	.anchor-grid {
-		display: grid;
-		grid-template-columns: repeat(4, 1fr);
-		gap: var(--sp-2);
-	}
-	.anchor {
-		display: flex;
-		flex-direction: column;
-		gap: var(--sp-1);
-	}
-	.anchor-toggle {
-		background: var(--surface);
-		border: 1.5px solid var(--line-strong);
-		border-radius: var(--r-inner);
-		padding: var(--sp-3) var(--sp-1);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
-		cursor: pointer;
-		color: var(--sage-700);
-		min-height: var(--tap-min);
-		width: 100%;
-	}
-	.anchor.active .anchor-toggle {
-		background: var(--sage-100);
-		border-color: var(--sage-700);
-	}
-	.time-input {
-		min-height: 40px;
-		border-radius: 8px;
-		border: 1.5px solid var(--line-strong);
-		text-align: center;
-		font-family: var(--font-sans);
-	}
-	.segmented {
-		display: flex;
-		background: var(--surface-sunk);
-		border-radius: var(--r-input);
-		padding: 4px;
-		gap: 4px;
-	}
-	.segmented button {
-		flex: 1;
-		min-height: 40px;
-		border: none;
-		border-radius: 8px;
-		background: transparent;
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--ink-2);
-		cursor: pointer;
-		font-family: var(--font-sans);
-	}
-	.segmented button.active {
-		background: var(--surface);
-		color: var(--sage-800);
-		box-shadow: var(--shadow-1);
 	}
 	.n-days {
 		display: flex;
@@ -562,25 +486,9 @@
 	}
 	.weekday-grid {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
-		gap: 4px;
+		grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+		gap: var(--sp-1);
 		margin-top: var(--sp-3);
-	}
-	.weekday-btn {
-		min-height: 44px;
-		border-radius: 8px;
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--ink-2);
-		cursor: pointer;
-		font-family: var(--font-sans);
-	}
-	.weekday-btn.active {
-		background: var(--sage-100);
-		border-color: var(--sage-700);
-		color: var(--sage-800);
 	}
 	.error {
 		color: var(--danger-text);

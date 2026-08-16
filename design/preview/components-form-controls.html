@@ -97,16 +97,21 @@
 				gap: 8px;
 			}
 			.anchor {
+				display: flex;
+				flex-direction: column;
 				background: var(--surface);
 				border: 1.5px solid var(--line-strong);
 				border-radius: 12px;
-				padding: 12px 8px;
+				overflow: hidden;
 				text-align: center;
-				min-height: 48px;
 			}
 			.anchor.active {
 				background: var(--sage-100);
 				border-color: var(--sage-700);
+			}
+			.anchor-toggle {
+				padding: 12px 8px;
+				min-height: 48px;
 			}
 			.anchor svg {
 				width: 22px;
@@ -117,6 +122,19 @@
 				display: block;
 				font-size: 12px;
 				margin-top: 4px;
+			}
+			.anchor .time-row {
+				min-height: 48px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-top: 1.5px solid var(--line-strong);
+				background: var(--surface);
+				font-size: 14px;
+				font-weight: 600;
+			}
+			.anchor.active .time-row {
+				border-top-color: var(--sage-700);
 			}
 		</style>
 	</head>
@@ -151,19 +169,29 @@
 				</div>
 
 				<div class="field-group">
-					<label>Time-of-day anchors — offered first</label>
+					<label>Time-of-day anchors — selecting one reveals a time row inside the SAME card</label>
 					<div class="anchor-grid">
 						<div class="anchor active">
-							<svg><use href="../pictograms.svg#pic-sunrise" /></svg><span>Morning</span>
+							<div class="anchor-toggle">
+								<svg><use href="../pictograms.svg#pic-sunrise" /></svg><span>Morning</span>
+							</div>
+							<div class="time-row">08:00</div>
 						</div>
 						<div class="anchor">
-							<svg><use href="../pictograms.svg#pic-sun" /></svg><span>Afternoon</span>
+							<div class="anchor-toggle">
+								<svg><use href="../pictograms.svg#pic-sun" /></svg><span>Afternoon</span>
+							</div>
 						</div>
 						<div class="anchor active">
-							<svg><use href="../pictograms.svg#pic-sunset" /></svg><span>Evening</span>
+							<div class="anchor-toggle">
+								<svg><use href="../pictograms.svg#pic-sunset" /></svg><span>Evening</span>
+							</div>
+							<div class="time-row">19:00</div>
 						</div>
 						<div class="anchor">
-							<svg><use href="../pictograms.svg#pic-moon" /></svg><span>Night</span>
+							<div class="anchor-toggle">
+								<svg><use href="../pictograms.svg#pic-moon" /></svg><span>Night</span>
+							</div>
 						</div>
 					</div>
 				</div>
