@@ -32,35 +32,27 @@ export interface OcrResult {
 	ocrFailed: boolean;
 }
 
-const FIELD_SCHEMA = {
-	type: 'object',
-	properties: {
-		name: { type: 'string' },
-		name_confidence: { type: 'number' },
-		strength: { type: 'string' },
-		strength_confidence: { type: 'number' },
-		form: { type: 'string', enum: ['tablet', 'capsule', 'syrup', 'inhaler', 'drops', 'other'] },
-		form_confidence: { type: 'number' },
-		dose_amount: { type: 'number' },
-		dose_amount_confidence: { type: 'number' },
-		dose_unit: {
-			type: 'string',
-			enum: ['tablet', 'capsule', 'half_tablet', 'ml', 'puff', 'drop']
-		},
-		dose_unit_confidence: { type: 'number' },
-		frequency_per_day: { type: 'number' },
-		frequency_per_day_confidence: { type: 'number' },
-		instructions_text: { type: 'string' },
-		instructions_text_confidence: { type: 'number' }
-	},
-	required: ['name', 'name_confidence']
-} as const;
+// The model's guided/schema-constrained JSON mode (response_format:
+// json_schema) was found, via M7 local testing, to reliably deadlock into an
+// ever-growing whitespace-repetition loop partway through this many
+// properties, burning the whole token budget without ever closing the
+// object. Plain `json_object` mode (valid-JSON-syntax only, no schema FSM)
+// doesn't hit that failure mode, at the cost of the model having to follow
+// the shape from prompt instructions alone — hence spelling every key out
+// explicitly here rather than leaning on a schema to enforce it.
+const PROMPT = `You are reading a photo of a pharmacy dispensing label or medicine box for a medication-reminder app. Extract what you can read into a single flat JSON object with exactly these keys (all optional except name/name_confidence — omit any key not legible on the label, don't invent values):
 
-const PROMPT = `You are reading a photo of a pharmacy dispensing label or medicine box for a medication-reminder app. Extract what you can read into the given fields.
+- name (string), name_confidence (number 0-1) — REQUIRED
+- strength (string), strength_confidence (number 0-1)
+- form (one of: tablet, capsule, syrup, inhaler, drops, other), form_confidence (number 0-1)
+- dose_amount (number), dose_amount_confidence (number 0-1)
+- dose_unit (one of: tablet, capsule, half_tablet, ml, puff, drop), dose_unit_confidence (number 0-1)
+- frequency_per_day (number — how many times a day, e.g. "twice daily" -> 2), frequency_per_day_confidence (number 0-1)
+- instructions_text (string), instructions_text_confidence (number 0-1)
 
-For every field you fill in, also give a confidence from 0 to 1 reflecting how legible and certain that specific reading is — not your certainty about the whole photo. Use a LOW confidence (below 0.5) for anything blurry, partially cut off, or that you had to guess at. If a field genuinely is not present on the label, omit it rather than inventing a value.
+Each confidence reflects how legible and certain that specific reading is — not your certainty about the whole photo. Use a LOW confidence (below 0.5) for anything blurry, partially cut off, or that you had to guess at.
 
-frequency_per_day is how many times a day the medicine is taken (e.g. "twice daily" -> 2), as best you can infer from the label text.`;
+Respond with ONLY the raw JSON object — no markdown fences, no explanation, no text before or after it.`;
 
 interface RawModelOutput {
 	name?: string;
@@ -137,7 +129,18 @@ export async function extractFromLabelPhoto(
 	contentType: string
 ): Promise<OcrResult> {
 	try {
-		const output = await ai.run(MODEL, {
+		// `guided_json` is this model's officially typed structured-output
+		// param (see worker-configuration.d.ts), but confirmed via M7 local
+		// testing to be silently ignored on this model/runtime — it just
+		// returns free-text chat, which broke JSON.parse below on every call.
+		// `response_format` (OpenAI's structured-output convention) is what
+		// the underlying serving backend actually honors here. It's not in
+		// Cloudflare's own generated types yet (hence the intersection type
+		// below, itself named after that generated type — regenerate this if
+		// `wrangler types` ever renames it).
+		const request: Ai_Cf_Mistralai_Mistral_Small_3_1_24B_Instruct_Messages & {
+			response_format: { type: 'json_object' };
+		} = {
 			messages: [
 				{
 					role: 'user',
@@ -147,10 +150,25 @@ export async function extractFromLabelPhoto(
 					]
 				}
 			],
-			guided_json: FIELD_SCHEMA
-		});
+			response_format: { type: 'json_object' },
+			// Guided decoding on this model was observed (M7 local testing) to
+			// occasionally get stuck in a token-repetition loop (repeated
+			// digits, repeated whitespace) that never naturally closes the
+			// JSON object. frequency_penalty directly discourages re-picking
+			// an already-repeated token; max_tokens is raised as a margin of
+			// safety on top, not the primary fix.
+			frequency_penalty: 0.5,
+			max_tokens: 800
+		};
+		const output = await ai.run(MODEL, request);
 
-		const raw = JSON.parse(output.response) as RawModelOutput;
+		// response_format-driven output arrives already parsed as an object;
+		// guided_json (and plain chat) would have arrived as a JSON string.
+		// Handle both so this doesn't re-break if the backend's behavior
+		// shifts back.
+		const raw = (
+			typeof output.response === 'string' ? JSON.parse(output.response) : output.response
+		) as RawModelOutput;
 		if (!raw.name) return FAILED_RESULT;
 
 		const extracted: Partial<OcrExtraction> = {
