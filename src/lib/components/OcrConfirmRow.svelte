@@ -92,7 +92,7 @@
 	}
 	.field-label {
 		display: block;
-		font-size: 10.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 700;
 		text-transform: uppercase;
 		letter-spacing: 0.02em;
@@ -105,7 +105,8 @@
 		border: none;
 		background: transparent;
 		padding: 0;
-		font-size: 15.5px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 		font-family: var(--font-sans);
 		color: var(--ink);
 		resize: none;
@@ -115,14 +116,14 @@
 	}
 	.field-tag {
 		flex: 0 0 auto;
-		font-size: 10.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 700;
-		padding: 5px 10px;
+		padding: var(--sp-2) var(--sp-3);
 		border-radius: 999px;
 		white-space: nowrap;
 		border: none;
 		cursor: pointer;
-		min-height: 32px;
+		min-height: var(--tap-min);
 	}
 	.tag-unverified {
 		background: var(--warn-border);

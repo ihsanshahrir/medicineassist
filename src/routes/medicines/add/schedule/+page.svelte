@@ -221,39 +221,13 @@
 		display: block;
 		margin: 0 0 var(--sp-2);
 	}
-	.text-input {
-		width: 100%;
-		min-height: var(--tap-min);
-		border-radius: var(--r-input);
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		padding: 0 var(--sp-4);
-		font-size: var(--t-body-size);
-		color: var(--ink);
-		font-family: var(--font-sans);
-	}
 	.stepper {
-		display: flex;
-		align-items: center;
-		gap: var(--sp-3);
 		background: var(--surface);
 		border-radius: var(--r-input);
 		padding: var(--sp-2) var(--sp-4);
 		box-shadow: var(--shadow-1);
 	}
-	.stepper button {
-		width: 40px;
-		height: 40px;
-		border-radius: 10px;
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		font-size: 18px;
-		font-weight: 700;
-		color: var(--sage-700);
-		cursor: pointer;
-	}
 	.dose-val {
-		font-size: 20px;
 		min-width: 28px;
 		text-align: center;
 	}
@@ -268,7 +242,7 @@
 	}
 	.anchor-grid {
 		display: grid;
-		grid-template-columns: repeat(4, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
 		gap: var(--sp-2);
 	}
 	.anchor {
@@ -295,35 +269,11 @@
 		border-color: var(--sage-700);
 	}
 	.time-input {
-		min-height: 40px;
-		border-radius: 8px;
+		min-height: var(--tap-min);
+		border-radius: var(--r-chip);
 		border: 1.5px solid var(--line-strong);
 		text-align: center;
 		font-family: var(--font-sans);
-	}
-	.segmented {
-		display: flex;
-		background: var(--surface-sunk);
-		border-radius: var(--r-input);
-		padding: 4px;
-		gap: 4px;
-	}
-	.segmented button {
-		flex: 1;
-		min-height: 40px;
-		border: none;
-		border-radius: 8px;
-		background: transparent;
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--ink-2);
-		cursor: pointer;
-		font-family: var(--font-sans);
-	}
-	.segmented button.active {
-		background: var(--surface);
-		color: var(--sage-800);
-		box-shadow: var(--shadow-1);
 	}
 	.n-days {
 		display: flex;
@@ -337,24 +287,9 @@
 	}
 	.weekday-grid {
 		display: grid;
-		grid-template-columns: repeat(7, 1fr);
-		gap: 4px;
+		grid-template-columns: repeat(auto-fit, minmax(40px, 1fr));
+		gap: var(--sp-1);
 		margin-top: var(--sp-3);
-	}
-	.weekday-btn {
-		min-height: 44px;
-		border-radius: 8px;
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
-		font-size: 12px;
-		font-weight: 600;
-		color: var(--ink-2);
-		cursor: pointer;
-	}
-	.weekday-btn.active {
-		background: var(--sage-100);
-		border-color: var(--sage-700);
-		color: var(--sage-800);
 	}
 	.error {
 		color: var(--danger-text);

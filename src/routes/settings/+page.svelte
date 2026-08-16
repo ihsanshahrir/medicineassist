@@ -318,10 +318,11 @@
 	}
 	.health-body b {
 		display: block;
-		font-size: 14px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 	}
 	.health-body span {
-		font-size: 11.5px;
+		font-size: var(--t-caption-size);
 		color: var(--ink-2);
 	}
 	.reminder-btn {
@@ -334,30 +335,6 @@
 	.note {
 		color: var(--ink-2);
 		margin-top: var(--sp-2);
-	}
-	.segmented {
-		display: flex;
-		background: var(--surface-sunk);
-		border-radius: var(--r-input);
-		padding: 4px;
-		gap: 4px;
-	}
-	.segmented button {
-		flex: 1;
-		min-height: 40px;
-		border: none;
-		border-radius: 8px;
-		background: transparent;
-		font-size: 13px;
-		font-weight: 600;
-		color: var(--ink-2);
-		cursor: pointer;
-		font-family: var(--font-sans);
-	}
-	.segmented button.active {
-		background: var(--surface);
-		color: var(--sage-800);
-		box-shadow: var(--shadow-1);
 	}
 	.row {
 		display: flex;
@@ -380,11 +357,11 @@
 	}
 	.row .lbl {
 		flex: 1;
-		font-size: 15px;
+		font-size: var(--t-body-size);
 		color: var(--ink);
 	}
 	.row .val {
-		font-size: 13.5px;
+		font-size: var(--t-caption-size);
 		color: var(--ink-2);
 	}
 	.row-button {
@@ -400,14 +377,8 @@
 		margin-top: var(--sp-2);
 	}
 	.text-input {
-		min-height: var(--tap-min);
-		border-radius: var(--r-input);
-		border: 1.5px solid var(--line-strong);
-		background: var(--surface);
+		width: auto;
 		padding: 0 var(--sp-3);
-		font-size: var(--t-body-size);
-		color: var(--ink);
-		font-family: var(--font-sans);
 	}
 	.saving {
 		color: var(--ink-2);

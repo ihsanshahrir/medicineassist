@@ -235,27 +235,28 @@
 	}
 	.tag-grid {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
+		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
 		gap: var(--sp-2);
 	}
 	.tag-chip {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
-		gap: 5px;
+		gap: var(--sp-1);
 		background: var(--surface);
 		border: 1.5px solid var(--line-strong);
 		border-radius: var(--r-inner);
-		padding: var(--sp-3) var(--sp-1);
+		padding: var(--sp-3) var(--sp-2);
 		color: var(--ink-2);
 		cursor: pointer;
 		min-height: var(--tap-min);
 		font-family: var(--font-sans);
 	}
 	.tag-chip span {
-		font-size: 11.5px;
+		font-size: var(--t-caption-size);
 		font-weight: 600;
 		text-align: center;
+		overflow-wrap: anywhere;
 	}
 	.tag-chip.active {
 		background: var(--sage-100);

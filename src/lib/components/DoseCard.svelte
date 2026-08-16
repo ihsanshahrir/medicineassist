@@ -108,46 +108,51 @@
 		color: var(--sage-700);
 	}
 	.time-label {
-		font-size: 20px;
+		font-size: var(--t-h2-size);
+		line-height: var(--t-h2-line);
 		color: var(--ink);
 	}
 	.med-row {
 		display: flex;
 		align-items: center;
-		gap: var(--sp-3);
-		padding: 10px 0;
+		gap: var(--sp-2);
+		padding: var(--sp-2) 0;
 		border-bottom: 1px solid var(--sage-200);
 	}
 	.med-row:last-of-type {
 		border-bottom: none;
 	}
 	.checkbox {
+		width: var(--tap-min);
+		height: var(--tap-min);
+		display: grid;
+		place-items: center;
+		margin: 0 calc(-1 * var(--sp-1));
+		border: none;
+		background: none;
+		flex: 0 0 auto;
+		cursor: pointer;
+		padding: 0;
+	}
+	.checkbox::before {
+		content: '';
+		grid-area: 1 / 1;
 		width: 26px;
 		height: 26px;
-		min-width: var(--tap-min);
-		min-height: var(--tap-min);
-		margin: calc((var(--tap-min) - 26px) / -2);
 		border-radius: 8px;
 		border: 2px solid var(--line-strong);
 		background: var(--surface);
-		flex: 0 0 auto;
-		cursor: pointer;
 	}
-	.checkbox.checked {
+	.checkbox.checked::before {
 		background: var(--state-done);
 		border-color: var(--state-done);
-		position: relative;
 	}
 	.checkbox.checked::after {
 		content: '✓';
+		grid-area: 1 / 1;
 		color: #fff;
 		font-size: 15px;
 		font-weight: 700;
-		position: absolute;
-		inset: 0;
-		display: flex;
-		align-items: center;
-		justify-content: center;
 	}
 	.med-photo {
 		width: 52px;
@@ -161,15 +166,16 @@
 	}
 	.med-info b {
 		display: block;
-		font-size: 16px;
+		font-size: var(--t-body-size);
+		line-height: var(--t-body-line);
 	}
 	.med-info .dose {
 		display: flex;
 		align-items: center;
-		gap: 4px;
+		gap: var(--sp-1);
 		margin-top: 2px;
 		color: var(--sage-700);
-		font-size: 13.5px;
+		font-size: var(--t-caption-size);
 	}
 	.btn-primary {
 		margin-top: var(--sp-4);
@@ -184,7 +190,7 @@
 		background: none;
 		border: none;
 		cursor: pointer;
-		font: 600 13px var(--font-sans);
+		font: 600 var(--t-caption-size) var(--font-sans);
 		color: var(--sage-700);
 		min-height: var(--tap-min);
 		padding: 0 var(--sp-2);
