@@ -3,6 +3,7 @@ import {
 	removePushSubscription,
 	upsertPushSubscription
 } from '$lib/server/db/queries/pushSubscriptions';
+import { checkAndIncrement } from '$lib/server/rateLimit';
 import type { RequestHandler } from './$types';
 
 interface SubscribeBody {
@@ -11,8 +12,19 @@ interface SubscribeBody {
 	installedAsPwa?: unknown;
 }
 
+const SUBSCRIBE_LIMIT = 20;
+const SUBSCRIBE_WINDOW_SECONDS = 3600;
+
 export const POST: RequestHandler = async ({ request, locals, platform }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
+
+	const allowed = await checkAndIncrement(
+		platform!.env.OTP_KV,
+		`push_sub_rl:${locals.user.id}`,
+		SUBSCRIBE_LIMIT,
+		SUBSCRIBE_WINDOW_SECONDS
+	);
+	if (!allowed) return json({ error: 'rate_limited' }, { status: 429 });
 
 	const body = (await request.json().catch(() => null)) as SubscribeBody | null;
 	if (

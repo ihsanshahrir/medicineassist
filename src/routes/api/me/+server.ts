@@ -5,6 +5,7 @@ import {
 	hasPushSubscription
 } from '$lib/server/db/queries/pushSubscriptions';
 import { deleteUser, getUserById, updateUserSettings } from '$lib/server/db/queries/users';
+import { deleteAllUserPhotos } from '$lib/server/r2';
 import type { RequestHandler } from './$types';
 
 export const GET: RequestHandler = async ({ locals, platform }) => {
@@ -79,6 +80,9 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
 
 export const DELETE: RequestHandler = async ({ locals, platform, cookies }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
+	// R2 objects aren't covered by D1's ON DELETE CASCADE, so this has to be
+	// done explicitly, and before the D1 row (which holds the keys) is gone.
+	await deleteAllUserPhotos(platform!.env.PHOTOS, locals.user.id);
 	await deleteUser(platform!.env.DB, locals.user.id);
 	cookies.delete('session', { path: '/' });
 	return json({ ok: true });

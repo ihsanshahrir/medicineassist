@@ -203,3 +203,19 @@ export async function listPushSubscriptionsForUser(
 export async function deletePushSubscription(db: D1Database, id: string): Promise<void> {
 	await db.prepare('DELETE FROM push_subscriptions WHERE id = ?').bind(id).run();
 }
+
+/** M7 quota monitoring — same usage_counters table/pattern as the root app's
+ *  own copy in src/lib/server/db/queries/usageCounters.ts (kept duplicated
+ *  rather than shared, matching this file's own header comment). */
+export type UsageCounterName = 'push_attempts' | 'push_failures';
+
+export async function incrementUsageCounter(db: D1Database, name: UsageCounterName): Promise<void> {
+	await db
+		.prepare(
+			`INSERT INTO usage_counters (counter_date, counter_name, count)
+			 VALUES (date('now'), ?, 1)
+			 ON CONFLICT(counter_date, counter_name) DO UPDATE SET count = count + 1`
+		)
+		.bind(name)
+		.run();
+}

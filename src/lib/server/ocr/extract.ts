@@ -123,7 +123,7 @@ function toDataUri(bytes: ArrayBuffer, contentType: string): string {
 	return `data:${contentType};base64,${btoa(binary)}`;
 }
 
-const FAILED_RESULT: OcrResult = {
+export const FAILED_RESULT: OcrResult = {
 	extracted: {},
 	instructionTagsSuggested: [],
 	warningTagsSuggested: [],

@@ -72,3 +72,16 @@ Prints a public key and a private JWK. They go to **different places**:
 - `VAPID_PRIVATE_JWK` + `VAPID_SUBJECT` (a `mailto:`/`https:` contact for push-service abuse reports) → **reminder-engine's own** secrets, since that's the only thing that ever signs a push: `npx wrangler secret put VAPID_PRIVATE_JWK` and `... put VAPID_SUBJECT`, both run from `workers/reminder-engine/`.
 
 For local dev, paste the same values into `.dev.vars` (root, `VAPID_PUBLIC_KEY` only) and `workers/reminder-engine/.dev.vars` (`VAPID_PRIVATE_JWK` + `VAPID_SUBJECT`) — both gitignored, both have a `.dev.vars.example` alongside them.
+
+## M7 — quota monitoring
+
+`db/migrations/0002_usage_counters.sql` adds a `usage_counters` table (one row per UTC day per counter: `ocr_calls`, `push_attempts`, `push_failures`). Both the root app and `reminder-engine` write to it directly — no admin UI, this is a single-user MVP, so a manual check is enough:
+
+```bash
+npx wrangler d1 execute DB --remote --file=db/migrations/0002_usage_counters.sql
+# (once, same as 0001_init.sql was applied — local dev already has it via --local during scaffolding)
+
+npx wrangler d1 execute DB --remote --command "SELECT * FROM usage_counters ORDER BY counter_date DESC"
+```
+
+Compare against the plan's own researched free-tier ceilings: 100K D1 writes/day, 10K Workers AI Neurons/day, 10K Queue messages/month. `ocr_calls` tracks against the Neuron budget; `push_attempts`/`push_failures` track against the Queue budget (each queue message becomes one `sendToSubscription` call per device, i.e. one `push_attempts` increment).

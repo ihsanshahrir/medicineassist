@@ -3,6 +3,7 @@
 // - verify attempt limit (how many guesses per issued code before it's
 //   burned) — this, not a constant-time string compare, is what actually
 //   defends a 6-digit code against brute force.
+import { checkAndIncrement } from '../rateLimit';
 
 const OTP_TTL_SECONDS = 600; // 10 minutes
 const OTP_MAX_ATTEMPTS = 5;
@@ -23,10 +24,13 @@ function generateCode(): string {
 export type RequestOtpResult = { ok: true; code: string } | { ok: false; reason: 'rate_limited' };
 
 export async function requestOtp(kv: KVNamespace, email: string): Promise<RequestOtpResult> {
-	const rlKey = `otp_rl:${email}`;
-	const count = Number((await kv.get(rlKey)) ?? '0');
-	if (count >= REQUEST_LIMIT) return { ok: false, reason: 'rate_limited' };
-	await kv.put(rlKey, String(count + 1), { expirationTtl: REQUEST_WINDOW_SECONDS });
+	const allowed = await checkAndIncrement(
+		kv,
+		`otp_rl:${email}`,
+		REQUEST_LIMIT,
+		REQUEST_WINDOW_SECONDS
+	);
+	if (!allowed) return { ok: false, reason: 'rate_limited' };
 
 	const code = generateCode();
 	const record: OtpRecord = { code, attempts: 0 };

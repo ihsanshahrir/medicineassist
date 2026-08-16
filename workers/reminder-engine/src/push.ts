@@ -5,6 +5,7 @@
 import { buildPushHTTPRequest } from '@pushforge/builder';
 import {
 	deletePushSubscription,
+	incrementUsageCounter,
 	listPushSubscriptionsForUser,
 	type PushSubscriptionRow
 } from './db';
@@ -34,16 +35,36 @@ async function sendToSubscription(
 		}
 	});
 
-	const res = await fetch(endpoint, { method: 'POST', headers, body });
+	await incrementUsageCounter(env.DB, 'push_attempts');
+
+	// A network-level exception here (DNS, timeout, connection reset) must
+	// not propagate: sendPushToUser's Promise.all would otherwise reject for
+	// this user's *entire* batch of devices, and index.ts's queue() handler
+	// would retry the whole message — re-sending to devices that already
+	// succeeded. Isolating each subscription's outcome is what fixes that.
+	let res: Response;
+	try {
+		res = await fetch(endpoint, { method: 'POST', headers, body });
+	} catch (err) {
+		console.error(`push send threw: ${err}`);
+		await incrementUsageCounter(env.DB, 'push_failures');
+		return false;
+	}
 
 	// 404/410 means the push service considers this subscription gone for
 	// good (uninstalled, expired) — clean it up so future ticks stop trying.
+	// Other 4xx (400/403) are more often our own bug (bad VAPID config,
+	// malformed payload) than a dead subscription, so deliberately not
+	// deleting on those — that would risk mass-orphaning valid subscriptions
+	// over our own error.
 	if (res.status === 404 || res.status === 410) {
 		await deletePushSubscription(env.DB, sub.id);
+		await incrementUsageCounter(env.DB, 'push_failures');
 		return false;
 	}
 	if (!res.ok) {
 		console.error(`push send failed: ${res.status} ${await res.text().catch(() => '')}`);
+		await incrementUsageCounter(env.DB, 'push_failures');
 		return false;
 	}
 	return true;
