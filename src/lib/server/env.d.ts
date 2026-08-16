@@ -9,7 +9,9 @@ declare global {
 	interface Env {
 		SESSION_SECRET: string;
 		/** Unset in local dev is fine — see src/lib/server/email.ts's fallback. */
-		RESEND_API_KEY?: string;
+		SENDGRID_API_KEY?: string;
+		/** Must be a Single Sender verified in SendGrid's dashboard. Required whenever SENDGRID_API_KEY is set. */
+		SENDGRID_FROM_EMAIL?: string;
 		/** Handed to the browser as pushManager.subscribe()'s applicationServerKey —
 		 *  see GET /api/push/public-key. The matching private key lives only in
 		 *  workers/reminder-engine's own secrets (that's the worker that signs and

@@ -2,6 +2,7 @@ import { json } from '@sveltejs/kit';
 import { getMedicineById, setOcrSource } from '$lib/server/db/queries/medicines';
 import { incrementUsageCounter } from '$lib/server/db/queries/usageCounters';
 import { extractFromLabelPhoto, FAILED_RESULT, type OcrResult } from '$lib/server/ocr/extract';
+import { getPhoto } from '$lib/server/photos';
 import { checkAndIncrement } from '$lib/server/rateLimit';
 import type { RequestHandler } from './$types';
 
@@ -40,10 +41,10 @@ export const POST: RequestHandler = async ({ params, locals, platform }) => {
 	let photoBytes: ArrayBuffer;
 	let contentType: string;
 	try {
-		const object = await platform!.env.PHOTOS.get(medicine.label_photo_key);
-		if (!object) return json({ error: 'no_label_photo' }, { status: 400 });
-		photoBytes = await object.arrayBuffer();
-		contentType = object.httpMetadata?.contentType ?? 'image/jpeg';
+		const photo = await getPhoto(platform!.env.PHOTOS, medicine.label_photo_key);
+		if (!photo) return json({ error: 'no_label_photo' }, { status: 400 });
+		photoBytes = photo.body;
+		contentType = photo.contentType;
 	} catch {
 		await setOcrSource(db, locals.user.id, medicine.id, JSON.stringify(FAILED_RESULT));
 		return json(FAILED_RESULT);

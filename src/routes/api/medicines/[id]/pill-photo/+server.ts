@@ -1,10 +1,15 @@
 import { json } from '@sveltejs/kit';
 import { getMedicineById, setPhotoKey } from '$lib/server/db/queries/medicines';
-import { InvalidPhotoError, pillPhotoKey, putPhoto, readPhotoFromFormData } from '$lib/server/r2';
+import {
+	InvalidPhotoError,
+	pillPhotoKey,
+	putPhoto,
+	readPhotoFromFormData
+} from '$lib/server/photos';
 import { checkAndIncrement } from '$lib/server/rateLimit';
 import type { RequestHandler } from './$types';
 
-// Same combined budget as label-photo — protects R2 storage/write quota
+// Same combined budget as label-photo — protects KV storage/write quota
 // against a runaway or scripted uploader across both photo types.
 const UPLOAD_LIMIT = 30;
 const UPLOAD_WINDOW_SECONDS = 3600;

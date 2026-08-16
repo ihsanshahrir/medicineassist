@@ -17,30 +17,31 @@
 
 	// PLACEHOLDER IDs below — replace after running (once, with your own
 	// Cloudflare login): see db/README.md for the exact provisioning commands.
-	// `wrangler dev` runs D1/R2/KV/Queues against local Miniflare emulation
+	// `wrangler dev` runs D1/KV/Queues against local Miniflare emulation
 	// regardless of these IDs, so local development works before you provision
 	// anything real. Only `wrangler deploy` needs the real IDs filled in.
 	"d1_databases": [
 		{
 			"binding": "DB",
 			"database_name": "medsassist",
-			"database_id": "REPLACE_AFTER_WRANGLER_D1_CREATE",
+			"database_id": "f59bc249-dc1c-4f82-b3f0-feab5b1b7bfd",
 			"migrations_dir": "db/migrations"
-		}
-	],
-	"r2_buckets": [
-		{
-			"binding": "PHOTOS",
-			"bucket_name": "medsassist-photos"
 		}
 	],
 	"kv_namespaces": [
 		{
 			"binding": "OTP_KV",
-			"id": "REPLACE_AFTER_WRANGLER_KV_NAMESPACE_CREATE"
+			"id": "495e414f6e674c72ac4a0b60970531c3"
+		},
+		{
+			// Photo storage (label/pill photos). KV instead of R2 — no account-level
+			// dashboard enablement needed, and well within KV's free tier for a
+			// handful of users. See src/lib/server/photos.ts.
+			"binding": "PHOTOS",
+			"id": "e06c53dbdd814c9196abb989ae74d491"
 		}
 	],
-	// Workers AI has no local emulation — unlike D1/R2/KV/Queues above, every
+	// Workers AI has no local emulation — unlike D1/KV/Queues above, every
 	// AI call proxies to Cloudflare's real edge inference even under
 	// `wrangler dev`/`vite dev`, which needs either `wrangler login` or a
 	// CLOUDFLARE_API_TOKEN env var. That requirement used to block the ENTIRE

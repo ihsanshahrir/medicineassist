@@ -1,6 +1,6 @@
 # Provisioning real Cloudflare resources
 
-Everything in this repo runs and builds with **zero Cloudflare credentials** — `wrangler dev`/`vite dev` emulate D1, R2, KV, and Queues locally via Miniflare, and `npm run build` produces a deployable worker without touching your account. You only need this page once, when you're ready to actually deploy.
+Everything in this repo runs and builds with **zero Cloudflare credentials** — `wrangler dev`/`vite dev` emulate D1, KV, and Queues locally via Miniflare, and `npm run build` produces a deployable worker without touching your account. You only need this page once, when you're ready to actually deploy.
 
 Workers AI is the one exception: it has no local emulation (every call proxies to Cloudflare's real edge inference), so it's deliberately left commented out in `wrangler.jsonc` until the OCR milestone (M3) — that's the first point you'll need to authenticate at all, even for local dev of that one feature.
 
@@ -19,8 +19,10 @@ npx wrangler d1 create medsassist
 npx wrangler kv namespace create OTP_KV
 # → copy id into wrangler.jsonc's kv_namespaces[0].id
 
-npx wrangler r2 bucket create medsassist-photos
-# (bucket_name in wrangler.jsonc already matches — no ID to copy)
+npx wrangler kv namespace create PHOTOS
+# → copy id into wrangler.jsonc's kv_namespaces[1].id — photo storage lives
+# in KV (see src/lib/server/photos.ts), not R2: no account-level dashboard
+# enablement needed, and well within KV's free tier for a handful of users.
 
 npx wrangler queues create medsassist-notifications
 npx wrangler queues create medsassist-notifications-dlq
@@ -36,7 +38,8 @@ Secrets (never committed — set per-environment):
 
 ```bash
 npx wrangler secret put SESSION_SECRET
-npx wrangler secret put RESEND_API_KEY
+npx wrangler secret put SENDGRID_API_KEY
+npx wrangler secret put SENDGRID_FROM_EMAIL
 npx wrangler secret put VAPID_PRIVATE_JWK
 npx wrangler secret put VAPID_PUBLIC_KEY
 ```

@@ -84,7 +84,7 @@ export async function updateUserSettings(
 /** Cascades via the schema's ON DELETE CASCADE — medicines, schedules,
  *  schedule_times, dose_logs, and push_subscriptions all go with it. No
  *  session table to clean up (stateless HMAC cookie — the route handler
- *  clears the cookie itself). Does NOT touch R2 — the DELETE /api/me route
+ *  clears the cookie itself). Does NOT touch KV — the DELETE /api/me route
  *  handler calls deleteAllUserPhotos() itself first, since cascade only
  *  ever covers D1 rows. */
 export async function deleteUser(db: D1Database, userId: string): Promise<void> {

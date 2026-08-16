@@ -1,7 +1,12 @@
-// Key naming + put/get for the PHOTOS bucket. Keys are namespaced
+// Key naming + put/get for the PHOTOS KV namespace. Keys are namespaced
 // `medicines/{userId}/{medicineId}/...` deliberately — GET /api/photos/[...key]
 // parses the userId back out of the key itself to authorize a stream, with no
 // D1 lookup needed on that hot read path.
+//
+// KV instead of R2: no account-level dashboard enablement needed to
+// provision it, and well within KV's free tier (1GB storage, 25MB/value,
+// 1,000 writes/day) for a handful of users. Content-Type rides along in KV
+// metadata since KV values are opaque bytes.
 
 export function labelPhotoKey(userId: string, medicineId: string): string {
 	return `medicines/${userId}/${medicineId}/label-${Date.now()}.jpg`;
@@ -33,30 +38,37 @@ export async function readPhotoFromFormData(request: Request, field = 'photo'): 
 	return file;
 }
 
-export async function putPhoto(bucket: R2Bucket, key: string, file: File): Promise<void> {
-	await bucket.put(key, await file.arrayBuffer(), {
-		httpMetadata: { contentType: file.type }
+export async function putPhoto(kv: KVNamespace, key: string, file: File): Promise<void> {
+	await kv.put(key, await file.arrayBuffer(), {
+		metadata: { contentType: file.type }
 	});
 }
 
-/** Account deletion's R2 cleanup — D1's ON DELETE CASCADE only ever covers
+export async function getPhoto(
+	kv: KVNamespace,
+	key: string
+): Promise<{ body: ArrayBuffer; contentType: string } | null> {
+	const { value, metadata } = await kv.getWithMetadata<{ contentType: string }>(key, 'arrayBuffer');
+	if (value === null) return null;
+	return { body: value, contentType: metadata?.contentType ?? 'application/octet-stream' };
+}
+
+/** Account deletion's KV cleanup — D1's ON DELETE CASCADE only ever covers
  *  D1 rows, so without this every photo a deleted user uploaded would be
- *  orphaned in the bucket forever. Best-effort by design: catches and logs
- *  rather than throwing, since blocking account deletion over a transient
- *  storage hiccup is worse than a rare orphaned photo, and there's no later
- *  retry once the D1 row holding the key is gone. */
-export async function deleteAllUserPhotos(bucket: R2Bucket, userId: string): Promise<void> {
+ *  orphaned in the namespace forever. Best-effort by design: catches and
+ *  logs rather than throwing, since blocking account deletion over a
+ *  transient storage hiccup is worse than a rare orphaned photo, and
+ *  there's no later retry once the D1 row holding the key is gone. */
+export async function deleteAllUserPhotos(kv: KVNamespace, userId: string): Promise<void> {
 	const prefix = `medicines/${userId}/`;
 	try {
 		let cursor: string | undefined;
 		do {
-			const listed = await bucket.list({ prefix, cursor });
-			if (listed.objects.length > 0) {
-				await bucket.delete(listed.objects.map((o) => o.key));
-			}
-			cursor = listed.truncated ? listed.cursor : undefined;
+			const listed = await kv.list({ prefix, cursor });
+			await Promise.all(listed.keys.map((k) => kv.delete(k.name)));
+			cursor = listed.list_complete ? undefined : listed.cursor;
 		} while (cursor);
 	} catch (err) {
-		console.error(`failed to delete R2 photos for user ${userId}: ${err}`);
+		console.error(`failed to delete KV photos for user ${userId}: ${err}`);
 	}
 }

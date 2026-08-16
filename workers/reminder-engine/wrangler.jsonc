@@ -23,7 +23,7 @@
 		{
 			"binding": "DB",
 			"database_name": "medsassist",
-			"database_id": "REPLACE_AFTER_WRANGLER_D1_CREATE"
+			"database_id": "f59bc249-dc1c-4f82-b3f0-feab5b1b7bfd"
 		}
 	],
 	"queues": {
