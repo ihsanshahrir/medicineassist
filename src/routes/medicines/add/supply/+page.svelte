@@ -43,9 +43,15 @@
 	<p class="t-body intro">Optional — lets MedsAssist warn you before you run out.</p>
 
 	<div class="stepper">
-		<button type="button" onclick={() => (count = Math.max(0, (count ?? 0) - 1))}>–</button>
+		<button
+			type="button"
+			aria-label="Decrease count"
+			onclick={() => (count = Math.max(0, (count ?? 0) - 1))}>–</button
+		>
 		<span class="t-display val">{count ?? '—'}</span>
-		<button type="button" onclick={() => (count = (count ?? 0) + 1)}>+</button>
+		<button type="button" aria-label="Increase count" onclick={() => (count = (count ?? 0) + 1)}
+			>+</button
+		>
 	</div>
 
 	{#if error}<p class="error t-caption">{error}</p>{/if}

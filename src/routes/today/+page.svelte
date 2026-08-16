@@ -87,6 +87,14 @@
 </svelte:head>
 
 <main>
+	<div class="header">
+		<h1 class="t-title">Today</h1>
+		<nav class="header-links" aria-label="Main">
+			<a class="btn-text" href={resolve('/medicines')}>My Medicines</a>
+			<a class="btn-text" href={resolve('/settings')}>Settings</a>
+		</nav>
+	</div>
+
 	{#if loading}
 		<p class="t-body loading">Loading…</p>
 	{:else if data}
@@ -188,6 +196,16 @@
 		max-width: 460px;
 		margin: 0 auto;
 		padding: var(--sp-5) var(--sp-4) var(--sp-10);
+	}
+	.header {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		margin-bottom: var(--sp-4);
+	}
+	.header-links {
+		display: flex;
+		gap: var(--sp-2);
 	}
 	.loading {
 		text-align: center;

@@ -35,9 +35,13 @@
 
 	<form onsubmit={submit}>
 		<div class="stepper">
-			<button type="button" onclick={() => (amount = Math.max(1, amount - 5))}>–</button>
+			<button
+				type="button"
+				aria-label="Decrease amount"
+				onclick={() => (amount = Math.max(1, amount - 5))}>–</button
+			>
 			<span class="t-display val">{amount}</span>
-			<button type="button" onclick={() => (amount += 5)}>+</button>
+			<button type="button" aria-label="Increase amount" onclick={() => (amount += 5)}>+</button>
 		</div>
 
 		{#if error}<p class="error t-caption">{error}</p>{/if}

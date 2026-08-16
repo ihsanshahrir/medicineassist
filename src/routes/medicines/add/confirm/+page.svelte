@@ -12,7 +12,8 @@
 	import Pictogram from '$lib/components/Pictogram.svelte';
 	import { apiFetch } from '$lib/client/api';
 	import { resolve } from '$app/paths';
-	import { INSTRUCTION_TAG_META, WARNING_TAG_META } from '$lib/shared/instructionTags';
+	import { INSTRUCTION_TAG_META, WARNING_TAG_META, tagLabel } from '$lib/shared/instructionTags';
+	import { userSettings } from '$lib/stores/userSettings.svelte';
 	import type { InstructionTag, WarningTag } from '$lib/shared/types';
 	import type { PageProps } from './$types';
 
@@ -179,7 +180,7 @@
 					onclick={() => toggleTag(instructionTags, tag)}
 				>
 					<Pictogram id={meta.picId} size={22} />
-					<span>{meta.en}</span>
+					<span>{tagLabel(meta, userSettings.language)}</span>
 				</button>
 			{/each}
 		</div>
@@ -194,7 +195,7 @@
 					onclick={() => toggleTag(warningTags, tag)}
 				>
 					<Pictogram id={meta.picId} size={22} />
-					<span>{meta.en}</span>
+					<span>{tagLabel(meta, userSettings.language)}</span>
 				</button>
 			{/each}
 		</div>

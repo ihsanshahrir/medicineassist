@@ -3,6 +3,14 @@
 // so a new tag only ever needs adding in one spot.
 import type { InstructionTag, WarningTag } from './types';
 
+/** Picks the label matching the user's language setting (see
+ *  $lib/stores/userSettings.svelte) — the one part of the UI that's been
+ *  bilingual since M0. Full UI-wide translation of every screen's static
+ *  text is a separate, much larger undertaking not covered by this. */
+export function tagLabel(meta: { en: string; ms: string }, language: 'en' | 'ms'): string {
+	return language === 'ms' ? meta.ms : meta.en;
+}
+
 export const INSTRUCTION_TAG_META: Record<
 	InstructionTag,
 	{ picId: string; en: string; ms: string }

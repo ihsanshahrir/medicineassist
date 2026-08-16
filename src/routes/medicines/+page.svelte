@@ -33,7 +33,10 @@
 <main>
 	<div class="header">
 		<h1 class="t-title">My Medicines</h1>
-		<a class="btn-text" href={resolve('/medicines/add')}>+ Add</a>
+		<nav class="header-links" aria-label="Main">
+			<a class="btn-text" href={resolve('/today')}>Today</a>
+			<a class="btn-text" href={resolve('/medicines/add')}>+ Add</a>
+		</nav>
 	</div>
 
 	{#if loading}
@@ -71,6 +74,10 @@
 		align-items: center;
 		justify-content: space-between;
 		margin-bottom: var(--sp-4);
+	}
+	.header-links {
+		display: flex;
+		gap: var(--sp-2);
 	}
 	.loading {
 		text-align: center;

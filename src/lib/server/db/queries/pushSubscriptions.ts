@@ -83,3 +83,30 @@ export async function hasPushSubscription(db: D1Database, userId: string): Promi
 		.first<{ x: number }>();
 	return row !== null;
 }
+
+/** Settings' Reminder-health row cares whether AT LEAST ONE of the user's
+ *  devices is home-screen-installed — iOS push silently doesn't work without
+ *  it (per the PRD), so this is the thing worth surfacing, not "all of them". */
+export async function anyPushSubscriptionInstalledAsPwa(
+	db: D1Database,
+	userId: string
+): Promise<boolean> {
+	const row = await db
+		.prepare(
+			'SELECT 1 as x FROM push_subscriptions WHERE user_id = ? AND installed_as_pwa = 1 LIMIT 1'
+		)
+		.bind(userId)
+		.first<{ x: number }>();
+	return row !== null;
+}
+
+export async function listAllPushSubscriptionsForExport(
+	db: D1Database,
+	userId: string
+): Promise<PushSubscriptionRow[]> {
+	const { results } = await db
+		.prepare('SELECT * FROM push_subscriptions WHERE user_id = ?')
+		.bind(userId)
+		.all<PushSubscriptionRow>();
+	return results;
+}

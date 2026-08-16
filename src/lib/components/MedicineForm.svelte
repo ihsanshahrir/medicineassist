@@ -41,8 +41,10 @@
 	import {
 		INSTRUCTION_TAG_META,
 		WARNING_TAG_META,
-		TIME_ANCHOR_PIC
+		TIME_ANCHOR_PIC,
+		tagLabel
 	} from '$lib/shared/instructionTags';
+	import { userSettings } from '$lib/stores/userSettings.svelte';
 
 	interface AnchorTimes {
 		morning: string;
@@ -252,7 +254,7 @@
 					onclick={() => toggleTag(instructionTags, tag)}
 				>
 					<Pictogram id={meta.picId} size={22} />
-					<span>{meta.en}</span>
+					<span>{tagLabel(meta, userSettings.language)}</span>
 				</button>
 			{/each}
 		</div>
@@ -267,7 +269,7 @@
 					onclick={() => toggleTag(warningTags, tag)}
 				>
 					<Pictogram id={meta.picId} size={22} />
-					<span>{meta.en}</span>
+					<span>{tagLabel(meta, userSettings.language)}</span>
 				</button>
 			{/each}
 		</div>
@@ -277,10 +279,14 @@
 		<h2 class="t-h2">Schedule</h2>
 		<label class="t-label" for="dose-stepper">Dose per intake</label>
 		<div class="stepper" id="dose-stepper">
-			<button type="button" onclick={() => (doseAmount = Math.max(0.5, doseAmount - 0.5))}>–</button
+			<button
+				type="button"
+				aria-label="Decrease dose"
+				onclick={() => (doseAmount = Math.max(0.5, doseAmount - 0.5))}>–</button
 			>
 			<span class="t-title dose-val">{doseAmount}</span>
-			<button type="button" onclick={() => (doseAmount += 0.5)}>+</button>
+			<button type="button" aria-label="Increase dose" onclick={() => (doseAmount += 0.5)}>+</button
+			>
 			<select class="unit-select" bind:value={doseUnit}>
 				<option value="tablet">tablet(s)</option>
 				<option value="capsule">capsule(s)</option>

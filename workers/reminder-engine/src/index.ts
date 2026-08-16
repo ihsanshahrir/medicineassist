@@ -1,5 +1,6 @@
 import { runScan } from './scan';
 import { sendPushToUser } from './push';
+import { markPushSent } from './db';
 import type { QueueMessage } from './types';
 
 function toPushPayload(message: QueueMessage) {
@@ -36,7 +37,14 @@ export default {
 	async queue(batch, env) {
 		for (const message of batch.messages) {
 			try {
-				await sendPushToUser(env, message.body.user_id, toPushPayload(message.body));
+				const delivered = await sendPushToUser(
+					env,
+					message.body.user_id,
+					toPushPayload(message.body)
+				);
+				if (delivered && message.body.type !== 'supply_alert') {
+					await markPushSent(env.DB, message.body.dose_log_id);
+				}
 				message.ack();
 			} catch (err) {
 				console.error('failed to process queue message', message.body.type, err);

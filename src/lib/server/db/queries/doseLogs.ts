@@ -254,6 +254,31 @@ export async function actOnDoseLog(
 	return { ok: true, log: updated! };
 }
 
+/** Settings' Reminder-health row ("Last delivered 8:00 AM today") — the most
+ *  recent time reminder-engine actually sent a push for this user, across
+ *  every dose_log. Null if none ever has (never subscribed, or every send
+ *  failed). */
+export async function lastPushDeliveredAt(db: D1Database, userId: string): Promise<string | null> {
+	const row = await db
+		.prepare(
+			'SELECT MAX(last_push_sent_at) as t FROM dose_logs WHERE user_id = ? AND last_push_sent_at IS NOT NULL'
+		)
+		.bind(userId)
+		.first<{ t: string | null }>();
+	return row?.t ?? null;
+}
+
+export async function listAllDoseLogsForExport(
+	db: D1Database,
+	userId: string
+): Promise<DoseLogRow[]> {
+	const { results } = await db
+		.prepare('SELECT * FROM dose_logs WHERE user_id = ? ORDER BY scheduled_at ASC')
+		.bind(userId)
+		.all<DoseLogRow>();
+	return results;
+}
+
 /** Reverts a 'taken' dose back to 'pending' and restores supply — only within a short grace window after taking it. */
 export async function undoDoseLog(
 	db: D1Database,

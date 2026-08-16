@@ -33,9 +33,20 @@
 			>{label}{lowConfidence && !accepted ? ' — low confidence read' : ''}</span
 		>
 		{#if multiline}
-			<textarea class="field-val" rows="2" bind:value oninput={() => (accepted = true)}></textarea>
+			<textarea
+				class="field-val"
+				rows="2"
+				bind:value
+				aria-label={label}
+				oninput={() => (accepted = true)}></textarea>
 		{:else}
-			<input class="field-val" type="text" bind:value oninput={() => (accepted = true)} />
+			<input
+				class="field-val"
+				type="text"
+				bind:value
+				aria-label={label}
+				oninput={() => (accepted = true)}
+			/>
 		{/if}
 	</div>
 	<button

@@ -88,6 +88,16 @@ export function todayLocalDateStr(tzOffsetMinutes: number): string {
 	return shifted.toISOString().slice(0, 10);
 }
 
+/** Bare 'HH:MM' + offset -> 'HH:MM' UTC, no date component — used for both
+ *  schedule_times.time_utc and users.quiet_hours_*_utc, which are daily
+ *  recurring times rather than instants (so they don't need a calendar date
+ *  the way scheduled_at does). */
+export function timeLocalToUtc(timeLocal: string, tzOffsetMinutes: number): string {
+	const [hh, mm] = timeLocal.split(':').map(Number);
+	const totalMinutes = (hh * 60 + mm - tzOffsetMinutes + 1440 * 2) % 1440;
+	return `${String(Math.floor(totalMinutes / 60)).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
+}
+
 /**
  * Combines a local calendar date + local wall-clock time + the user's fixed
  * offset into the true UTC instant — this is what scheduled_at is stored as.

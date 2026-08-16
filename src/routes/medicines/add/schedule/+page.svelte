@@ -113,10 +113,14 @@
 	<section>
 		<span class="t-label">Dose per intake</span>
 		<div class="stepper">
-			<button type="button" onclick={() => (doseAmount = Math.max(0.5, doseAmount - 0.5))}>–</button
+			<button
+				type="button"
+				aria-label="Decrease dose"
+				onclick={() => (doseAmount = Math.max(0.5, doseAmount - 0.5))}>–</button
 			>
 			<span class="t-title dose-val">{doseAmount}</span>
-			<button type="button" onclick={() => (doseAmount += 0.5)}>+</button>
+			<button type="button" aria-label="Increase dose" onclick={() => (doseAmount += 0.5)}>+</button
+			>
 			<select class="unit-select" bind:value={doseUnit}>
 				<option value="tablet">tablet(s)</option>
 				<option value="capsule">capsule(s)</option>

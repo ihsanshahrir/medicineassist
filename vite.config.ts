@@ -18,7 +18,7 @@ export default defineConfig({
 			// injectManifest (not generateSW) since M4 needs a hand-written 'push'
 			// event listener to actually display reminders — generateSW's
 			// Workbox-authored service worker has no hook for custom event
-			// listeners, only caching recipes. src/service-worker.ts owns both the
+			// listeners, only caching recipes. src/sw.ts owns both the
 			// caching rules (moved there from workbox.runtimeCaching below) and the
 			// push/notificationclick handlers.
 			strategies: 'injectManifest',
@@ -30,8 +30,12 @@ export default defineConfig({
 			filename: 'sw.ts',
 			includeAssets: ['pictograms.svg'],
 			manifest: {
+				id: '/today',
 				name: 'MedsAssist',
 				short_name: 'MedsAssist',
+				lang: 'en',
+				dir: 'ltr',
+				orientation: 'portrait',
 				description: 'What to take, right now — with a photo of the actual pill.',
 				start_url: '/today',
 				scope: '/',

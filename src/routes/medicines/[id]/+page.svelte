@@ -7,9 +7,11 @@
 		INSTRUCTION_TAG_META,
 		WARNING_TAG_META,
 		MEDICINE_FORM_GLYPH,
-		DOSE_UNIT_GLYPH
+		DOSE_UNIT_GLYPH,
+		tagLabel
 	} from '$lib/shared/instructionTags';
 	import { daysBetween, estimateAvgDailyDose } from '$lib/shared/scheduleOccurrence';
+	import { userSettings } from '$lib/stores/userSettings.svelte';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -154,7 +156,7 @@
 							{#if meta}
 								<div class="tile surface-card">
 									<Pictogram id={meta.picId} size={28} />
-									<span>{meta.en}</span>
+									<span>{tagLabel(meta, userSettings.language)}</span>
 								</div>
 							{/if}
 						{/each}
@@ -175,7 +177,7 @@
 						{#if meta}
 							<div class="warn-row">
 								<Pictogram id={meta.picId} size={24} />
-								<span>{meta.en}</span>
+								<span>{tagLabel(meta, userSettings.language)}</span>
 							</div>
 						{/if}
 					{/each}

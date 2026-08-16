@@ -117,6 +117,20 @@ export async function listMedicinesForUser(db: D1Database, userId: string): Prom
 	return results;
 }
 
+/** For GET /api/me/export — deliberately unfiltered (includes drafts and
+ *  archived rows too), unlike listMedicinesForUser: "export my data" means
+ *  all of it, not just what's currently visible in the app. */
+export async function listAllMedicinesForExport(
+	db: D1Database,
+	userId: string
+): Promise<MedicineRow[]> {
+	const { results } = await db
+		.prepare('SELECT * FROM medicines WHERE user_id = ? ORDER BY created_at ASC')
+		.bind(userId)
+		.all<MedicineRow>();
+	return results;
+}
+
 export interface UpdateMedicineInput {
 	name?: string;
 	strength?: string | null;

@@ -1,4 +1,4 @@
-import type { ScheduleLike } from '$lib/shared/scheduleOccurrence';
+import { timeLocalToUtc, type ScheduleLike } from '$lib/shared/scheduleOccurrence';
 
 export interface ScheduleRow {
 	id: string;
@@ -34,12 +34,6 @@ export interface UpsertScheduleInput {
 	endDate?: string | null;
 	times: Array<{ timeLocal: string; anchorLabel?: string | null }>;
 	tzOffsetMinutes: number;
-}
-
-function timeLocalToUtc(timeLocal: string, tzOffsetMinutes: number): string {
-	const [hh, mm] = timeLocal.split(':').map(Number);
-	const totalMinutes = (hh * 60 + mm - tzOffsetMinutes + 1440 * 2) % 1440;
-	return `${String(Math.floor(totalMinutes / 60)).padStart(2, '0')}:${String(totalMinutes % 60).padStart(2, '0')}`;
 }
 
 /** 1:1 with medicine — always fully replaces any existing schedule + times (no partial-patch API, matches the plan's PUT semantics). */
@@ -157,6 +151,29 @@ export async function listSchedulesForUser(
 		map.set(schedule.medicine_id, { ...schedule, times });
 	}
 	return map;
+}
+
+/** For GET /api/me/export. */
+export async function listAllSchedulesForExport(
+	db: D1Database,
+	userId: string
+): Promise<ScheduleWithTimes[]> {
+	const { results: rows } = await db
+		.prepare(
+			`SELECT s.* FROM schedules s JOIN medicines m ON m.id = s.medicine_id WHERE m.user_id = ?`
+		)
+		.bind(userId)
+		.all<ScheduleRow>();
+
+	const withTimes: ScheduleWithTimes[] = [];
+	for (const schedule of rows) {
+		const { results: times } = await db
+			.prepare('SELECT * FROM schedule_times WHERE schedule_id = ? ORDER BY time_local ASC')
+			.bind(schedule.id)
+			.all<ScheduleTimeRow>();
+		withTimes.push({ ...schedule, times });
+	}
+	return withTimes;
 }
 
 export function toScheduleLike(row: ScheduleRow): ScheduleLike {

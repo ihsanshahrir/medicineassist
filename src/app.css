@@ -3,3 +3,43 @@
    value here; edit design/colors_and_type.css and re-check with /design-sync.
    See DESIGN.md at the repo root for the full rule set. */
 @import '../design/colors_and_type.css';
+
+/* M6's text-size setting (Settings > Text size). Deliberately kept OUT of
+   design/colors_and_type.css (that file is /design-sync's untouched source
+   of truth) — this just overrides the same --t-*-size/--t-*-line custom
+   properties every .t-* class already reads from, scaled by a multiplier, so
+   every screen's type scales together without any component-level changes.
+   +layout.svelte sets data-text-size on <html> from the user's saved
+   preference (defaulting to "normal", which needs no override at all). */
+:root[data-text-size='large'] {
+	--t-display-size: 2.875rem;
+	--t-display-line: 3.1625rem;
+	--t-title-size: 2.0125rem;
+	--t-title-line: 2.44375rem;
+	--t-h2-size: 1.58125rem;
+	--t-h2-line: 2.0125rem;
+	--t-body-lg-size: 1.4375rem;
+	--t-body-lg-line: 2.15625rem;
+	--t-body-size: 1.29375rem;
+	--t-body-line: 2.0125rem;
+	--t-label-size: 1.15rem;
+	--t-label-line: 1.58125rem;
+	--t-caption-size: 1.078125rem;
+	--t-caption-line: 1.4375rem;
+}
+:root[data-text-size='xl'] {
+	--t-display-size: 3.25rem;
+	--t-display-line: 3.575rem;
+	--t-title-size: 2.275rem;
+	--t-title-line: 2.7625rem;
+	--t-h2-size: 1.7875rem;
+	--t-h2-line: 2.275rem;
+	--t-body-lg-size: 1.625rem;
+	--t-body-lg-line: 2.4375rem;
+	--t-body-size: 1.4625rem;
+	--t-body-line: 2.275rem;
+	--t-label-size: 1.3rem;
+	--t-label-line: 1.7875rem;
+	--t-caption-size: 1.21875rem;
+	--t-caption-line: 1.625rem;
+}

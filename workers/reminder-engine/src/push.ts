@@ -23,7 +23,7 @@ async function sendToSubscription(
 	env: Env,
 	sub: PushSubscriptionRow,
 	payload: PushPayload
-): Promise<void> {
+): Promise<boolean> {
 	const { endpoint, body, headers } = await buildPushHTTPRequest({
 		privateJWK: env.VAPID_PRIVATE_JWK,
 		subscription: { endpoint: sub.endpoint, keys: { p256dh: sub.p256dh, auth: sub.auth } },
@@ -40,16 +40,26 @@ async function sendToSubscription(
 	// good (uninstalled, expired) — clean it up so future ticks stop trying.
 	if (res.status === 404 || res.status === 410) {
 		await deletePushSubscription(env.DB, sub.id);
-	} else if (!res.ok) {
-		console.error(`push send failed: ${res.status} ${await res.text().catch(() => '')}`);
+		return false;
 	}
+	if (!res.ok) {
+		console.error(`push send failed: ${res.status} ${await res.text().catch(() => '')}`);
+		return false;
+	}
+	return true;
 }
 
+/** True if at least one of the user's devices actually accepted the push —
+ *  what Settings' Reminder-health row means by "delivered" (see index.ts's
+ *  markPushSent call, gated on this return value rather than assumed). */
 export async function sendPushToUser(
 	env: Env,
 	userId: string,
 	payload: PushPayload
-): Promise<void> {
+): Promise<boolean> {
 	const subscriptions = await listPushSubscriptionsForUser(env.DB, userId);
-	await Promise.all(subscriptions.map((sub) => sendToSubscription(env, sub, payload)));
+	const results = await Promise.all(
+		subscriptions.map((sub) => sendToSubscription(env, sub, payload))
+	);
+	return results.some(Boolean);
 }

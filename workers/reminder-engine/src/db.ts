@@ -122,6 +122,23 @@ export async function findDueFollowUps(
 	return results;
 }
 
+/** Settings' Reminder-health row ("Last delivered...") reads this back via
+ *  the root app's lastPushDeliveredAt query — set after an actual send
+ *  attempt, in index.ts's queue() handler, not here in the scan.
+ *
+ *  Bound as a real ISO string, deliberately NOT SQL's datetime('now') — every
+ *  other instant column in dose_logs (scheduled_at, taken_at, snoozed_until)
+ *  is a full ISO string too, and the main app's doseLogs.ts warns explicitly
+ *  against mixing the two formats (datetime('now')'s space-separated,
+ *  no-'Z' format parses as local time, not UTC, if you ever pass it through
+ *  `new Date()` — which the Settings page's display formatting does). */
+export async function markPushSent(db: D1Database, doseLogId: string): Promise<void> {
+	await db
+		.prepare(`UPDATE dose_logs SET last_push_sent_at = ? WHERE id = ?`)
+		.bind(new Date().toISOString(), doseLogId)
+		.run();
+}
+
 export async function markFollowUpSent(db: D1Database, doseLogId: string): Promise<void> {
 	await db
 		.prepare(`UPDATE dose_logs SET followup_sent = 1, updated_at = datetime('now') WHERE id = ?`)
