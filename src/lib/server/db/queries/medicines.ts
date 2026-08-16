@@ -225,6 +225,20 @@ export async function finalizeMedicineDraft(
 	return result.meta.changes > 0;
 }
 
+/** Flips one of the two one-way alert flags — cleared again only by
+ *  setSupplyCount/refillMedicine, both of which reset both flags to 0. */
+export async function markSupplyAlertSent(
+	db: D1Database,
+	id: string,
+	threshold: 7 | 2
+): Promise<void> {
+	const column = threshold === 7 ? 'supply_alert_7d_sent' : 'supply_alert_2d_sent';
+	await db
+		.prepare(`UPDATE medicines SET ${column} = 1, updated_at = datetime('now') WHERE id = ?`)
+		.bind(id)
+		.run();
+}
+
 export async function setSupplyCount(
 	db: D1Database,
 	userId: string,

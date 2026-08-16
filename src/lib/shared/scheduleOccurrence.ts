@@ -21,7 +21,10 @@ function parseDateOnly(dateStr: string): number {
 	return Date.UTC(y, m - 1, d);
 }
 
-function daysBetween(fromDateStr: string, toDateStr: string): number {
+// Exported for the medicine detail page's course-completion progress ("Day 3
+// of 7") — a plain YYYY-MM-DD diff, no timezone math needed beyond what the
+// date strings themselves already encode.
+export function daysBetween(fromDateStr: string, toDateStr: string): number {
 	const MS_PER_DAY = 86_400_000;
 	return Math.round((parseDateOnly(toDateStr) - parseDateOnly(fromDateStr)) / MS_PER_DAY);
 }
@@ -30,6 +33,32 @@ function daysBetween(fromDateStr: string, toDateStr: string): number {
 function mondayBitForDate(dateStr: string): number {
 	const jsDay = new Date(parseDateOnly(dateStr)).getUTCDay(); // 0=Sun..6=Sat
 	return (jsDay + 6) % 7;
+}
+
+export interface DoseFrequencyLike {
+	doseAmount: number;
+	timesPerDay: number;
+	repeatType: 'daily' | 'every_n_days' | 'weekdays';
+	repeatIntervalDays: number | null;
+	weekdaysMask: number | null;
+}
+
+/** Average daily dose implied by a schedule's recurrence pattern — used both
+ *  for the Today "days remaining" display and M5's event-driven 7d/2d supply
+ *  alerts (src/lib/server/push/supplyAlerts.ts), which need the identical
+ *  number so a UI estimate and an actual alert never disagree. */
+export function estimateAvgDailyDose(schedule: DoseFrequencyLike): number {
+	const perOccurrence = schedule.doseAmount * schedule.timesPerDay;
+	if (schedule.repeatType === 'every_n_days') {
+		return perOccurrence / (schedule.repeatIntervalDays || 1);
+	}
+	if (schedule.repeatType === 'weekdays') {
+		const mask = schedule.weekdaysMask ?? 0;
+		let activeDays = 0;
+		for (let bit = 0; bit < 7; bit++) if ((mask >> bit) & 1) activeDays++;
+		return perOccurrence * (activeDays / 7);
+	}
+	return perOccurrence; // daily
 }
 
 export function isScheduledOnLocalDate(schedule: ScheduleLike, localDateStr: string): boolean {

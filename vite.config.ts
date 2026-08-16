@@ -15,7 +15,19 @@ export default defineConfig({
 		}),
 		VitePWA({
 			registerType: 'autoUpdate',
-			strategies: 'generateSW',
+			// injectManifest (not generateSW) since M4 needs a hand-written 'push'
+			// event listener to actually display reminders — generateSW's
+			// Workbox-authored service worker has no hook for custom event
+			// listeners, only caching recipes. src/service-worker.ts owns both the
+			// caching rules (moved there from workbox.runtimeCaching below) and the
+			// push/notificationclick handlers.
+			strategies: 'injectManifest',
+			srcDir: 'src',
+			// Deliberately NOT `service-worker.ts` — that exact filename is
+			// SvelteKit's own reserved convention (kit.files.serviceWorker) for its
+			// unrelated native service-worker feature, and having both present
+			// would fight over registering/serving a service worker.
+			filename: 'sw.ts',
 			includeAssets: ['pictograms.svg'],
 			manifest: {
 				name: 'MedsAssist',
@@ -37,29 +49,10 @@ export default defineConfig({
 					}
 				]
 			},
-			workbox: {
-				// Offline-readable per the PRD: today's schedule + medicine data + photos.
-				// Never cache auth, mutations, or push registration — pretending those
-				// work offline is worse than the honest "you're offline" state.
-				runtimeCaching: [
-					{
-						urlPattern: /\/api\/(today|medicines)/,
-						handler: 'NetworkFirst',
-						options: { cacheName: 'medsassist-data', networkTimeoutSeconds: 4 }
-					},
-					{
-						urlPattern: /\/api\/photos\//,
-						handler: 'CacheFirst',
-						options: {
-							cacheName: 'medsassist-photos',
-							expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 30 }
-						}
-					},
-					{
-						urlPattern: /\/api\/(auth|dose-logs|push)\//,
-						handler: 'NetworkOnly'
-					}
-				]
+			injectManifest: {
+				// Default globPatterns also match static/pictograms.svg and the icon
+				// PNGs, which is what we want precached alongside the JS/CSS bundle.
+				maximumFileSizeToCacheInBytes: 4 * 1024 * 1024
 			}
 		})
 	]

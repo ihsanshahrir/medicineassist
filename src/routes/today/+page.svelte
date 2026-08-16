@@ -7,6 +7,7 @@
 	import { apiFetch } from '$lib/client/api';
 	import { resolve } from '$app/paths';
 	import { anchorFromIso, anchorText, formatTimeLabel } from '$lib/shared/formatTime';
+	import { enableReminders, getPushStatus, type PushStatus } from '$lib/client/push';
 	import type { DoseLogStatus, DoseUnit } from '$lib/shared/types';
 
 	interface Occurrence {
@@ -58,7 +59,27 @@
 		await Promise.all(group.filter((o) => o.status === 'pending').map((o) => act(o, 'take')));
 	}
 
-	onMount(load);
+	let pushStatus = $state<PushStatus | 'checking'>('checking');
+	let enablingPush = $state(false);
+	let pushError = $state('');
+
+	async function turnOnReminders() {
+		pushError = '';
+		enablingPush = true;
+		try {
+			await enableReminders();
+			pushStatus = 'subscribed';
+		} catch (err) {
+			pushError = err instanceof Error ? err.message : 'Could not turn on reminders.';
+		} finally {
+			enablingPush = false;
+		}
+	}
+
+	onMount(() => {
+		load();
+		getPushStatus().then((s) => (pushStatus = s));
+	});
 </script>
 
 <svelte:head>
@@ -69,6 +90,32 @@
 	{#if loading}
 		<p class="t-body loading">Loading…</p>
 	{:else if data}
+		{#if pushStatus === 'unsubscribed'}
+			<div class="push-banner">
+				<div>
+					<b>Turn on reminders</b>
+					<span>MedsAssist can only remind you at the right time if notifications are on.</span>
+					{#if pushError}<span class="push-error">{pushError}</span>{/if}
+				</div>
+				<button
+					class="btn btn-secondary push-btn"
+					onclick={turnOnReminders}
+					disabled={enablingPush}
+				>
+					{enablingPush ? 'Turning on…' : 'Turn on'}
+				</button>
+			</div>
+		{:else if pushStatus === 'denied'}
+			<div class="push-banner">
+				<div>
+					<b>Reminders are blocked</b>
+					<span
+						>Notifications were denied for this site — enable them in your browser settings.</span
+					>
+				</div>
+			</div>
+		{/if}
+
 		{#if data.now.length > 0}
 			{@const firstTime = data.now[0].scheduledAt}
 			{@const anchor = anchorFromIso(firstTime)}
@@ -149,6 +196,34 @@
 	}
 	.section-title {
 		margin: var(--sp-6) 0 var(--sp-2);
+	}
+	.push-banner {
+		display: flex;
+		align-items: center;
+		gap: var(--sp-3);
+		background: var(--surface);
+		box-shadow: var(--shadow-1);
+		border-radius: var(--r-card);
+		padding: var(--sp-4);
+		margin-bottom: var(--sp-4);
+	}
+	.push-banner b {
+		display: block;
+		font-size: 14px;
+	}
+	.push-banner span {
+		display: block;
+		font-size: 12px;
+		color: var(--ink-2);
+		margin-top: 2px;
+	}
+	.push-error {
+		color: var(--danger-text) !important;
+	}
+	.push-btn {
+		flex: 0 0 auto;
+		min-height: 40px;
+		padding: 0 var(--sp-4);
 	}
 	.warn-banner {
 		display: flex;

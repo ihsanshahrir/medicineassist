@@ -10,5 +10,10 @@ declare global {
 		SESSION_SECRET: string;
 		/** Unset in local dev is fine — see src/lib/server/email.ts's fallback. */
 		RESEND_API_KEY?: string;
+		/** Handed to the browser as pushManager.subscribe()'s applicationServerKey —
+		 *  see GET /api/push/public-key. The matching private key lives only in
+		 *  workers/reminder-engine's own secrets (that's the worker that signs and
+		 *  sends), not here. */
+		VAPID_PUBLIC_KEY?: string;
 	}
 }

@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { getMedicineById, setSupplyCount } from '$lib/server/db/queries/medicines';
+import { checkAndEnqueueSupplyAlert } from '$lib/server/push/supplyAlerts';
 import type { RequestHandler } from './$types';
 
 export const PATCH: RequestHandler = async ({ params, request, locals, platform }) => {
@@ -15,5 +16,12 @@ export const PATCH: RequestHandler = async ({ params, request, locals, platform 
 	}
 
 	await setSupplyCount(db, locals.user.id, medicine.id, body.count);
+
+	// A manual "I have N left" edit (e.g. the OCR wizard's Supply step) is the
+	// same signal a refill is — if the count entered is already low, check
+	// immediately rather than waiting for the next take/refill to notice.
+	const updated = await getMedicineById(db, locals.user.id, medicine.id);
+	if (updated) await checkAndEnqueueSupplyAlert(db, platform!.env.NOTIFY_QUEUE, updated);
+
 	return json({ ok: true });
 };

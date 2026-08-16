@@ -9,6 +9,7 @@
 		MEDICINE_FORM_GLYPH,
 		DOSE_UNIT_GLYPH
 	} from '$lib/shared/instructionTags';
+	import { daysBetween, estimateAvgDailyDose } from '$lib/shared/scheduleOccurrence';
 	import type { PageProps } from './$types';
 
 	let { data }: PageProps = $props();
@@ -26,13 +27,16 @@
 		accent_index: number;
 		pill_photo_key: string | null;
 		supply_count: number | null;
+		last_refill_amount: number | null;
 	}
 	interface ScheduleDetail {
 		dose_amount: number;
 		dose_unit: string;
-		repeat_type: string;
+		repeat_type: 'daily' | 'every_n_days' | 'weekdays';
 		repeat_interval_days: number | null;
 		weekdays_mask: number | null;
+		start_date: string;
+		end_date: string | null;
 		times: Array<{ time_local: string; anchor_label: string | null }>;
 	}
 
@@ -62,6 +66,39 @@
 			return days.join(', ') || 'No days selected';
 		}
 		return '';
+	}
+
+	// Local (browser) calendar date, not UTC — v1 is MYT-only per the PRD, and
+	// this is a display-only estimate, not the safety-critical scheduling math
+	// (that's server-side and uses the user's stored tz_offset_minutes).
+	function todayDateStr(): string {
+		const d = new Date();
+		return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+	}
+
+	function daysRemainingEstimate(supplyCount: number, s: ScheduleDetail): number | null {
+		const avgDaily = estimateAvgDailyDose({
+			doseAmount: s.dose_amount,
+			timesPerDay: s.times.length,
+			repeatType: s.repeat_type,
+			repeatIntervalDays: s.repeat_interval_days,
+			weekdaysMask: s.weekdays_mask
+		});
+		return avgDaily > 0 ? Math.floor(supplyCount / avgDaily) : null;
+	}
+
+	interface CourseProgress {
+		dayIndex: number;
+		totalDays: number;
+		percent: number;
+	}
+	function courseProgress(s: ScheduleDetail): CourseProgress | null {
+		if (!s.end_date) return null;
+		const totalDays = daysBetween(s.start_date, s.end_date) + 1;
+		if (totalDays <= 0) return null;
+		const elapsed = daysBetween(s.start_date, todayDateStr()) + 1;
+		const dayIndex = Math.min(totalDays, Math.max(1, elapsed));
+		return { dayIndex, totalDays, percent: Math.round((dayIndex / totalDays) * 100) };
 	}
 
 	async function deleteMedicine() {
@@ -149,14 +186,54 @@
 		<div class="section">
 			<h3 class="t-caption label">Supply</h3>
 			<div class="supply-card surface-card">
-				<div class="supply-row">
-					<b class="t-body-lg">
-						{medicine.supply_count !== null ? `${medicine.supply_count} left` : 'Not tracked'}
-					</b>
-					<a class="btn-text" href={resolve('/medicines/[id]/refill', { id: data.id })}>Refill</a>
-				</div>
+				{#if medicine.supply_count !== null}
+					{@const days = schedule ? daysRemainingEstimate(medicine.supply_count, schedule) : null}
+					{@const fillPercent = medicine.last_refill_amount
+						? Math.min(100, Math.round((medicine.supply_count / medicine.last_refill_amount) * 100))
+						: null}
+					<div class="supply-row">
+						<b class="t-body-lg">
+							{medicine.supply_count} left{days !== null
+								? ` · ~${days} day${days === 1 ? '' : 's'}`
+								: ''}
+						</b>
+						<a class="btn-text" href={resolve('/medicines/[id]/refill', { id: data.id })}>Refill</a>
+					</div>
+					{#if fillPercent !== null}
+						<div class="meter-track">
+							<div
+								class="meter-fill"
+								class:meter-low={days !== null && days <= 7}
+								style:width="{fillPercent}%"
+							></div>
+						</div>
+					{/if}
+				{:else}
+					<div class="supply-row">
+						<b class="t-body-lg">Not tracked</b>
+						<a class="btn-text" href={resolve('/medicines/[id]/refill', { id: data.id })}>Refill</a>
+					</div>
+				{/if}
 			</div>
 		</div>
+
+		{#if schedule}
+			{@const course = courseProgress(schedule)}
+			{#if course}
+				<div class="section">
+					<h3 class="t-caption label">Course progress</h3>
+					<div class="supply-card surface-card">
+						<div class="supply-row">
+							<b class="t-body-lg">Day {course.dayIndex} of {course.totalDays}</b>
+						</div>
+						<div class="meter-track">
+							<div class="meter-fill" style:width="{course.percent}%"></div>
+						</div>
+						<p class="t-caption course-note">Finish the full course even if you feel better</p>
+					</div>
+				</div>
+			{/if}
+		{/if}
 
 		{#if schedule}
 			<div class="section">
@@ -285,6 +362,25 @@
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+	}
+	.meter-track {
+		height: 10px;
+		background: var(--surface-sunk);
+		border-radius: 999px;
+		overflow: hidden;
+		margin-top: var(--sp-3);
+	}
+	.meter-fill {
+		height: 100%;
+		border-radius: 999px;
+		background: var(--sage-700);
+	}
+	.meter-fill.meter-low {
+		background: var(--warn-border);
+	}
+	.course-note {
+		margin-top: var(--sp-2);
+		color: var(--ink-2);
 	}
 	.dose-line {
 		display: flex;

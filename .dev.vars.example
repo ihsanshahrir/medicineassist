@@ -11,3 +11,9 @@ SESSION_SECRET=replace-with-a-long-random-string
 # instead of emailed (see src/lib/server/email.ts). Only needed to actually
 # test real email delivery.
 RESEND_API_KEY=
+
+# For M4's reminder pipeline — only the public half goes here (handed to the
+# browser to subscribe with, via GET /api/push/public-key). The matching
+# private key goes in workers/reminder-engine/.dev.vars instead, never here.
+# Generate both with: node scripts/generate-vapid-keys.mjs
+VAPID_PUBLIC_KEY=

@@ -14,7 +14,7 @@ export default defineConfig(
 	// (kept committed so editors get binding types without a build step first),
 	// but it's not our code to fix; its own internal eslint-disable comments
 	// occasionally go stale as wrangler's generator changes.
-	{ ignores: ['worker-configuration.d.ts'] },
+	{ ignores: ['worker-configuration.d.ts', 'workers/*/worker-configuration.d.ts'] },
 	js.configs.recommended,
 	ts.configs.recommended,
 	svelte.configs.recommended,

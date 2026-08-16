@@ -1,5 +1,6 @@
 import { json } from '@sveltejs/kit';
 import { refillMedicine } from '$lib/server/db/queries/medicines';
+import { checkAndEnqueueSupplyAlert } from '$lib/server/push/supplyAlerts';
 import type { RequestHandler } from './$types';
 
 export const POST: RequestHandler = async ({ params, request, locals, platform }) => {
@@ -10,7 +11,14 @@ export const POST: RequestHandler = async ({ params, request, locals, platform }
 		return json({ error: 'invalid_amount' }, { status: 400 });
 	}
 
-	const medicine = await refillMedicine(platform!.env.DB, locals.user.id, params.id, body.amount);
+	const db = platform!.env.DB;
+	const medicine = await refillMedicine(db, locals.user.id, params.id, body.amount);
 	if (!medicine) return json({ error: 'not_found' }, { status: 404 });
+
+	// refillMedicine already reset both alert flags — a refill can still leave
+	// someone under the 7d/2d threshold (a too-small top-up), so re-check
+	// rather than assuming a refill always clears the warning.
+	await checkAndEnqueueSupplyAlert(db, platform!.env.NOTIFY_QUEUE, medicine);
+
 	return json({ medicine });
 };

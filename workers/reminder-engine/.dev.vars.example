@@ -1,0 +1,9 @@
+# Copy to .dev.vars (gitignored) and fill in for local development.
+# `wrangler dev` reads this automatically when run from this directory —
+# no need to declare these in wrangler.jsonc, and they're never committed.
+#
+# Generate a keypair with: node ../../scripts/generate-vapid-keys.mjs
+# (run from this directory; path is relative to repo root's scripts/)
+
+VAPID_PRIVATE_JWK=
+VAPID_SUBJECT=mailto:you@example.com

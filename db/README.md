@@ -45,6 +45,30 @@ npx wrangler secret put VAPID_PUBLIC_KEY
 
 Uncomment the `ai` block in `wrangler.jsonc`, then `npm run gen` to regenerate `worker-configuration.d.ts` with the `AI` binding back in scope.
 
-## When M4 (reminders) lands
+## M4 — reminder pipeline (reminder-engine + push)
 
-`workers/reminder-engine/` is a second, separate Worker (see the top-level plan notes / `DESIGN.md`) with its own `wrangler.jsonc` binding to the _same_ D1 database, plus the Queue consumer side. It needs `wrangler deploy` run from its own directory, separately from the main app.
+`workers/reminder-engine/` is a second, separate Worker with its own `wrangler.jsonc`, binding to the _same_ D1 database as the main app plus its own Queue consumer/producer of `medsassist-notifications`. Deploy it separately from the main app:
+
+```bash
+npm run deploy:reminder
+# equivalent to: cd workers/reminder-engine && wrangler deploy
+```
+
+It has no local emulation gap like Workers AI does — D1/Queues both run under Miniflare the same way for this worker as for the root app, so `npm run dev:reminder` (`wrangler dev --test-scheduled`) works fully offline. Trigger a tick manually against the local dev server with:
+
+```bash
+curl "http://localhost:8787/__scheduled"
+```
+
+**VAPID keys** (Web Push's signing keypair — distinct per environment, not shared with anything else):
+
+```bash
+node scripts/generate-vapid-keys.mjs
+```
+
+Prints a public key and a private JWK. They go to **different places**:
+
+- `VAPID_PUBLIC_KEY` → the **root app's** secrets (it's what `GET /api/push/public-key` hands the browser to subscribe with): `npx wrangler secret put VAPID_PUBLIC_KEY` from the repo root.
+- `VAPID_PRIVATE_JWK` + `VAPID_SUBJECT` (a `mailto:`/`https:` contact for push-service abuse reports) → **reminder-engine's own** secrets, since that's the only thing that ever signs a push: `npx wrangler secret put VAPID_PRIVATE_JWK` and `... put VAPID_SUBJECT`, both run from `workers/reminder-engine/`.
+
+For local dev, paste the same values into `.dev.vars` (root, `VAPID_PUBLIC_KEY` only) and `workers/reminder-engine/.dev.vars` (`VAPID_PRIVATE_JWK` + `VAPID_SUBJECT`) — both gitignored, both have a `.dev.vars.example` alongside them.

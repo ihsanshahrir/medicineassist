@@ -3,25 +3,8 @@ import { computeTodayOccurrences } from '$lib/server/db/queries/doseLogs';
 import { listMedicinesForUser } from '$lib/server/db/queries/medicines';
 import { listSchedulesForUser } from '$lib/server/db/queries/schedules';
 import { getUserById } from '$lib/server/db/queries/users';
+import { estimateAvgDailyDose } from '$lib/shared/scheduleOccurrence';
 import type { RequestHandler } from './$types';
-import type { ScheduleWithTimes } from '$lib/server/db/queries/schedules';
-
-// Average daily dose from the recurrence pattern — used only for the
-// days-remaining estimate shown here. The push-triggering version of this
-// same idea (event-driven 7d/2d alerts) is M5; this is display-only.
-function estimateAvgDailyDose(schedule: ScheduleWithTimes): number {
-	const perOccurrence = schedule.dose_amount * schedule.times.length;
-	if (schedule.repeat_type === 'every_n_days') {
-		return perOccurrence / (schedule.repeat_interval_days || 1);
-	}
-	if (schedule.repeat_type === 'weekdays') {
-		const mask = schedule.weekdays_mask ?? 0;
-		let activeDays = 0;
-		for (let bit = 0; bit < 7; bit++) if ((mask >> bit) & 1) activeDays++;
-		return perOccurrence * (activeDays / 7);
-	}
-	return perOccurrence; // daily
-}
 
 export const GET: RequestHandler = async ({ locals, platform }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
@@ -47,7 +30,15 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 		.filter((m) => m.supply_count !== null)
 		.map((m) => {
 			const schedule = schedules.get(m.id);
-			const avgDaily = schedule ? estimateAvgDailyDose(schedule) : 0;
+			const avgDaily = schedule
+				? estimateAvgDailyDose({
+						doseAmount: schedule.dose_amount,
+						timesPerDay: schedule.times.length,
+						repeatType: schedule.repeat_type as 'daily' | 'every_n_days' | 'weekdays',
+						repeatIntervalDays: schedule.repeat_interval_days,
+						weekdaysMask: schedule.weekdays_mask
+					})
+				: 0;
 			const daysRemaining = avgDaily > 0 ? (m.supply_count ?? 0) / avgDaily : Infinity;
 			return { medicineId: m.id, medicineName: m.name, daysRemaining: Math.floor(daysRemaining) };
 		})

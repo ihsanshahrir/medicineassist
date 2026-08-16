@@ -1,0 +1,54 @@
+{
+	"$schema": "../../node_modules/wrangler/config-schema.json",
+	// Second, hand-written Worker: cron scan + queue consumer + VAPID push
+	// send. Exists only because adapter-cloudflare's generated worker (the
+	// root app, medsassist-web) has no supported hook for a Cron Trigger's
+	// `scheduled()` or a Queue's `queue()` — see src/index.ts for both.
+	// Deploy separately from the root app: `cd workers/reminder-engine &&
+	// wrangler deploy` (or `npm run deploy:reminder` from the repo root).
+	"name": "medsassist-reminder-engine",
+	"compatibility_date": "2026-08-16",
+	"compatibility_flags": ["nodejs_compat"],
+	"main": "src/index.ts",
+
+	"triggers": {
+		"crons": ["* * * * *"]
+	},
+
+	// Same D1 database as the root app (medsassist-web) — copy the real
+	// database_id here too once you've filled it into the root wrangler.jsonc,
+	// see db/README.md. No R2/KV/AI bindings — this worker never touches
+	// photos, OTP, or OCR.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "medsassist",
+			"database_id": "REPLACE_AFTER_WRANGLER_D1_CREATE"
+		}
+	],
+	"queues": {
+		// Both producer and consumer of the same queue: the cron scan enqueues
+		// what needs sending, and this worker's own queue() handler is what
+		// actually sends it — decouples scanning from push delivery (retries,
+		// batching, DLQ) without needing a third moving part.
+		"producers": [
+			{
+				"binding": "NOTIFY_QUEUE",
+				"queue": "medsassist-notifications"
+			}
+		],
+		"consumers": [
+			{
+				"queue": "medsassist-notifications",
+				"max_batch_size": 20,
+				"max_retries": 3,
+				"dead_letter_queue": "medsassist-notifications-dlq"
+			}
+		]
+	}
+
+	// secrets (wrangler secret put, run from this directory):
+	//   VAPID_PRIVATE_JWK — the signing half of the VAPID keypair
+	//   VAPID_SUBJECT      — contact URL/email push services may use for abuse reports, e.g. mailto:you@example.com
+	// See scripts/generate-vapid-keys.mjs and db/README.md.
+}

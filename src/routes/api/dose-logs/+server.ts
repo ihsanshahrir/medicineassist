@@ -1,6 +1,7 @@
 import { json } from '@sveltejs/kit';
 import { actOnDoseLog, undoDoseLog } from '$lib/server/db/queries/doseLogs';
 import { getMedicineById } from '$lib/server/db/queries/medicines';
+import { checkAndEnqueueSupplyAlert } from '$lib/server/push/supplyAlerts';
 import type { RequestHandler } from './$types';
 
 interface DoseLogActionBody {
@@ -45,5 +46,13 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
 		body.action as 'take' | 'skip' | 'snooze'
 	);
 	if (!result.ok) return json({ error: result.reason }, { status: 400 });
+
+	// Only 'take' changes supply — skip/snooze/undo never touch it, so only
+	// 'take' can possibly cross a 7d/2d threshold.
+	if (body.action === 'take') {
+		const updated = await getMedicineById(db, locals.user.id, body.medicineId);
+		if (updated) await checkAndEnqueueSupplyAlert(db, platform!.env.NOTIFY_QUEUE, updated);
+	}
+
 	return json({ ok: true, log: result.log });
 };
