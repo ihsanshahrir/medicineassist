@@ -20,6 +20,11 @@ interface CreateMedicineBody {
 	warningTags?: unknown;
 	notes?: unknown;
 	supplyCount?: unknown;
+	// The OCR wizard's Capture step sets this to create the row before any
+	// field is confirmed (is_draft=1) — see finalizeMedicineDraft, called by
+	// POST .../finish once the wizard reaches "Done". Manual entry (M2)
+	// omits this and keeps its immediate is_draft=0.
+	isDraft?: unknown;
 	// Optional — the manual-entry (M2) path creates medicine + schedule in one
 	// call. The OCR wizard (M3) instead calls PUT .../schedule as its own
 	// step, since its flow is staged across several screens.
@@ -53,7 +58,8 @@ export const POST: RequestHandler = async ({ request, locals, platform }) => {
 		instructionTags: Array.isArray(body.instructionTags) ? body.instructionTags : [],
 		warningTags: Array.isArray(body.warningTags) ? body.warningTags : [],
 		notes: typeof body.notes === 'string' ? body.notes : null,
-		supplyCount: typeof body.supplyCount === 'number' ? body.supplyCount : null
+		supplyCount: typeof body.supplyCount === 'number' ? body.supplyCount : null,
+		isDraft: body.isDraft === true
 	});
 
 	const s = body.schedule;

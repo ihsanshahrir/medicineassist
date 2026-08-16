@@ -5,7 +5,8 @@
   step forces staging. Typing everything in doesn't, so one form is simpler
   and faster for the "manual entry" path specifically. The OCR wizard (M3)
   is a separate flow that happens to call the same PUT .../schedule endpoint
-  as its own step.
+  as its own step — and lands back on this form (mode="draft") if OCR fails
+  outright, per the PRD's "never a dead end" requirement.
 -->
 <script module lang="ts">
 	import type { InstructionTag, WarningTag } from '$lib/shared/types';
@@ -59,7 +60,10 @@
 	};
 
 	interface Props {
-		mode: 'add' | 'edit';
+		// 'draft' is the OCR wizard's "drop to manual form" fallback: a draft
+		// medicine (is_draft=1) already exists with a label photo attached, so
+		// this PATCHes + finalizes it instead of creating a new row.
+		mode: 'add' | 'edit' | 'draft';
 		medicineId?: string;
 		initial?: MedicineFormInitialData;
 	}
@@ -194,6 +198,9 @@
 					method: 'PUT',
 					body: JSON.stringify(schedule)
 				});
+				if (mode === 'draft') {
+					await apiFetch(`/api/medicines/${medicineId}/finish`, { method: 'POST' });
+				}
 			}
 			window.location.href = `/medicines/${id}`;
 		} catch (err) {

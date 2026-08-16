@@ -24,6 +24,7 @@
 		warning_tags: string;
 		notes: string | null;
 		accent_index: number;
+		pill_photo_key: string | null;
 		supply_count: number | null;
 	}
 	interface ScheduleDetail {
@@ -80,9 +81,17 @@
 		<p class="t-body loading">Loading…</p>
 	{:else if medicine}
 		<div class="hero">
-			<div class="photo" style:background="var(--accent-{medicine.accent_index})">
-				<Pictogram id={MEDICINE_FORM_GLYPH[medicine.form] ?? 'glyph-tablet'} size={44} />
-			</div>
+			{#if medicine.pill_photo_key}
+				<img
+					class="photo pill-photo"
+					src="/api/photos/{medicine.pill_photo_key}"
+					alt="{medicine.name} pill"
+				/>
+			{:else}
+				<div class="photo" style:background="var(--accent-{medicine.accent_index})">
+					<Pictogram id={MEDICINE_FORM_GLYPH[medicine.form] ?? 'glyph-tablet'} size={44} />
+				</div>
+			{/if}
 			<div class="hero-info">
 				<b class="t-title">{medicine.name}</b>
 				<span class="t-body-lg muted">
@@ -209,6 +218,9 @@
 		justify-content: center;
 		color: var(--sage-800);
 		flex: 0 0 auto;
+	}
+	.pill-photo {
+		object-fit: cover;
 	}
 	.hero-info b {
 		display: block;

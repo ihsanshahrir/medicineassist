@@ -40,17 +40,15 @@
 			"id": "REPLACE_AFTER_WRANGLER_KV_NAMESPACE_CREATE"
 		}
 	],
-	// Workers AI is DELIBERATELY OMITTED here, unlike D1/R2/KV/Queues above.
-	// Those four have full local (Miniflare) emulation and work offline with
-	// zero Cloudflare credentials. Workers AI has no local emulation at all —
-	// even `wrangler dev`/`vite dev` proxy every AI call to Cloudflare's real
-	// edge inference, which fails outright without either `wrangler login` or
-	// a CLOUDFLARE_API_TOKEN env var, and (confirmed by testing) that
-	// requirement blocks the ENTIRE platform proxy session, not just AI calls
-	// — so leaving this binding in breaks local dev for routes that never
-	// touch AI at all. Add it back in M3 when the OCR endpoint is built,
-	// at which point you'll need to run `wrangler login` once anyway.
-	// "ai": { "binding": "AI" },
+	// Workers AI has no local emulation — unlike D1/R2/KV/Queues above, every
+	// AI call proxies to Cloudflare's real edge inference even under
+	// `wrangler dev`/`vite dev`, which needs either `wrangler login` or a
+	// CLOUDFLARE_API_TOKEN env var. That requirement used to block the ENTIRE
+	// platform proxy session if this binding was present at all (confirmed by
+	// testing pre-M3), so it stayed commented out until the OCR endpoint
+	// (M3) existed to use it. Run `wrangler login` once before `vite dev` if
+	// local dev now fails to start — see db/README.md.
+	"ai": { "binding": "AI" },
 	"queues": {
 		"producers": [
 			{

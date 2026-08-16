@@ -38,6 +38,10 @@ export interface CreateMedicineInput {
 	warningTags?: string[];
 	notes?: string | null;
 	supplyCount?: number | null;
+	/** True for the OCR wizard's first step, which creates the row before any
+	 *  fields are confirmed — see `is_draft` in the schema. Manual entry (M2)
+	 *  omits this and gets the immediate is_draft=0 it always had. */
+	isDraft?: boolean;
 }
 
 // Round-robin accent assignment: count existing (non-archived) medicines for
@@ -64,7 +68,7 @@ export async function createMedicine(
 			`INSERT INTO medicines
 				(id, user_id, name, strength, form, what_for, instructions_text,
 				 instruction_tags, warning_tags, notes, accent_index, supply_count, is_draft)
-			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 0)`
+			 VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
 		)
 		.bind(
 			id,
@@ -78,7 +82,8 @@ export async function createMedicine(
 			JSON.stringify(input.warningTags ?? []),
 			input.notes ?? null,
 			accentIndex,
-			input.supplyCount ?? null
+			input.supplyCount ?? null,
+			input.isDraft ? 1 : 0
 		)
 		.run();
 
@@ -178,12 +183,46 @@ export async function setPhotoKey(
 	key: string
 ): Promise<void> {
 	const column = kind === 'pill' ? 'pill_photo_key' : 'label_photo_key';
+	// A fresh label photo invalidates any cached ocr_source from a prior
+	// attempt (see POST .../ocr's cache-reuse) — otherwise a retake after a
+	// failed or bad read would just replay the stale extraction.
+	const extraClear = kind === 'label' ? ', ocr_source = NULL' : '';
 	await db
 		.prepare(
-			`UPDATE medicines SET ${column} = ?, updated_at = datetime('now') WHERE id = ? AND user_id = ?`
+			`UPDATE medicines SET ${column} = ?${extraClear}, updated_at = datetime('now') WHERE id = ? AND user_id = ?`
 		)
 		.bind(key, id, userId)
 		.run();
+}
+
+export async function setOcrSource(
+	db: D1Database,
+	userId: string,
+	id: string,
+	ocrSourceJson: string
+): Promise<void> {
+	await db
+		.prepare(
+			`UPDATE medicines SET ocr_source = ?, updated_at = datetime('now') WHERE id = ? AND user_id = ?`
+		)
+		.bind(ocrSourceJson, id, userId)
+		.run();
+}
+
+/** Flips is_draft 1→0 — the OCR wizard's Supply step (its last, "Done") calls
+ *  this regardless of whether supply was entered, since that's optional. */
+export async function finalizeMedicineDraft(
+	db: D1Database,
+	userId: string,
+	id: string
+): Promise<boolean> {
+	const result = await db
+		.prepare(
+			`UPDATE medicines SET is_draft = 0, updated_at = datetime('now') WHERE id = ? AND user_id = ?`
+		)
+		.bind(id, userId)
+		.run();
+	return result.meta.changes > 0;
 }
 
 export async function setSupplyCount(
