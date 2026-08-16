@@ -1,73 +1,196 @@
 <!doctype html>
 <!-- @dsCard group="Screens" name="Medicine Detail" subtitle="Photo, what it's for, how to take it, warnings, supply — the comprehension screen" viewport="460x980" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  body { align-items: flex-start; padding-top: 20px; }
-  .hero { display: flex; align-items: center; gap: 14px; margin-top: 8px; }
-  .photo { width: 84px; height: 84px; border-radius: 20px; background: var(--accent-1); display: flex; align-items: center; justify-content: center; }
-  .photo svg { width: 44px; height: 44px; color: var(--sage-800); }
-  .hero-info b { font-size: 24px; display: block; }
-  .hero-info span { font-size: 14px; color: var(--ink-2); }
-  .read-btn { display: flex; align-items: center; gap: 8px; background: var(--surface); border: 1.5px solid var(--sage-200); border-radius: 999px; padding: 8px 16px; width: fit-content; margin-top: 14px; font-size: 13.5px; font-weight: 600; color: var(--sage-700); }
-  .section { margin-top: 22px; }
-  .section h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); margin: 0 0 8px; }
-  .what-for { background: var(--surface); border-radius: 16px; padding: 14px 16px; font-size: 16px; box-shadow: var(--shadow-1); }
-  .tile-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-  .tile { background: var(--surface); border-radius: 14px; padding: 12px; box-shadow: var(--shadow-1); display: flex; flex-direction: column; align-items: center; gap: 5px; text-align: center; }
-  .tile svg { width: 28px; height: 28px; color: var(--sage-700); }
-  .tile span { font-size: 11.5px; font-weight: 600; }
-  .warn-panel { background: var(--warn-bg); border: 1.5px solid var(--warn-border); border-radius: 16px; padding: 14px; }
-  .warn-panel .row { display: flex; align-items: center; gap: 10px; padding: 6px 0; }
-  .warn-panel svg { width: 24px; height: 24px; color: var(--warn-text); }
-  .warn-panel span { font-size: 13.5px; }
-  .supply-card { background: var(--surface); border-radius: 16px; padding: 14px 16px; box-shadow: var(--shadow-1); }
-  .meter-track { height: 8px; background: var(--surface-sunk); border-radius: 999px; margin-top: 8px; overflow: hidden; }
-  .meter-fill { height: 100%; background: var(--sage-700); border-radius: 999px; }
-</style>
-</head>
-<body>
-<div class="phone">
-  <div class="phone-status"><span>9:41</span><span>← Back</span></div>
-  <div class="phone-body">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			body {
+				align-items: flex-start;
+				padding-top: 20px;
+			}
+			.hero {
+				display: flex;
+				align-items: center;
+				gap: 14px;
+				margin-top: 8px;
+			}
+			.photo {
+				width: 84px;
+				height: 84px;
+				border-radius: 20px;
+				background: var(--accent-1);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.photo svg {
+				width: 44px;
+				height: 44px;
+				color: var(--sage-800);
+			}
+			.hero-info b {
+				font-size: 24px;
+				display: block;
+			}
+			.hero-info span {
+				font-size: 14px;
+				color: var(--ink-2);
+			}
+			.read-btn {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				background: var(--surface);
+				border: 1.5px solid var(--sage-200);
+				border-radius: 999px;
+				padding: 8px 16px;
+				width: fit-content;
+				margin-top: 14px;
+				font-size: 13.5px;
+				font-weight: 600;
+				color: var(--sage-700);
+			}
+			.section {
+				margin-top: 22px;
+			}
+			.section h3 {
+				font-size: 13px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				color: var(--ink-3);
+				margin: 0 0 8px;
+			}
+			.what-for {
+				background: var(--surface);
+				border-radius: 16px;
+				padding: 14px 16px;
+				font-size: 16px;
+				box-shadow: var(--shadow-1);
+			}
+			.tile-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 8px;
+			}
+			.tile {
+				background: var(--surface);
+				border-radius: 14px;
+				padding: 12px;
+				box-shadow: var(--shadow-1);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 5px;
+				text-align: center;
+			}
+			.tile svg {
+				width: 28px;
+				height: 28px;
+				color: var(--sage-700);
+			}
+			.tile span {
+				font-size: 11.5px;
+				font-weight: 600;
+			}
+			.warn-panel {
+				background: var(--warn-bg);
+				border: 1.5px solid var(--warn-border);
+				border-radius: 16px;
+				padding: 14px;
+			}
+			.warn-panel .row {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				padding: 6px 0;
+			}
+			.warn-panel svg {
+				width: 24px;
+				height: 24px;
+				color: var(--warn-text);
+			}
+			.warn-panel span {
+				font-size: 13.5px;
+			}
+			.supply-card {
+				background: var(--surface);
+				border-radius: 16px;
+				padding: 14px 16px;
+				box-shadow: var(--shadow-1);
+			}
+			.meter-track {
+				height: 8px;
+				background: var(--surface-sunk);
+				border-radius: 999px;
+				margin-top: 8px;
+				overflow: hidden;
+			}
+			.meter-fill {
+				height: 100%;
+				background: var(--sage-700);
+				border-radius: 999px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone">
+			<div class="phone-status"><span>9:41</span><span>← Back</span></div>
+			<div class="phone-body">
+				<div class="hero">
+					<div class="photo">
+						<svg><use href="../pictograms.svg#glyph-tablet" /></svg>
+					</div>
+					<div class="hero-info"><b>Metformin</b><span>500mg · Tablet</span></div>
+				</div>
+				<div class="read-btn">🔊 Read this to me</div>
 
-    <div class="hero">
-      <div class="photo"><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
-      <div class="hero-info"><b>Metformin</b><span>500mg · Tablet</span></div>
-    </div>
-    <div class="read-btn">🔊 Read this to me</div>
+				<div class="section">
+					<h3>What it's for</h3>
+					<div class="what-for">Helps control blood sugar levels for type 2 diabetes.</div>
+				</div>
 
-    <div class="section">
-      <h3>What it's for</h3>
-      <div class="what-for">Helps control blood sugar levels for type 2 diabetes.</div>
-    </div>
+				<div class="section">
+					<h3>How to take it</h3>
+					<div class="tile-grid">
+						<div class="tile">
+							<svg><use href="../pictograms.svg#pic-with-food" /></svg><span>With food</span>
+						</div>
+						<div class="tile">
+							<svg><use href="../pictograms.svg#pic-swallow-whole" /></svg
+							><span>Swallow whole</span>
+						</div>
+						<div class="tile">
+							<svg><use href="../pictograms.svg#pic-do-not-crush" /></svg><span>Do not crush</span>
+						</div>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>How to take it</h3>
-      <div class="tile-grid">
-        <div class="tile"><svg><use href="../pictograms.svg#pic-with-food"/></svg><span>With food</span></div>
-        <div class="tile"><svg><use href="../pictograms.svg#pic-swallow-whole"/></svg><span>Swallow whole</span></div>
-        <div class="tile"><svg><use href="../pictograms.svg#pic-do-not-crush"/></svg><span>Do not crush</span></div>
-      </div>
-    </div>
+				<div class="section">
+					<h3>Be careful</h3>
+					<div class="warn-panel">
+						<div class="row">
+							<svg><use href="../pictograms.svg#pic-drowsiness" /></svg
+							><span>May cause mild nausea at first</span>
+						</div>
+						<div class="row">
+							<svg><use href="../pictograms.svg#pic-no-alcohol" /></svg
+							><span>Avoid excess alcohol</span>
+						</div>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>Be careful</h3>
-      <div class="warn-panel">
-        <div class="row"><svg><use href="../pictograms.svg#pic-drowsiness"/></svg><span>May cause mild nausea at first</span></div>
-        <div class="row"><svg><use href="../pictograms.svg#pic-no-alcohol"/></svg><span>Avoid excess alcohol</span></div>
-      </div>
-    </div>
-
-    <div class="section">
-      <h3>Supply</h3>
-      <div class="supply-card">
-        <div style="display:flex;justify-content:space-between"><b style="font-size:15px">18 tablets left</b><span class="t-caption">~9 days</span></div>
-        <div class="meter-track"><div class="meter-fill" style="width:60%"></div></div>
-      </div>
-    </div>
-
-  </div>
-</div>
-</body></html>
+				<div class="section">
+					<h3>Supply</h3>
+					<div class="supply-card">
+						<div style="display: flex; justify-content: space-between">
+							<b style="font-size: 15px">18 tablets left</b><span class="t-caption">~9 days</span>
+						</div>
+						<div class="meter-track"><div class="meter-fill" style="width: 60%"></div></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

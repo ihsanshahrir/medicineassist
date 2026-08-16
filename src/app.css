@@ -1,0 +1,5 @@
+/* Single import — every token, base style, and utility class (.btn-*, .chip-*,
+   .t-*, .surface-card) comes from the design system itself. Never redefine a
+   value here; edit design/colors_and_type.css and re-check with /design-sync.
+   See DESIGN.md at the repo root for the full rule set. */
+@import '../design/colors_and_type.css';

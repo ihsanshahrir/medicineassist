@@ -1,38 +1,103 @@
 <!doctype html>
 <!-- @dsCard group="Pictograms" name="Construction Spec" subtitle="48×48 grid · 2.5px stroke · must be comprehension-tested" viewport="740x340" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  .wrap { width: 700px; display: flex; gap: 28px; align-items: flex-start; }
-  .demo { flex: 0 0 auto; }
-  .demo-grid { width: 140px; height: 140px; background:
-      linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 17.5px 17.5px,
-      linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 17.5px 17.5px,
-      var(--surface);
-    border: 1.5px solid var(--line-strong); border-radius: 12px; display: flex; align-items: center; justify-content: center; }
-  .demo-grid svg { width: 100px; height: 100px; color: var(--sage-700); }
-  .specs { flex: 1; }
-  .spec-row { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
-  .spec-row b { flex: 0 0 150px; color: var(--ink-2); font-weight: 600; }
-  .note { margin-top: 14px; padding: 12px 14px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 12px; font-size: 12.5px; color: var(--warn-text); }
-</style>
-</head>
-<body><div class="card"><div class="wrap">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				width: 700px;
+				display: flex;
+				gap: 28px;
+				align-items: flex-start;
+			}
+			.demo {
+				flex: 0 0 auto;
+			}
+			.demo-grid {
+				width: 140px;
+				height: 140px;
+				background:
+					linear-gradient(var(--line) 1px, transparent 1px) 0 0 / 17.5px 17.5px,
+					linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0 / 17.5px 17.5px,
+					var(--surface);
+				border: 1.5px solid var(--line-strong);
+				border-radius: 12px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.demo-grid svg {
+				width: 100px;
+				height: 100px;
+				color: var(--sage-700);
+			}
+			.specs {
+				flex: 1;
+			}
+			.spec-row {
+				display: flex;
+				gap: 10px;
+				padding: 8px 0;
+				border-bottom: 1px solid var(--line);
+				font-size: 13.5px;
+			}
+			.spec-row b {
+				flex: 0 0 150px;
+				color: var(--ink-2);
+				font-weight: 600;
+			}
+			.note {
+				margin-top: 14px;
+				padding: 12px 14px;
+				background: var(--warn-bg);
+				border: 1px solid var(--warn-border);
+				border-radius: 12px;
+				font-size: 12.5px;
+				color: var(--warn-text);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div class="demo">
+					<div class="demo-grid">
+						<svg><use href="../pictograms.svg#pic-swallow-whole" /></svg>
+					</div>
+				</div>
 
-  <div class="demo">
-    <div class="demo-grid"><svg><use href="../pictograms.svg#pic-swallow-whole"/></svg></div>
-  </div>
-
-  <div class="specs">
-    <div class="spec-row"><b>Grid</b><span>48×48 viewBox, content within a 6px margin</span></div>
-    <div class="spec-row"><b>Stroke</b><span>2.5px, round caps and joins</span></div>
-    <div class="spec-row"><b>Color</b><span>currentColor — single tone, inherits state</span></div>
-    <div class="spec-row"><b>Pairing rule</b><span>Every icon ships with a text label in the active language — never load-bearing alone</span></div>
-    <div class="spec-row"><b>First encounter</b><span>Meaning shown as text the first time a user sees it; always tappable for a plain-language explanation</span></div>
-    <div class="note">
-      <strong>This is a first drawn pass, adapted from the USP pictogram model.</strong> Research is explicit that pictograms only work when redrawn and comprehension-tested for the target culture. Per the PRD Validation Plan: show each mark cold, no context, ask what it means — anything under 85% correct gets redrawn before launch.
-    </div>
-  </div>
-
-</div></div></body></html>
+				<div class="specs">
+					<div class="spec-row">
+						<b>Grid</b><span>48×48 viewBox, content within a 6px margin</span>
+					</div>
+					<div class="spec-row"><b>Stroke</b><span>2.5px, round caps and joins</span></div>
+					<div class="spec-row">
+						<b>Color</b><span>currentColor — single tone, inherits state</span>
+					</div>
+					<div class="spec-row">
+						<b>Pairing rule</b
+						><span
+							>Every icon ships with a text label in the active language — never load-bearing
+							alone</span
+						>
+					</div>
+					<div class="spec-row">
+						<b>First encounter</b
+						><span
+							>Meaning shown as text the first time a user sees it; always tappable for a
+							plain-language explanation</span
+						>
+					</div>
+					<div class="note">
+						<strong>This is a first drawn pass, adapted from the USP pictogram model.</strong>
+						Research is explicit that pictograms only work when redrawn and comprehension-tested for
+						the target culture. Per the PRD Validation Plan: show each mark cold, no context, ask
+						what it means — anything under 85% correct gets redrawn before launch.
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

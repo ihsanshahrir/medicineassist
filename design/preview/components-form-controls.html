@@ -1,55 +1,173 @@
 <!doctype html>
 <!-- @dsCard group="Components" name="Form Controls" subtitle="Text row, stepper, time picker, segmented, times-per-day — all ≥48px" viewport="740x460" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  .wrap { width: 700px; display: flex; flex-direction: column; gap: 18px; }
-  .field-group label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 6px; }
-  .text-input { width: 100%; min-height: 48px; border-radius: var(--r-input); border: 1.5px solid var(--line-strong); background: var(--surface); padding: 0 14px; font-size: 17px; color: var(--ink); }
-  .stepper { display: flex; align-items: center; gap: 14px; }
-  .stepper button { width: 48px; height: 48px; border-radius: var(--r-input); border: 1.5px solid var(--line-strong); background: var(--surface); font-size: 20px; font-weight: 700; color: var(--sage-700); }
-  .stepper .val { font-size: 22px; font-weight: 700; min-width: 40px; text-align: center; }
-  .time-pick { display: flex; align-items: center; gap: 10px; background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: var(--r-input); padding: 8px 14px; width: fit-content; }
-  .time-pick svg { width: 22px; height: 22px; color: var(--sage-700); }
-  .time-pick .t { font-size: 22px; font-weight: 700; }
-  .segmented { display: inline-flex; background: var(--surface-sunk); border-radius: var(--r-input); padding: 4px; gap: 4px; }
-  .segmented button { min-height: 40px; padding: 0 18px; border: none; border-radius: 8px; background: transparent; font-size: 14px; font-weight: 600; color: var(--ink-2); }
-  .segmented button.active { background: var(--surface); color: var(--sage-800); box-shadow: var(--shadow-1); }
-  .anchor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .anchor { background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px; padding: 12px 8px; text-align: center; min-height: 48px; }
-  .anchor.active { background: var(--sage-100); border-color: var(--sage-700); }
-  .anchor svg { width: 22px; height: 22px; color: var(--sage-700); }
-  .anchor span { display: block; font-size: 12px; margin-top: 4px; }
-</style>
-</head>
-<body><div class="card"><div class="wrap">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				width: 700px;
+				display: flex;
+				flex-direction: column;
+				gap: 18px;
+			}
+			.field-group label {
+				display: block;
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--ink-2);
+				margin-bottom: 6px;
+			}
+			.text-input {
+				width: 100%;
+				min-height: 48px;
+				border-radius: var(--r-input);
+				border: 1.5px solid var(--line-strong);
+				background: var(--surface);
+				padding: 0 14px;
+				font-size: 17px;
+				color: var(--ink);
+			}
+			.stepper {
+				display: flex;
+				align-items: center;
+				gap: 14px;
+			}
+			.stepper button {
+				width: 48px;
+				height: 48px;
+				border-radius: var(--r-input);
+				border: 1.5px solid var(--line-strong);
+				background: var(--surface);
+				font-size: 20px;
+				font-weight: 700;
+				color: var(--sage-700);
+			}
+			.stepper .val {
+				font-size: 22px;
+				font-weight: 700;
+				min-width: 40px;
+				text-align: center;
+			}
+			.time-pick {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+				background: var(--surface);
+				border: 1.5px solid var(--line-strong);
+				border-radius: var(--r-input);
+				padding: 8px 14px;
+				width: fit-content;
+			}
+			.time-pick svg {
+				width: 22px;
+				height: 22px;
+				color: var(--sage-700);
+			}
+			.time-pick .t {
+				font-size: 22px;
+				font-weight: 700;
+			}
+			.segmented {
+				display: inline-flex;
+				background: var(--surface-sunk);
+				border-radius: var(--r-input);
+				padding: 4px;
+				gap: 4px;
+			}
+			.segmented button {
+				min-height: 40px;
+				padding: 0 18px;
+				border: none;
+				border-radius: 8px;
+				background: transparent;
+				font-size: 14px;
+				font-weight: 600;
+				color: var(--ink-2);
+			}
+			.segmented button.active {
+				background: var(--surface);
+				color: var(--sage-800);
+				box-shadow: var(--shadow-1);
+			}
+			.anchor-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 8px;
+			}
+			.anchor {
+				background: var(--surface);
+				border: 1.5px solid var(--line-strong);
+				border-radius: 12px;
+				padding: 12px 8px;
+				text-align: center;
+				min-height: 48px;
+			}
+			.anchor.active {
+				background: var(--sage-100);
+				border-color: var(--sage-700);
+			}
+			.anchor svg {
+				width: 22px;
+				height: 22px;
+				color: var(--sage-700);
+			}
+			.anchor span {
+				display: block;
+				font-size: 12px;
+				margin-top: 4px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div class="field-group">
+					<label>Medicine name</label><input class="text-input" value="Metformin" />
+				</div>
 
-  <div class="field-group"><label>Medicine name</label><input class="text-input" value="Metformin" /></div>
+				<div class="field-group">
+					<label>Dose per intake</label>
+					<div class="stepper">
+						<button>–</button><span class="val">2</span><button>+</button
+						><span class="t-caption" style="margin-left: 6px">tablets</span>
+					</div>
+				</div>
 
-  <div class="field-group">
-    <label>Dose per intake</label>
-    <div class="stepper"><button>–</button><span class="val">2</span><button>+</button><span class="t-caption" style="margin-left:6px">tablets</span></div>
-  </div>
+				<div class="field-group">
+					<label>Time</label>
+					<div class="time-pick">
+						<svg><use href="../pictograms.svg#pic-sunrise" /></svg><span class="t">08:00</span>
+					</div>
+				</div>
 
-  <div class="field-group">
-    <label>Time</label>
-    <div class="time-pick"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span class="t">08:00</span></div>
-  </div>
+				<div class="field-group">
+					<label>Repeat</label>
+					<div class="segmented">
+						<button class="active">Every day</button><button>Every N days</button
+						><button>Weekdays</button>
+					</div>
+				</div>
 
-  <div class="field-group">
-    <label>Repeat</label>
-    <div class="segmented"><button class="active">Every day</button><button>Every N days</button><button>Weekdays</button></div>
-  </div>
-
-  <div class="field-group">
-    <label>Time-of-day anchors — offered first</label>
-    <div class="anchor-grid">
-      <div class="anchor active"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span>Morning</span></div>
-      <div class="anchor"><svg><use href="../pictograms.svg#pic-sun"/></svg><span>Afternoon</span></div>
-      <div class="anchor active"><svg><use href="../pictograms.svg#pic-sunset"/></svg><span>Evening</span></div>
-      <div class="anchor"><svg><use href="../pictograms.svg#pic-moon"/></svg><span>Night</span></div>
-    </div>
-  </div>
-
-</div></div></body></html>
+				<div class="field-group">
+					<label>Time-of-day anchors — offered first</label>
+					<div class="anchor-grid">
+						<div class="anchor active">
+							<svg><use href="../pictograms.svg#pic-sunrise" /></svg><span>Morning</span>
+						</div>
+						<div class="anchor">
+							<svg><use href="../pictograms.svg#pic-sun" /></svg><span>Afternoon</span>
+						</div>
+						<div class="anchor active">
+							<svg><use href="../pictograms.svg#pic-sunset" /></svg><span>Evening</span>
+						</div>
+						<div class="anchor">
+							<svg><use href="../pictograms.svg#pic-moon" /></svg><span>Night</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

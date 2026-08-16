@@ -1,6 +1,28 @@
-# Claude Design local sync — packaging wrapper only, not the artifacts themselves.
-# Pull out what's useful (e.g. DESIGN.md → repo root, icons → design/assets/)
-# and let this folder regenerate untracked on each sync.
-design/design_handoff/
+node_modules
 
+# Output
+.output
+.vercel
+.netlify
+.wrangler
+/.svelte-kit
+/build
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Env
+.env
+.env.*
+!.env.example
+!.env.test
+
+# Wrangler's local-secrets file (distinct from .env — read directly by
+# `wrangler dev`/`vite dev` via adapter-cloudflare's platform proxy).
+.dev.vars
+!.dev.vars.example
+
+# Vite
+vite.config.js.timestamp-*
+vite.config.ts.timestamp-*

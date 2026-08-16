@@ -1,43 +1,117 @@
 <!doctype html>
 <!-- @dsCard group="Components" name="OCR Confirm Row" subtitle="Unverified / accepted / low-confidence — the safety-critical control" viewport="740x420" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  .wrap { width: 700px; display: flex; flex-direction: column; gap: 12px; }
-  .field { border-radius: var(--r-input); padding: 14px 16px; display: flex; align-items: center; gap: 12px; min-height: 48px; }
-  .field.unverified { background: var(--warn-bg); border: 1.5px dashed var(--warn-border); }
-  .field.accepted { background: var(--state-done-bg); border: 1.5px solid transparent; }
-  .field.low-conf { background: var(--danger-bg); border: 1.5px solid #E3A79E; }
-  .field-body { flex: 1; }
-  .field-label { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--ink-2); }
-  .field-val { font-size: 17px; margin-top: 2px; }
-  .field-tag { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
-  .tag-unverified { background: var(--warn-border); color: #fff; }
-  .tag-accepted { background: var(--state-done); color: #fff; }
-  .tag-low { background: var(--danger-text); color: #fff; }
-  .note { margin-top: 4px; padding: 12px 14px; background: var(--surface); border-radius: 12px; font-size: 12.5px; color: var(--ink-2); }
-</style>
-</head>
-<body><div class="card"><div class="wrap">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				width: 700px;
+				display: flex;
+				flex-direction: column;
+				gap: 12px;
+			}
+			.field {
+				border-radius: var(--r-input);
+				padding: 14px 16px;
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				min-height: 48px;
+			}
+			.field.unverified {
+				background: var(--warn-bg);
+				border: 1.5px dashed var(--warn-border);
+			}
+			.field.accepted {
+				background: var(--state-done-bg);
+				border: 1.5px solid transparent;
+			}
+			.field.low-conf {
+				background: var(--danger-bg);
+				border: 1.5px solid #e3a79e;
+			}
+			.field-body {
+				flex: 1;
+			}
+			.field-label {
+				font-size: 11.5px;
+				font-weight: 700;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+				color: var(--ink-2);
+			}
+			.field-val {
+				font-size: 17px;
+				margin-top: 2px;
+			}
+			.field-tag {
+				font-size: 11px;
+				font-weight: 700;
+				padding: 4px 10px;
+				border-radius: 999px;
+				white-space: nowrap;
+			}
+			.tag-unverified {
+				background: var(--warn-border);
+				color: #fff;
+			}
+			.tag-accepted {
+				background: var(--state-done);
+				color: #fff;
+			}
+			.tag-low {
+				background: var(--danger-text);
+				color: #fff;
+			}
+			.note {
+				margin-top: 4px;
+				padding: 12px 14px;
+				background: var(--surface);
+				border-radius: 12px;
+				font-size: 12.5px;
+				color: var(--ink-2);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div class="field unverified">
+					<div class="field-body">
+						<div class="field-label">Medicine name — from label</div>
+						<div class="field-val">Metformin 500mg</div>
+					</div>
+					<div class="field-tag tag-unverified">Tap to confirm</div>
+				</div>
 
-  <div class="field unverified">
-    <div class="field-body"><div class="field-label">Medicine name — from label</div><div class="field-val">Metformin 500mg</div></div>
-    <div class="field-tag tag-unverified">Tap to confirm</div>
-  </div>
+				<div class="field accepted">
+					<div class="field-body">
+						<div class="field-label">Strength</div>
+						<div class="field-val">500 mg</div>
+					</div>
+					<div class="field-tag tag-accepted">✓ Confirmed</div>
+				</div>
 
-  <div class="field accepted">
-    <div class="field-body"><div class="field-label">Strength</div><div class="field-val">500 mg</div></div>
-    <div class="field-tag tag-accepted">✓ Confirmed</div>
-  </div>
+				<div class="field low-conf">
+					<div class="field-body">
+						<div class="field-label">Instructions — low confidence read</div>
+						<div class="field-val">Take twi[ce?] daily w[ith] food</div>
+					</div>
+					<div class="field-tag tag-low">Check this</div>
+				</div>
 
-  <div class="field low-conf">
-    <div class="field-body"><div class="field-label">Instructions — low confidence read</div><div class="field-val">Take twi[ce?] daily w[ith] food</div></div>
-    <div class="field-tag tag-low">Check this</div>
-  </div>
-
-  <div class="note">
-    <strong style="color:var(--ink)">Nothing OCR-derived is treated as truth silently.</strong> Every extracted field starts <em>unverified</em> and requires an explicit tap to accept. Low-confidence reads are flagged individually rather than failing the whole capture, and the original label photo stays attached and viewable — this is the core safety property of the Add-Medicine flow.
-  </div>
-
-</div></div></body></html>
+				<div class="note">
+					<strong style="color: var(--ink)"
+						>Nothing OCR-derived is treated as truth silently.</strong
+					>
+					Every extracted field starts <em>unverified</em> and requires an explicit tap to accept.
+					Low-confidence reads are flagged individually rather than failing the whole capture, and
+					the original label photo stays attached and viewable — this is the core safety property of
+					the Add-Medicine flow.
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

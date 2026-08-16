@@ -6,157 +6,265 @@
    later by introducing a [data-theme="dark"] block without renaming tokens. */
 
 :root {
-  /* ---------- Surfaces & ink ---------- */
-  --ground: #FAF9F6;        /* app background — warm off-white, not clinical white */
-  --surface: #FFFFFF;       /* cards, sheets */
-  --surface-sunk: #F1F0EB;  /* wells, input backgrounds, timeline track */
-  --ink: #13201B;           /* primary text — ~16.5:1 on ground */
-  --ink-2: #3B4F47;         /* secondary text — ~8.8:1 on white, ~8.2:1 on ground */
-  --ink-3: #7C8983;         /* decorative/disabled only — never text */
-  --line: #E2E0D9;          /* hairlines */
-  --line-strong: #C9C6BC;   /* input borders, dividers that need to read */
+	/* ---------- Surfaces & ink ---------- */
+	--ground: #faf9f6; /* app background — warm off-white, not clinical white */
+	--surface: #ffffff; /* cards, sheets */
+	--surface-sunk: #f1f0eb; /* wells, input backgrounds, timeline track */
+	--ink: #13201b; /* primary text — ~16.5:1 on ground */
+	--ink-2: #3b4f47; /* secondary text — ~8.8:1 on white, ~8.2:1 on ground */
+	--ink-3: #7c8983; /* decorative/disabled only — never text */
+	--line: #e2e0d9; /* hairlines */
+	--line-strong: #c9c6bc; /* input borders, dividers that need to read */
 
-  /* ---------- Brand — sage ---------- */
-  --sage-100: #E3EDE8;
-  --sage-200: #C9DDD5;
-  --sage-600: #17715E;      /* hover */
-  --sage-700: #0F5D4E;      /* primary action — white text ~7.8:1 */
-  --sage-800: #0A463B;      /* press */
+	/* ---------- Brand — sage ---------- */
+	--sage-100: #e3ede8;
+	--sage-200: #c9ddd5;
+	--sage-600: #17715e; /* hover */
+	--sage-700: #0f5d4e; /* primary action — white text ~7.8:1 */
+	--sage-800: #0a463b; /* press */
 
-  /* ---------- Semantic state ----------
+	/* ---------- Semantic state ----------
      "missed" is deliberately styled identically to neutral ink, never red —
      design principle 8. Do not add a red/alarm variant for missed doses. */
-  --state-now-bg: var(--sage-100);
-  --state-now-border: var(--sage-700);
-  --state-done: #1B6B4A;        /* checkmark only — ~7.3:1 on white */
-  --state-done-bg: #E7F1EB;
-  --state-missed-text: var(--ink-2);   /* reuses ink-2, guaranteed ≥7:1 */
-  --state-missed-bg: #EFEEE9;          /* flat neutral, no alarm color */
-  --state-upcoming-text: var(--ink-2);
-  --state-upcoming-bg: var(--surface-sunk);
+	--state-now-bg: var(--sage-100);
+	--state-now-border: var(--sage-700);
+	--state-done: #1b6b4a; /* checkmark only — ~7.3:1 on white */
+	--state-done-bg: #e7f1eb;
+	--state-missed-text: var(--ink-2); /* reuses ink-2, guaranteed ≥7:1 */
+	--state-missed-bg: #efeee9; /* flat neutral, no alarm color */
+	--state-upcoming-text: var(--ink-2);
+	--state-upcoming-bg: var(--surface-sunk);
 
-  --warn-text: #6B4A00;     /* supply-low banners — ~8.1:1 on white */
-  --warn-bg: #FBF1DD;
-  --warn-border: #D9A441;
-  --danger-text: #7A241C;   /* destructive actions ONLY — never adherence — ~10:1 */
-  --danger-bg: #FBEAE7;
+	--warn-text: #6b4a00; /* supply-low banners — ~8.1:1 on white */
+	--warn-bg: #fbf1dd;
+	--warn-border: #d9a441;
+	--danger-text: #7a241c; /* destructive actions ONLY — never adherence — ~10:1 */
+	--danger-bg: #fbeae7;
 
-  /* ---------- Medicine accent hues ----------
+	/* ---------- Medicine accent hues ----------
      Assigned round-robin at creation for fast scanning. Each is ≥7:1 against
      --ink when used as a background under solid ink text, and is never the
      sole carrier of meaning (always paired with the pill photo + name). */
-  --accent-1: #C9DDD5; /* sage */
-  --accent-2: #F0DCC4; /* sand */
-  --accent-3: #DCD6EF; /* violet */
-  --accent-4: #F3D6D6; /* clay */
-  --accent-5: #CFE3EE; /* sky */
-  --accent-6: #E8DFC8; /* wheat */
-  --accent-7: #D9E4C9; /* moss */
-  --accent-8: #E6D3E0; /* mauve */
+	--accent-1: #c9ddd5; /* sage */
+	--accent-2: #f0dcc4; /* sand */
+	--accent-3: #dcd6ef; /* violet */
+	--accent-4: #f3d6d6; /* clay */
+	--accent-5: #cfe3ee; /* sky */
+	--accent-6: #e8dfc8; /* wheat */
+	--accent-7: #d9e4c9; /* moss */
+	--accent-8: #e6d3e0; /* mauve */
 
-  /* ---------- Type ---------- */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  /* Inter to be self-hosted (woff2, incl. Latin Extended for BM diacritics) in the
+	/* ---------- Type ---------- */
+	--font-sans:
+		'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+		sans-serif;
+	/* Inter to be self-hosted (woff2, incl. Latin Extended for BM diacritics) in the
      production build; system stack is the faithful fallback used in this preview. */
 
-  --t-display-size: 2.5rem;    /* 40px  — the dose time on the Now card */
-  --t-display-line: 2.75rem;   /* 44px */
-  --t-title-size: 1.75rem;     /* 28px  — screen titles */
-  --t-title-line: 2.125rem;    /* 34px */
-  --t-h2-size: 1.375rem;       /* 22px  — section heads */
-  --t-h2-line: 1.75rem;        /* 28px */
-  --t-body-lg-size: 1.25rem;   /* 20px  — primary reading size */
-  --t-body-lg-line: 1.875rem;  /* 30px */
-  --t-body-size: 1.125rem;     /* 18px  — floor, per PRD design principle 3 */
-  --t-body-line: 1.75rem;      /* 28px */
-  --t-label-size: 1rem;        /* 16px  — field labels, medium weight */
-  --t-label-line: 1.375rem;    /* 22px */
-  --t-caption-size: 0.9375rem; /* 15px  — sparing use only; nothing smaller exists */
-  --t-caption-line: 1.25rem;   /* 20px */
+	--t-display-size: 2.5rem; /* 40px  — the dose time on the Now card */
+	--t-display-line: 2.75rem; /* 44px */
+	--t-title-size: 1.75rem; /* 28px  — screen titles */
+	--t-title-line: 2.125rem; /* 34px */
+	--t-h2-size: 1.375rem; /* 22px  — section heads */
+	--t-h2-line: 1.75rem; /* 28px */
+	--t-body-lg-size: 1.25rem; /* 20px  — primary reading size */
+	--t-body-lg-line: 1.875rem; /* 30px */
+	--t-body-size: 1.125rem; /* 18px  — floor, per PRD design principle 3 */
+	--t-body-line: 1.75rem; /* 28px */
+	--t-label-size: 1rem; /* 16px  — field labels, medium weight */
+	--t-label-line: 1.375rem; /* 22px */
+	--t-caption-size: 0.9375rem; /* 15px  — sparing use only; nothing smaller exists */
+	--t-caption-line: 1.25rem; /* 20px */
 
-  /* ---------- Space — 4pt rhythm ---------- */
-  --sp-1: 4px;
-  --sp-2: 8px;
-  --sp-3: 12px;
-  --sp-4: 16px;
-  --sp-5: 20px;
-  --sp-6: 24px;
-  --sp-8: 32px;
-  --sp-10: 40px;
-  --sp-12: 48px;
-  --sp-16: 64px;
+	/* ---------- Space — 4pt rhythm ---------- */
+	--sp-1: 4px;
+	--sp-2: 8px;
+	--sp-3: 12px;
+	--sp-4: 16px;
+	--sp-5: 20px;
+	--sp-6: 24px;
+	--sp-8: 32px;
+	--sp-10: 40px;
+	--sp-12: 48px;
+	--sp-16: 64px;
 
-  /* ---------- Radius ---------- */
-  --r-chip: 8px;
-  --r-input: 12px;
-  --r-inner: 16px;
-  --r-card: 20px;
-  --r-sheet: 28px;
-  --r-pill: 999px;
+	/* ---------- Radius ---------- */
+	--r-chip: 8px;
+	--r-input: 12px;
+	--r-inner: 16px;
+	--r-card: 20px;
+	--r-sheet: 28px;
+	--r-pill: 999px;
 
-  /* ---------- Elevation — soft, tinted, never pure black ---------- */
-  --shadow-1: 0 1px 2px rgba(20, 32, 28, 0.06), 0 1px 1px rgba(20, 32, 28, 0.04);
-  --shadow-2: 0 4px 12px rgba(20, 32, 28, 0.08), 0 1px 3px rgba(20, 32, 28, 0.06);
-  --shadow-3: 0 12px 32px rgba(20, 32, 28, 0.12), 0 2px 6px rgba(20, 32, 28, 0.06);
+	/* ---------- Elevation — soft, tinted, never pure black ---------- */
+	--shadow-1: 0 1px 2px rgba(20, 32, 28, 0.06), 0 1px 1px rgba(20, 32, 28, 0.04);
+	--shadow-2: 0 4px 12px rgba(20, 32, 28, 0.08), 0 1px 3px rgba(20, 32, 28, 0.06);
+	--shadow-3: 0 12px 32px rgba(20, 32, 28, 0.12), 0 2px 6px rgba(20, 32, 28, 0.06);
 
-  /* ---------- Touch targets ---------- */
-  --tap-min: 48px;      /* PRD floor for every interactive element */
-  --tap-primary: 56px;  /* Taken / primary CTA height */
-  --tap-gap: 8px;       /* minimum spacing between adjacent targets */
+	/* ---------- Touch targets ---------- */
+	--tap-min: 48px; /* PRD floor for every interactive element */
+	--tap-primary: 56px; /* Taken / primary CTA height */
+	--tap-gap: 8px; /* minimum spacing between adjacent targets */
 
-  /* ---------- Focus (desktop web is in scope) ---------- */
-  --focus-ring: 0 0 0 3px rgba(15, 93, 78, 0.35);
+	/* ---------- Focus (desktop web is in scope) ---------- */
+	--focus-ring: 0 0 0 3px rgba(15, 93, 78, 0.35);
 }
 
 /* ---------- Base ---------- */
-* { box-sizing: border-box; }
-html, body {
-  margin: 0;
-  padding: 0;
-  background: var(--ground);
-  color: var(--ink);
-  font-family: var(--font-sans);
-  -webkit-font-smoothing: antialiased;
+* {
+	box-sizing: border-box;
 }
-button, input, select { font-family: inherit; }
-:focus-visible { outline: none; box-shadow: var(--focus-ring); border-radius: var(--r-chip); }
+html,
+body {
+	margin: 0;
+	padding: 0;
+	background: var(--ground);
+	color: var(--ink);
+	font-family: var(--font-sans);
+	-webkit-font-smoothing: antialiased;
+}
+button,
+input,
+select {
+	font-family: inherit;
+}
+:focus-visible {
+	outline: none;
+	box-shadow: var(--focus-ring);
+	border-radius: var(--r-chip);
+}
 
 /* ---------- Type utilities ---------- */
-.t-display  { font-size: var(--t-display-size); line-height: var(--t-display-line); font-weight: 700; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; }
-.t-title    { font-size: var(--t-title-size);   line-height: var(--t-title-line);   font-weight: 600; letter-spacing: -0.005em; }
-.t-h2       { font-size: var(--t-h2-size);      line-height: var(--t-h2-line);      font-weight: 600; }
-.t-body-lg  { font-size: var(--t-body-lg-size); line-height: var(--t-body-lg-line); font-weight: 400; }
-.t-body     { font-size: var(--t-body-size);    line-height: var(--t-body-line);    font-weight: 400; }
-.t-label    { font-size: var(--t-label-size);   line-height: var(--t-label-line);   font-weight: 500; }
-.t-caption  { font-size: var(--t-caption-size); line-height: var(--t-caption-line); font-weight: 400; color: var(--ink-2); }
-.tabular    { font-variant-numeric: tabular-nums; }
+.t-display {
+	font-size: var(--t-display-size);
+	line-height: var(--t-display-line);
+	font-weight: 700;
+	letter-spacing: -0.01em;
+	font-variant-numeric: tabular-nums;
+}
+.t-title {
+	font-size: var(--t-title-size);
+	line-height: var(--t-title-line);
+	font-weight: 600;
+	letter-spacing: -0.005em;
+}
+.t-h2 {
+	font-size: var(--t-h2-size);
+	line-height: var(--t-h2-line);
+	font-weight: 600;
+}
+.t-body-lg {
+	font-size: var(--t-body-lg-size);
+	line-height: var(--t-body-lg-line);
+	font-weight: 400;
+}
+.t-body {
+	font-size: var(--t-body-size);
+	line-height: var(--t-body-line);
+	font-weight: 400;
+}
+.t-label {
+	font-size: var(--t-label-size);
+	line-height: var(--t-label-line);
+	font-weight: 500;
+}
+.t-caption {
+	font-size: var(--t-caption-size);
+	line-height: var(--t-caption-line);
+	font-weight: 400;
+	color: var(--ink-2);
+}
+.tabular {
+	font-variant-numeric: tabular-nums;
+}
 
 /* ---------- Buttons ---------- */
 .btn {
-  display: inline-flex; align-items: center; justify-content: center; gap: var(--sp-2);
-  min-height: var(--tap-min); padding: 0 var(--sp-6);
-  border-radius: var(--r-input); border: none; cursor: pointer;
-  font-size: var(--t-body-size); font-weight: 600; font-family: var(--font-sans);
-  transition: background-color .12s ease, transform .04s ease;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: var(--sp-2);
+	min-height: var(--tap-min);
+	padding: 0 var(--sp-6);
+	border-radius: var(--r-input);
+	border: none;
+	cursor: pointer;
+	font-size: var(--t-body-size);
+	font-weight: 600;
+	font-family: var(--font-sans);
+	transition:
+		background-color 0.12s ease,
+		transform 0.04s ease;
 }
-.btn:active { transform: scale(0.98); }
-.btn-primary { min-height: var(--tap-primary); width: 100%; background: var(--sage-700); color: #FFFFFF; }
-.btn-primary:hover { background: var(--sage-600); }
-.btn-primary:active { background: var(--sage-800); }
-.btn-primary:disabled { background: var(--surface-sunk); color: var(--ink-3); cursor: not-allowed; }
-.btn-secondary { background: var(--surface); color: var(--ink); border: 1.5px solid var(--line-strong); }
-.btn-secondary:hover { background: var(--surface-sunk); }
-.btn-text { min-height: var(--tap-min); padding: 0 var(--sp-3); background: none; color: var(--sage-700); font-weight: 600; }
-.btn-destructive { background: var(--danger-bg); color: var(--danger-text); }
+.btn:active {
+	transform: scale(0.98);
+}
+.btn-primary {
+	min-height: var(--tap-primary);
+	width: 100%;
+	background: var(--sage-700);
+	color: #ffffff;
+}
+.btn-primary:hover {
+	background: var(--sage-600);
+}
+.btn-primary:active {
+	background: var(--sage-800);
+}
+.btn-primary:disabled {
+	background: var(--surface-sunk);
+	color: var(--ink-3);
+	cursor: not-allowed;
+}
+.btn-secondary {
+	background: var(--surface);
+	color: var(--ink);
+	border: 1.5px solid var(--line-strong);
+}
+.btn-secondary:hover {
+	background: var(--surface-sunk);
+}
+.btn-text {
+	min-height: var(--tap-min);
+	padding: 0 var(--sp-3);
+	background: none;
+	color: var(--sage-700);
+	font-weight: 600;
+}
+.btn-destructive {
+	background: var(--danger-bg);
+	color: var(--danger-text);
+}
 
 /* ---------- Cards / chips ---------- */
-.surface-card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow-2); }
-.chip {
-  display: inline-flex; align-items: center; gap: var(--sp-1);
-  padding: var(--sp-1) var(--sp-3); border-radius: var(--r-pill);
-  font-size: var(--t-caption-size); font-weight: 600;
+.surface-card {
+	background: var(--surface);
+	border-radius: var(--r-card);
+	box-shadow: var(--shadow-2);
 }
-.chip-now     { background: var(--state-now-bg); color: var(--sage-800); }
-.chip-done    { background: var(--state-done-bg); color: var(--state-done); }
-.chip-missed  { background: var(--state-missed-bg); color: var(--state-missed-text); }
-.chip-warn    { background: var(--warn-bg); color: var(--warn-text); border: 1px solid var(--warn-border); }
+.chip {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--sp-1);
+	padding: var(--sp-1) var(--sp-3);
+	border-radius: var(--r-pill);
+	font-size: var(--t-caption-size);
+	font-weight: 600;
+}
+.chip-now {
+	background: var(--state-now-bg);
+	color: var(--sage-800);
+}
+.chip-done {
+	background: var(--state-done-bg);
+	color: var(--state-done);
+}
+.chip-missed {
+	background: var(--state-missed-bg);
+	color: var(--state-missed-text);
+}
+.chip-warn {
+	background: var(--warn-bg);
+	color: var(--warn-text);
+	border: 1px solid var(--warn-border);
+}

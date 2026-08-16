@@ -54,13 +54,13 @@ Every text/background pairing in `colors_and_type.css` was checked against WCAG 
 (7:1 for text, 3:1 for non-text) — the PRD's stated bar, above AA's 4.5:1, because the
 audience skews older. Computed ratios (sRGB relative luminance):
 
-| Pair | Ratio | Bar |
-|---|---|---|
-| `--ink` on `--ground` | ~16.5:1 | text 7:1 |
-| `--ink-2` on `--surface` (white) | ~8.8:1 | text 7:1 |
-| white on `--sage-700` (primary button) | ~7.8:1 | text 7:1 |
-| `--warn-text` on white | ~8.1:1 | text 7:1 |
-| `--danger-text` on white | ~10.0:1 | text 7:1 |
+| Pair                                   | Ratio   | Bar      |
+| -------------------------------------- | ------- | -------- |
+| `--ink` on `--ground`                  | ~16.5:1 | text 7:1 |
+| `--ink-2` on `--surface` (white)       | ~8.8:1  | text 7:1 |
+| white on `--sage-700` (primary button) | ~7.8:1  | text 7:1 |
+| `--warn-text` on white                 | ~8.1:1  | text 7:1 |
+| `--danger-text` on white               | ~10.0:1 | text 7:1 |
 
 `--state-missed-text` deliberately reuses `--ink-2` rather than a new mid-tone grey —
 a distinct lighter grey was tried first and measured ~5.9:1, which fails AAA, so the

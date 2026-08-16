@@ -1,0 +1,23 @@
+{
+	"extends": "./.svelte-kit/tsconfig.json",
+	"compilerOptions": {
+		"rewriteRelativeImportExtensions": true,
+		"allowJs": true,
+		"checkJs": true,
+		"esModuleInterop": true,
+		"forceConsistentCasingInFileNames": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"sourceMap": true,
+		"strict": true,
+		"moduleResolution": "bundler",
+		"types": ["./worker-configuration.d.ts"]
+	},
+	// `checkJs: true` means svelte-check will happily type-check *build output*
+	// if it exists on disk (.svelte-kit/cloudflare/_worker.js is a bundled,
+	// pre-minified artifact — checking it is both wrong and produces hundreds
+	// of false-positive errors). Excluded explicitly so `npm run check` gives
+	// the same clean result whether or not `npm run build` ran first — the
+	// base .svelte-kit/tsconfig.json's own include/exclude doesn't cover this.
+	"exclude": [".svelte-kit/cloudflare/**", ".svelte-kit/output/**", ".wrangler/**"]
+}

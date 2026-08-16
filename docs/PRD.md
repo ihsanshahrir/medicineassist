@@ -12,16 +12,16 @@ The intended outcome of v1: a person adds their medicines in under two minutes b
 
 ## Discovery decisions (confirmed with the user)
 
-| Decision | Choice |
-|---|---|
-| Primary user | **Any adult on multiple meds** — not age-targeted. Accessibility is a quality bar, not the positioning. |
-| Medicine data source | **Photo/OCR of the pharmacy label or box**, pre-filling a form the user confirms. |
-| Reminder mechanism | **Server-sent web push, best-effort.** Backend exists from day one. |
-| Market / language | **Malaysia / SEA** — Bahasa Malaysia + English. |
-| v1 features | Today view + mark taken · Medicine detail & how-to-take · Supply count & refill alerts |
-| Caregiver layer | **v2** — v1 is solo, one person, one account. |
-| Schedule complexity | **Simple recurring only** (N×/day, every N days, specific weekdays, start/end date). |
-| Accounts | **Required upfront.** |
+| Decision             | Choice                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------- |
+| Primary user         | **Any adult on multiple meds** — not age-targeted. Accessibility is a quality bar, not the positioning. |
+| Medicine data source | **Photo/OCR of the pharmacy label or box**, pre-filling a form the user confirms.                       |
+| Reminder mechanism   | **Server-sent web push, best-effort.** Backend exists from day one.                                     |
+| Market / language    | **Malaysia / SEA** — Bahasa Malaysia + English.                                                         |
+| v1 features          | Today view + mark taken · Medicine detail & how-to-take · Supply count & refill alerts                  |
+| Caregiver layer      | **v2** — v1 is solo, one person, one account.                                                           |
+| Schedule complexity  | **Simple recurring only** (N×/day, every N days, specific weekdays, start/end date).                    |
+| Accounts             | **Required upfront.**                                                                                   |
 
 ---
 
@@ -31,7 +31,7 @@ Everything below is evidence gathered from published research, not intuition. It
 
 **Older adults fail on perceptual-motor and cognitive load, in that order.** Documented usability failures are small fonts, small buttons, too many options per screen, too many steps in data entry, and inadequate navigation guidance. Dense instruction text and language barriers directly reduce willingness to use medication reminder apps. ([Prospective usability study](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7298635/), [QFD optimization study](https://www.mdpi.com/2079-9292/12/13/2860))
 
-**Put the basics on the home screen.** Research on elderly medication reminder apps concludes that core functions and buttons belong on the primary page — searching for them is the main efficiency loss. Users care overwhelmingly about *time* and *dosage*, not advanced features. ([QFD study](https://www.mdpi.com/2079-9292/12/13/2860))
+**Put the basics on the home screen.** Research on elderly medication reminder apps concludes that core functions and buttons belong on the primary page — searching for them is the main efficiency loss. Users care overwhelmingly about _time_ and _dosage_, not advanced features. ([QFD study](https://www.mdpi.com/2079-9292/12/13/2860))
 
 **The gap is retention, not installation.** Uptake of health apps runs ~92%, but sustained adherence sits around ~62%, with attrition climbing from ~19% to ~28% over a trial. Reminders alone are not enough — condition-specific relevance and human support are what hold people. ([Narrative review](https://pmc.ncbi.nlm.nih.gov/articles/PMC12549263/), [AJMC on attrition](https://www.ajmc.com/view/addressing-uptake-adherence-and-attrition-in-mental-health-apps))
 
@@ -47,7 +47,7 @@ Everything below is evidence gathered from published research, not intuition. It
 
 **Reliable offline alarms are not available to a PWA.** Google's Notification Triggers API — the only way to schedule a local notification without a network — [was cancelled](https://developer.chrome.com/docs/web-platform/notification-triggers); Google stated it could not provide consistent, reliable cross-platform experiences. On iOS, the Push API works **only** for apps added to the Home Screen via Safari (iOS 16.4+), never in a browser tab, and Background Sync is unsupported. In the EU, the DMA change removed standalone PWA support entirely. ([iOS PWA limitations](https://www.magicbell.com/blog/pwa-ios-limitations-safari-support-complete-guide), [PWA 2026 state of play](https://blog.codercops.com/blog/progressive-web-apps-2026))
 
-**Product consequence, stated plainly:** MedsAssist can send a *good* reminder. It cannot promise an *alarm*. This must be designed for honestly (see §F6 The reminder contract), not papered over — a reminder app that silently fails is worse than none.
+**Product consequence, stated plainly:** MedsAssist can send a _good_ reminder. It cannot promise an _alarm_. This must be designed for honestly (see §F6 The reminder contract), not papered over — a reminder app that silently fails is worse than none.
 
 ---
 
@@ -83,7 +83,7 @@ These are binding constraints on every screen, derived from the research above.
 1. **One decision per screen.** Never present two competing primary actions.
 2. **48×48px minimum touch target**, 8px minimum spacing between adjacent targets.
 3. **Body text ≥18px** (above the 16px floor, because our median user is older). Full support for OS text scaling up to 200% without horizontal scroll or clipping.
-4. **Contrast ≥7:1 for all text** (AAA), ≥3:1 for meaningful non-text UI. Never encode meaning in colour alone — always colour *plus* icon *plus* label.
+4. **Contrast ≥7:1 for all text** (AAA), ≥3:1 for meaningful non-text UI. Never encode meaning in colour alone — always colour _plus_ icon _plus_ label.
 5. **Photo before text, always.** The pill image is the primary identifier on every surface where a medicine appears.
 6. **Every instruction gets a pictogram.** Text alone is a failure state.
 7. **Undo, never confirm.** No "Are you sure?" dialogs for routine actions — mark-as-taken is one tap with a 10-second undo. Confirmation dialogs are reserved for deletion.
@@ -102,7 +102,7 @@ Sign-in is required before first use (confirmed decision). The friction is real,
 - **One screen, passwordless.** Phone number or email → 6-digit code. No password to create, forget, or reset. Optional Google sign-in.
 - Large numeric keypad, code auto-fills from SMS/email where the platform allows.
 - Immediately after sign-in, a **3-card orientation** (skippable, re-openable from Settings):
-  1. *What this app does* — one sentence + illustration.
+  1. _What this app does_ — one sentence + illustration.
   2. **Install to Home Screen** — platform-detected, illustrated, step-by-step. This is not optional polish: on iOS, push notifications are impossible without it. Users who skip see a persistent, dismissible banner until they install.
   3. **Reminder expectations** — plainly states that reminders need internet and a home-screen install, and that this app is not an alarm clock. Offers "also set a phone alarm as backup" with instructions.
 - Then straight into **Add your first medicine**. No empty dashboard.
@@ -125,9 +125,10 @@ Setup abandonment is the single biggest failure mode. The flow is built to make 
                  Done
 ```
 
-**Step 1 — Capture.** Camera-first with a framing guide. Accepts the pharmacy dispensing label *or* the retail box. Alternatives always visible: "Type it in instead" and "Choose from gallery."
+**Step 1 — Capture.** Camera-first with a framing guide. Accepts the pharmacy dispensing label _or_ the retail box. Alternatives always visible: "Type it in instead" and "Choose from gallery."
 
 **Step 2 — Confirm.** OCR pre-fills: medicine name, strength, form (tablet/capsule/syrup/inhaler/drops), dose per intake, frequency, and instruction text. Every field is a large, tappable, editable row.
+
 - **Extracted fields are visually marked as unverified** until the user taps to accept them. Nothing OCR-derived is treated as truth silently — this is the core safety property of the flow.
 - Low-confidence fields are flagged individually rather than failing the whole capture.
 - Free-text instructions are parsed into structured tags where possible (`with food`, `before food`, `swallow whole`, `do not drive`) and each tag renders as a pictogram the user can confirm or remove.
@@ -136,6 +137,7 @@ Setup abandonment is the single biggest failure mode. The flow is built to make 
 **Step 3 — Pill photo.** Prompts for a photo of the actual tablet/capsule, ideally on a plain surface. This is the highest-value asset in the whole product; it is what stops someone taking the wrong white round tablet. Skippable, but the app asks again later. If skipped, the user picks shape + colour from a visual grid to generate a representative glyph.
 
 **Step 4 — Schedule.** Simple recurring only:
+
 - **Times per day** (1–6), each with a time.
 - **Preset anchors offered first**: Morning / Afternoon / Evening / Night, with editable default times. Anchored routines beat arbitrary clock times for habit formation.
 - **Repeat pattern**: every day · every N days · specific weekdays.
@@ -151,6 +153,7 @@ Setup abandonment is the single biggest failure mode. The flow is built to make 
 The app opens here, always. Structure, top to bottom:
 
 **A. The Now card** — dominates the viewport. Shows the next or currently-due dose group:
+
 - Time-of-day icon + large time ("8:00 AM · Morning")
 - For each medicine due: pill photo (large), name, strength, and dose as repeated glyphs
 - One full-width **"Taken"** button (≥56px tall)
@@ -169,15 +172,15 @@ Nothing else. No stats, no charts, no promotional cards, no bottom-sheet upsells
 
 Reached by tapping any medicine anywhere. This is where the "comprehension tool" positioning lives.
 
-| Section | Content |
-|---|---|
-| **Identity** | Large pill photo, name, strength, form. Box photo viewable. |
-| **What it's for** | One or two plain sentences. User-editable; OCR-suggested where the label states an indication. Never invented by the app. |
+| Section            | Content                                                                                                                                                            |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Identity**       | Large pill photo, name, strength, form. Box photo viewable.                                                                                                        |
+| **What it's for**  | One or two plain sentences. User-editable; OCR-suggested where the label states an indication. Never invented by the app.                                          |
 | **How to take it** | Dose as repeated glyphs, times, and every instruction rendered as **pictogram + short text pair** (with food / empty stomach / swallow whole / shake first / etc.) |
-| **Warnings** | A visually distinct "Be careful" block — drowsiness, alcohol, driving. Pictogram-led. Only what the label says. |
-| **Supply** | Tablets remaining, days remaining, projected run-out date. |
-| **Schedule** | Current schedule, with Edit. |
-| **Notes** | Free-text field for anything the doctor or pharmacist said. |
+| **Warnings**       | A visually distinct "Be careful" block — drowsiness, alcohol, driving. Pictogram-led. Only what the label says.                                                    |
+| **Supply**         | Tablets remaining, days remaining, projected run-out date.                                                                                                         |
+| **Schedule**       | Current schedule, with Edit.                                                                                                                                       |
+| **Notes**          | Free-text field for anything the doctor or pharmacist said.                                                                                                        |
 
 A **"Read this to me"** button plays the whole page via text-to-speech in the selected language. High value for low-vision and low-literacy users, low cost to build.
 
@@ -185,15 +188,16 @@ A **"Read this to me"** button plays the whole page via text-to-speech in the se
 
 - Each "Taken" decrements the supply count by the dose amount.
 - Detail page and Today view show **days remaining**, computed from the actual schedule.
-- **Two alerts**: at 7 days remaining ("time to arrange a refill") and at 2 days ("you'll run out on Thursday"). Both delivered as push *and* as an in-app banner, because push is not guaranteed.
+- **Two alerts**: at 7 days remaining ("time to arrange a refill") and at 2 days ("you'll run out on Thursday"). Both delivered as push _and_ as an in-app banner, because push is not guaranteed.
 - **"I got a refill"** — one tap, enter quantity, count resets.
-- **Course completion:** a medicine with an end date *and* a supply count (e.g. antibiotics: 7 days, 21 tablets) displays a progress bar — "Day 3 of 7" — and a clear completion state. This delivers the "finish the whole course" behaviour without introducing a separate course object into the schedule model, keeping v1 at "simple recurring only" as decided.
+- **Course completion:** a medicine with an end date _and_ a supply count (e.g. antibiotics: 7 days, 21 tablets) displays a progress bar — "Day 3 of 7" — and a clear completion state. This delivers the "finish the whole course" behaviour without introducing a separate course object into the schedule model, keeping v1 at "simple recurring only" as decided.
 
 ### F6 — The reminder contract
 
 Given the platform constraint, v1 is explicit about what it promises.
 
 **What we do:**
+
 - Server-sent web push at each scheduled dose time, to every registered home-screen install.
 - Notification body carries the medicine name and dose so it is useful from the lock screen without opening the app.
 - Action buttons on the notification where the platform supports them: **Taken** / **Snooze**.
@@ -202,17 +206,18 @@ Given the platform constraint, v1 is explicit about what it promises.
 - **Quiet hours** are respected — no push between user-set sleep times; those doses surface in-app instead.
 
 **What we say out loud** (in onboarding, in Settings, and in a persistent Settings status row):
+
 - Reminders need internet and a home-screen install.
 - iOS will not deliver anything if the app was opened in a browser tab rather than installed.
 - This is not a replacement for a phone alarm for critical medicines.
 
-**Settings shows a live "Reminder health" row:** *Notifications: On · Installed to Home Screen: Yes · Last reminder delivered: 8:00 AM today.* If any element is broken, this row explains the specific fix. Silent failure is the worst possible outcome for this product, so the failure state is made visible by design.
+**Settings shows a live "Reminder health" row:** _Notifications: On · Installed to Home Screen: Yes · Last reminder delivered: 8:00 AM today._ If any element is broken, this row explains the specific fix. Silent failure is the worst possible outcome for this product, so the failure state is made visible by design.
 
 ### F7 — Accessibility & language
 
 - **Bahasa Malaysia and English**, switchable at any time from Settings, no restart. Language choice is offered on the very first screen.
 - All pictograms carry a text label in the active language. Icons are never load-bearing on their own.
-- **Text size control inside the app** (Normal / Large / Extra Large) *in addition to* honouring OS scaling — many users never discover their phone's accessibility settings.
+- **Text size control inside the app** (Normal / Large / Extra Large) _in addition to_ honouring OS scaling — many users never discover their phone's accessibility settings.
 - Full keyboard navigation and correct focus order for the desktop web experience.
 - Screen-reader labels on every control; dose amounts announced as words ("two tablets"), not glyph counts.
 - Tested at 200% zoom and with the system's largest text setting.
@@ -221,7 +226,7 @@ Given the platform constraint, v1 is explicit about what it promises.
 
 ## Visual language
 
-**The dose glyph.** "Take 2 tablets" renders as the number *and* two pill shapes: `● ●  2 tablets`. Numerals are a known weak point for low-numeracy and cognitively-declining users; a countable visual removes the ambiguity. Applies to tablets and capsules; syrups show a marked spoon/cup graphic with the volume, inhalers show a puff count.
+**The dose glyph.** "Take 2 tablets" renders as the number _and_ two pill shapes: `● ●  2 tablets`. Numerals are a known weak point for low-numeracy and cognitively-declining users; a countable visual removes the ambiguity. Applies to tablets and capsules; syrups show a marked spoon/cup graphic with the volume, inhalers show a puff count.
 
 **Time-of-day iconography.** Sunrise / sun / sunset / moon accompany every time, everywhere. Recognisable long before the digits are read, and language-independent.
 
@@ -261,7 +266,7 @@ These are things the research and the market gap suggest would materially improv
 14. **Multiple profiles under one account** (managing a parent's meds directly).
 15. **Native app wrapper**, if and only if reminder reliability proves to be the binding constraint on retention. The measurement to justify this should be built into v1 (see metrics).
 
-### Explicitly recommended *against*
+### Explicitly recommended _against_
 
 - **Streaks, badges, and leaderboards.** Gamification that punishes a break directly undermines the self-efficacy that adherence depends on, and a missed dose is often legitimate. If any progress mechanic is used, it should be a gentle non-breaking summary ("22 of 25 doses this month"), never a streak that shatters.
 - **Any AI-generated medical content.** The app may reformat and translate what a label says. It must never generate clinical claims. This boundary is a product rule, not a technical one.
@@ -270,30 +275,30 @@ These are things the research and the market gap suggest would materially improv
 
 ## Success metrics
 
-| Metric | v1 target | Why |
-|---|---|---|
-| Setup completion (sign-in → first medicine saved) | ≥80% | Directly measures the OCR flow; the largest known drop-off point. |
-| Time to add first medicine | median <90s | The core promise of the OCR path. |
-| Home-screen install rate | ≥60% of signups | Push is impossible without it on iOS; a leading indicator of whether reminders work at all. |
-| Day-7 retention | ≥55% | Benchmark literature shows adherence settling near 62% with attrition to ~28%. |
-| Day-30 retention | ≥40% | The real test — this is where competitors lose people. |
-| Doses marked / doses scheduled | ≥70% | Proxy for adherence and for reminder effectiveness. |
-| Push delivery→interaction rate | tracked, no target | **Instrument this from day one.** It is the evidence that decides whether a native wrapper is necessary. |
-| Pill photos attached | ≥50% of medicines | The core differentiator; low uptake means the prompt needs redesign. |
+| Metric                                            | v1 target          | Why                                                                                                      |
+| ------------------------------------------------- | ------------------ | -------------------------------------------------------------------------------------------------------- |
+| Setup completion (sign-in → first medicine saved) | ≥80%               | Directly measures the OCR flow; the largest known drop-off point.                                        |
+| Time to add first medicine                        | median <90s        | The core promise of the OCR path.                                                                        |
+| Home-screen install rate                          | ≥60% of signups    | Push is impossible without it on iOS; a leading indicator of whether reminders work at all.              |
+| Day-7 retention                                   | ≥55%               | Benchmark literature shows adherence settling near 62% with attrition to ~28%.                           |
+| Day-30 retention                                  | ≥40%               | The real test — this is where competitors lose people.                                                   |
+| Doses marked / doses scheduled                    | ≥70%               | Proxy for adherence and for reminder effectiveness.                                                      |
+| Push delivery→interaction rate                    | tracked, no target | **Instrument this from day one.** It is the evidence that decides whether a native wrapper is necessary. |
+| Pill photos attached                              | ≥50% of medicines  | The core differentiator; low uptake means the prompt needs redesign.                                     |
 
 ---
 
 ## Risks
 
-| Risk | Severity | Mitigation |
-|---|---|---|
-| **Push proves unreliable enough to break trust** | High | Honest expectation-setting in onboarding; a visible "Reminder health" status row; an in-app catch-up view; instrument delivery rates to decide on a native wrapper with data rather than opinion. |
-| **OCR misreads a dose** and the user accepts it unchecked | High (safety) | Extracted fields are marked unverified until explicitly accepted; low-confidence fields flagged individually; the original label photo is retained and always viewable on the detail page. |
-| **Account-required sign-in loses users at screen one** | Medium-High | Passwordless one-screen OTP; no password creation; measure drop-off precisely and revisit if it exceeds 20%. |
-| Setup effort exceeds perceived benefit for 5+ medicines | Medium | OCR speed is the whole answer; allow adding medicines incrementally rather than demanding a complete list upfront. |
-| Pictograms misread by the target culture | Medium | Redraw for the local market and comprehension-test before launch; always pair with text; make every pictogram tappable for a plain explanation. |
-| Perceived as medical advice | Medium (legal) | Persistent, plainly-worded disclaimer; the app only repeats user- or label-sourced content; no interaction checking, no dose recommendations in v1. |
-| Sensitive health data in a v1 product | Medium | Minimum viable collection, encryption in transit and at rest, no third-party analytics on medicine content, clear export and delete. Formalise before any caregiver sharing ships in v2. |
+| Risk                                                      | Severity       | Mitigation                                                                                                                                                                                        |
+| --------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Push proves unreliable enough to break trust**          | High           | Honest expectation-setting in onboarding; a visible "Reminder health" status row; an in-app catch-up view; instrument delivery rates to decide on a native wrapper with data rather than opinion. |
+| **OCR misreads a dose** and the user accepts it unchecked | High (safety)  | Extracted fields are marked unverified until explicitly accepted; low-confidence fields flagged individually; the original label photo is retained and always viewable on the detail page.        |
+| **Account-required sign-in loses users at screen one**    | Medium-High    | Passwordless one-screen OTP; no password creation; measure drop-off precisely and revisit if it exceeds 20%.                                                                                      |
+| Setup effort exceeds perceived benefit for 5+ medicines   | Medium         | OCR speed is the whole answer; allow adding medicines incrementally rather than demanding a complete list upfront.                                                                                |
+| Pictograms misread by the target culture                  | Medium         | Redraw for the local market and comprehension-test before launch; always pair with text; make every pictogram tappable for a plain explanation.                                                   |
+| Perceived as medical advice                               | Medium (legal) | Persistent, plainly-worded disclaimer; the app only repeats user- or label-sourced content; no interaction checking, no dose recommendations in v1.                                               |
+| Sensitive health data in a v1 product                     | Medium         | Minimum viable collection, encryption in transit and at rest, no third-party analytics on medicine content, clear export and delete. Formalise before any caregiver sharing ships in v2.          |
 
 ---
 

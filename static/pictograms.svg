@@ -1,0 +1,203 @@
+<!--
+  MedsAssist pictogram sprite — 19 symbols on a shared 48×48 grid.
+  Instruction/warning/time marks: outline style, 2.5px stroke, round caps/joins,
+  single-color via currentColor so they inherit the surrounding text color.
+  Dose glyphs: filled style, meant to sit inline next to a numeral ("● ● 2 tablets").
+
+  Per the PRD: this is a first drawn pass for the design system, not a validated
+  set. It must be comprehension-tested with Malaysian users before shipping
+  (see docs/PRD.md → Validation plan, item 3) and every use in product pairs
+  the mark with a text label — icons are never load-bearing alone here.
+
+  Usage: <svg class="pic"><use href="../pictograms.svg#pic-with-food"/></svg>
+-->
+<svg xmlns="http://www.w3.org/2000/svg" style="display:none">
+
+  <!-- ============ How to take (6) ============ -->
+
+  <symbol id="pic-with-food" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M9 22 Q9 34 24 34 Q39 34 39 22" />
+      <ellipse cx="24" cy="22" rx="15" ry="3" />
+      <path d="M17 14 q-2 -3 0 -6" />
+      <path d="M24 14 q-2 -3 0 -6" />
+      <path d="M31 14 q-2 -3 0 -6" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-before-food" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="12" y1="9" x2="12" y2="18" />
+      <line x1="16" y1="9" x2="16" y2="18" />
+      <line x1="20" y1="9" x2="20" y2="18" />
+      <path d="M12 18 Q12 23 16 23 L16 39" />
+      <circle cx="33" cy="16" r="9" />
+      <path d="M33 11 L33 16 L37 16" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-empty-stomach" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M17 9 C12 9 9 14 10 20 C11 27 8 33 15 37 C21 40 32 39 35 31 C38 24 36 15 29 11 C25 9 21 12 17 9 Z" />
+      <line x1="16" y1="24" x2="29" y2="24" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-swallow-whole" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="14" y="7" width="20" height="9" rx="4.5" />
+      <line x1="24" y1="7" x2="24" y2="16" />
+      <line x1="24" y1="20" x2="24" y2="30" />
+      <path d="M18 25 L24 31 L30 25" />
+      <path d="M11 40 Q24 46 37 40" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-do-not-crush" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13 26 Q13 36 24 36 Q35 36 35 26" />
+      <ellipse cx="24" cy="26" rx="11" ry="2.5" />
+      <line x1="29" y1="11" x2="20" y2="24" />
+      <circle cx="29" cy="11" r="2.6" fill="currentColor" stroke="none" />
+      <circle cx="24" cy="24" r="19" />
+      <line x1="10.4" y1="37.6" x2="37.6" y2="10.4" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-shake-first" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="21" y="7" width="6" height="7" rx="1.5" />
+      <path d="M18 18 L18 36 Q18 40 22 40 L26 40 Q30 40 30 36 L30 18 Q30 14 24 14 Q18 14 18 18 Z" />
+      <path d="M9 20 Q6 24 9 28" />
+      <path d="M7.5 26 L9 28 L11 25.5" />
+      <path d="M39 20 Q42 24 39 28" />
+      <path d="M40.5 26 L39 28 L37 25.5" />
+    </g>
+  </symbol>
+
+  <!-- ============ Warnings (4) ============ -->
+
+  <symbol id="pic-drowsiness" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M8 25 Q24 13 40 25" />
+      <path d="M14 27 l-2 4" />
+      <path d="M34 27 l2 4" />
+      <path d="M27 10 h7 l-7 7 h7" />
+      <path d="M37 19 h4.5 l-4.5 4.5 h4.5" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-no-alcohol" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M16 8 L32 8 L24 22 Z" />
+      <line x1="24" y1="22" x2="24" y2="35" />
+      <line x1="17" y1="40" x2="31" y2="40" />
+      <circle cx="24" cy="24" r="19" />
+      <line x1="10.4" y1="37.6" x2="37.6" y2="10.4" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-do-not-drive" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="24" cy="24" r="13" />
+      <circle cx="24" cy="24" r="3" />
+      <line x1="24" y1="11" x2="24" y2="21" />
+      <line x1="14" y1="30.5" x2="21.5" y2="26" />
+      <line x1="34" y1="30.5" x2="26.5" y2="26" />
+      <circle cx="24" cy="24" r="19" />
+      <line x1="10.4" y1="37.6" x2="37.6" y2="10.4" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-keep-refrigerated" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="24" y1="8" x2="24" y2="40" />
+      <line x1="10" y1="16" x2="38" y2="32" />
+      <line x1="10" y1="32" x2="38" y2="16" />
+      <path d="M20 11 L24 8 L28 11" />
+      <path d="M20 37 L24 40 L28 37" />
+      <path d="M12 21 L10 16 L15 17" />
+      <path d="M36 31 L38 32 L33 31" />
+      <path d="M12 27 L10 32 L15 31" />
+      <path d="M36 17 L38 16 L33 17" />
+    </g>
+  </symbol>
+
+  <!-- ============ Time of day (4) ============ -->
+
+  <symbol id="pic-sunrise" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="6" y1="32" x2="42" y2="32" />
+      <path d="M14 32 A10 10 0 0 1 34 32" />
+      <line x1="24" y1="12" x2="24" y2="17" />
+      <line x1="13" y1="17" x2="16.5" y2="21" />
+      <line x1="35" y1="17" x2="31.5" y2="21" />
+      <path d="M20 7 L24 3 L28 7" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-sun" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="24" cy="24" r="8" />
+      <line x1="24" y1="6" x2="24" y2="11" />
+      <line x1="24" y1="37" x2="24" y2="42" />
+      <line x1="6" y1="24" x2="11" y2="24" />
+      <line x1="37" y1="24" x2="42" y2="24" />
+      <line x1="11.5" y1="11.5" x2="15" y2="15" />
+      <line x1="33" y1="33" x2="36.5" y2="36.5" />
+      <line x1="36.5" y1="11.5" x2="33" y2="15" />
+      <line x1="15" y1="33" x2="11.5" y2="36.5" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-sunset" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="6" y1="32" x2="42" y2="32" />
+      <path d="M14 32 A10 10 0 0 1 34 32" />
+      <path d="M20 12 L24 16 L28 12" />
+      <line x1="13" y1="21" x2="16.5" y2="17" />
+      <line x1="35" y1="21" x2="31.5" y2="17" />
+    </g>
+  </symbol>
+
+  <symbol id="pic-moon" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M31 9 A15 15 0 1 0 31 39 A12 12 0 1 1 31 9 Z" />
+      <path d="M11 15 l1.4 2.9 l2.9 1.4 l-2.9 1.4 l-1.4 2.9 l-1.4 -2.9 l-2.9 -1.4 l2.9 -1.4 Z" fill="currentColor" stroke="none" />
+      <path d="M9 27 l0.9 1.8 l1.8 0.9 l-1.8 0.9 l-0.9 1.8 l-0.9 -1.8 l-1.8 -0.9 l1.8 -0.9 Z" fill="currentColor" stroke="none" />
+    </g>
+  </symbol>
+
+  <!-- ============ Dose glyphs (5) — filled, inline with counts ============ -->
+
+  <symbol id="glyph-tablet" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="15" fill="currentColor" />
+  </symbol>
+
+  <symbol id="glyph-half-tablet" viewBox="0 0 48 48">
+    <circle cx="24" cy="24" r="15" fill="none" stroke="currentColor" stroke-width="2.5" />
+    <path d="M24 9 A15 15 0 0 0 24 39 Z" fill="currentColor" />
+    <line x1="24" y1="9" x2="24" y2="39" stroke="var(--ground, #FAF9F6)" stroke-width="1.5" />
+  </symbol>
+
+  <symbol id="glyph-capsule" viewBox="0 0 48 48">
+    <rect x="7" y="16" width="34" height="16" rx="8" fill="none" stroke="currentColor" stroke-width="2.5" />
+    <path d="M24 16.5 H16 a7.5 7.5 0 0 0 0 15 H24 Z" fill="currentColor" />
+  </symbol>
+
+  <symbol id="glyph-syrup" viewBox="0 0 48 48">
+    <g fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M14 10 H34 L31 36 A3 3 0 0 1 28 39 H20 A3 3 0 0 1 17 36 Z" />
+      <path d="M34 16 Q42 18 42 26 Q42 34 34 34" />
+    </g>
+    <path d="M16.6 24 H31.4 L29.4 36 A3 3 0 0 1 27.4 38 H20.6 A3 3 0 0 1 18.6 36 Z" fill="currentColor" />
+  </symbol>
+
+  <symbol id="glyph-inhaler" viewBox="0 0 48 48">
+    <rect x="17" y="7" width="14" height="19" rx="3" fill="currentColor" />
+    <path d="M14 26 H34 L31.5 35 H16.5 Z" fill="currentColor" />
+    <line x1="18" y1="3" x2="20.5" y2="3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+    <line x1="30" y1="3" x2="27.5" y2="3.6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+  </symbol>
+
+</svg>

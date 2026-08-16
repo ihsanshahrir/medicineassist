@@ -1,0 +1,62 @@
+{
+	"$schema": "./node_modules/wrangler/config-schema.json",
+	// Main web app: all HTTP routes (src/routes/**) + Queue producer.
+	// The cron scan + queue consumer live in a separate worker — see
+	// workers/reminder-engine/wrangler.jsonc — because adapter-cloudflare's
+	// generated worker only exports `fetch`, not `scheduled`/`queue`.
+	"name": "medsassist-web",
+	"compatibility_date": "2026-08-16",
+	"compatibility_flags": ["nodejs_als", "nodejs_compat"],
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	"workers_dev": true,
+	"preview_urls": true,
+
+	// PLACEHOLDER IDs below — replace after running (once, with your own
+	// Cloudflare login): see db/README.md for the exact provisioning commands.
+	// `wrangler dev` runs D1/R2/KV/Queues against local Miniflare emulation
+	// regardless of these IDs, so local development works before you provision
+	// anything real. Only `wrangler deploy` needs the real IDs filled in.
+	"d1_databases": [
+		{
+			"binding": "DB",
+			"database_name": "medsassist",
+			"database_id": "REPLACE_AFTER_WRANGLER_D1_CREATE",
+			"migrations_dir": "db/migrations"
+		}
+	],
+	"r2_buckets": [
+		{
+			"binding": "PHOTOS",
+			"bucket_name": "medsassist-photos"
+		}
+	],
+	"kv_namespaces": [
+		{
+			"binding": "OTP_KV",
+			"id": "REPLACE_AFTER_WRANGLER_KV_NAMESPACE_CREATE"
+		}
+	],
+	// Workers AI is DELIBERATELY OMITTED here, unlike D1/R2/KV/Queues above.
+	// Those four have full local (Miniflare) emulation and work offline with
+	// zero Cloudflare credentials. Workers AI has no local emulation at all —
+	// even `wrangler dev`/`vite dev` proxy every AI call to Cloudflare's real
+	// edge inference, which fails outright without either `wrangler login` or
+	// a CLOUDFLARE_API_TOKEN env var, and (confirmed by testing) that
+	// requirement blocks the ENTIRE platform proxy session, not just AI calls
+	// — so leaving this binding in breaks local dev for routes that never
+	// touch AI at all. Add it back in M3 when the OCR endpoint is built,
+	// at which point you'll need to run `wrangler login` once anyway.
+	// "ai": { "binding": "AI" },
+	"queues": {
+		"producers": [
+			{
+				"binding": "NOTIFY_QUEUE",
+				"queue": "medsassist-notifications"
+			}
+		]
+	}
+}

@@ -1,56 +1,137 @@
 <!doctype html>
 <!-- @dsCard group="Screens" name="Settings" subtitle="Language, text size, quiet hours, and the live Reminder-health row" viewport="460x940" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  body { align-items: flex-start; padding-top: 20px; }
-  .section { margin-top: 22px; }
-  .section h3 { font-size: 13px; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); margin: 0 0 8px; }
-  .row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: 14px; padding: 13px 16px; box-shadow: var(--shadow-1); margin-bottom: 8px; min-height: 48px; }
-  .row span.lbl { flex: 1; font-size: 15px; }
-  .row span.val { font-size: 13.5px; color: var(--ink-2); }
-  .segmented { display: flex; background: var(--surface-sunk); border-radius: var(--r-input); padding: 4px; }
-  .segmented button { flex: 1; min-height: 40px; border: none; border-radius: 8px; background: transparent; font-size: 13px; font-weight: 600; color: var(--ink-2); }
-  .segmented button.active { background: var(--surface); color: var(--sage-800); box-shadow: var(--shadow-1); }
-  .health-row { display: flex; align-items: center; gap: 12px; padding: 13px 16px; border-radius: 14px; background: var(--state-done-bg); }
-  .dot { width: 9px; height: 9px; border-radius: 50%; background: var(--state-done); flex: 0 0 auto; }
-  .health-row b { font-size: 14px; display: block; }
-  .health-row span { font-size: 11.5px; color: var(--ink-2); }
-</style>
-</head>
-<body>
-<div class="phone">
-  <div class="phone-status"><span>9:41</span><span>Settings</span></div>
-  <div class="phone-body">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			body {
+				align-items: flex-start;
+				padding-top: 20px;
+			}
+			.section {
+				margin-top: 22px;
+			}
+			.section h3 {
+				font-size: 13px;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				color: var(--ink-3);
+				margin: 0 0 8px;
+			}
+			.row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				background: var(--surface);
+				border-radius: 14px;
+				padding: 13px 16px;
+				box-shadow: var(--shadow-1);
+				margin-bottom: 8px;
+				min-height: 48px;
+			}
+			.row span.lbl {
+				flex: 1;
+				font-size: 15px;
+			}
+			.row span.val {
+				font-size: 13.5px;
+				color: var(--ink-2);
+			}
+			.segmented {
+				display: flex;
+				background: var(--surface-sunk);
+				border-radius: var(--r-input);
+				padding: 4px;
+			}
+			.segmented button {
+				flex: 1;
+				min-height: 40px;
+				border: none;
+				border-radius: 8px;
+				background: transparent;
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--ink-2);
+			}
+			.segmented button.active {
+				background: var(--surface);
+				color: var(--sage-800);
+				box-shadow: var(--shadow-1);
+			}
+			.health-row {
+				display: flex;
+				align-items: center;
+				gap: 12px;
+				padding: 13px 16px;
+				border-radius: 14px;
+				background: var(--state-done-bg);
+			}
+			.dot {
+				width: 9px;
+				height: 9px;
+				border-radius: 50%;
+				background: var(--state-done);
+				flex: 0 0 auto;
+			}
+			.health-row b {
+				font-size: 14px;
+				display: block;
+			}
+			.health-row span {
+				font-size: 11.5px;
+				color: var(--ink-2);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone">
+			<div class="phone-status"><span>9:41</span><span>Settings</span></div>
+			<div class="phone-body">
+				<div class="section">
+					<h3>Reminders</h3>
+					<div class="health-row">
+						<div class="dot"></div>
+						<div>
+							<b>Reminders are working</b><span>Home Screen · Last delivered 8:00 AM today</span>
+						</div>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>Reminders</h3>
-      <div class="health-row"><div class="dot"></div><div><b>Reminders are working</b><span>Home Screen · Last delivered 8:00 AM today</span></div></div>
-    </div>
+				<div class="section">
+					<h3>Language / Bahasa</h3>
+					<div class="segmented">
+						<button class="active">English</button><button>Bahasa Malaysia</button>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>Language / Bahasa</h3>
-      <div class="segmented"><button class="active">English</button><button>Bahasa Malaysia</button></div>
-    </div>
+				<div class="section">
+					<h3>Text size</h3>
+					<div class="segmented">
+						<button>Normal</button><button class="active">Large</button><button>Extra Large</button>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>Text size</h3>
-      <div class="segmented"><button>Normal</button><button class="active">Large</button><button>Extra Large</button></div>
-    </div>
+				<div class="section">
+					<h3>Quiet hours</h3>
+					<div class="row">
+						<span class="lbl">Do not notify between</span
+						><span class="val tabular">10:00 PM – 6:30 AM</span>
+					</div>
+				</div>
 
-    <div class="section">
-      <h3>Quiet hours</h3>
-      <div class="row"><span class="lbl">Do not notify between</span><span class="val tabular">10:00 PM – 6:30 AM</span></div>
-    </div>
-
-    <div class="section">
-      <h3>Account</h3>
-      <div class="row"><span class="lbl">Signed in</span><span class="val">aina@email.com</span></div>
-      <div class="row"><span class="lbl">Export my data</span></div>
-      <div class="row" style="color:var(--danger-text)"><span class="lbl" style="color:var(--danger-text)">Delete account</span></div>
-    </div>
-
-  </div>
-</div>
-</body></html>
+				<div class="section">
+					<h3>Account</h3>
+					<div class="row">
+						<span class="lbl">Signed in</span><span class="val">aina@email.com</span>
+					</div>
+					<div class="row"><span class="lbl">Export my data</span></div>
+					<div class="row" style="color: var(--danger-text)">
+						<span class="lbl" style="color: var(--danger-text)">Delete account</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

@@ -1,0 +1,14 @@
+# Package Managers
+package-lock.json
+pnpm-lock.yaml
+yarn.lock
+bun.lock
+bun.lockb
+
+# Miscellaneous
+/static/
+
+# Machine-generated — `wrangler types` regenerates this from wrangler.jsonc,
+# and `npm run check`/`build` fail their own integrity check on it if
+# Prettier has reformatted it (different byte content than wrangler expects).
+worker-configuration.d.ts

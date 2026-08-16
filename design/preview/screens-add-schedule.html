@@ -1,62 +1,167 @@
 <!doctype html>
 <!-- @dsCard group="Screens" name="Add Medicine — Schedule" subtitle="Time-of-day anchors first, repeat pattern, dose stepper with live glyph" viewport="460x940" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  body { align-items: flex-start; padding-top: 20px; }
-  .progress { display: flex; gap: 4px; margin-bottom: 12px; }
-  .progress span { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
-  .progress span.done { background: var(--sage-700); }
-  .field-group { margin-top: 20px; }
-  .field-group label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-2); margin-bottom: 8px; }
-  .anchor-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .anchor { background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 12px; padding: 12px 6px; text-align: center; }
-  .anchor.active { background: var(--sage-100); border-color: var(--sage-700); }
-  .anchor svg { width: 22px; height: 22px; color: var(--sage-700); }
-  .anchor span { display: block; font-size: 11px; margin-top: 4px; }
-  .segmented { display: flex; background: var(--surface-sunk); border-radius: var(--r-input); padding: 4px; }
-  .segmented button { flex: 1; min-height: 40px; border: none; border-radius: 8px; background: transparent; font-size: 13px; font-weight: 600; color: var(--ink-2); }
-  .segmented button.active { background: var(--surface); color: var(--sage-800); box-shadow: var(--shadow-1); }
-  .stepper { display: flex; align-items: center; gap: 14px; background: var(--surface); border-radius: var(--r-input); padding: 12px 16px; box-shadow: var(--shadow-1); }
-  .stepper button { width: 40px; height: 40px; border-radius: 10px; border: 1.5px solid var(--line-strong); background: var(--surface); font-size: 18px; font-weight: 700; color: var(--sage-700); }
-  .glyphs { display: flex; gap: 3px; color: var(--sage-700); margin-left: auto; }
-  .glyphs svg { width: 20px; height: 20px; }
-</style>
-</head>
-<body>
-<div class="phone">
-  <div class="phone-status"><span>9:41</span><span>Add medicine</span></div>
-  <div class="phone-body">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			body {
+				align-items: flex-start;
+				padding-top: 20px;
+			}
+			.progress {
+				display: flex;
+				gap: 4px;
+				margin-bottom: 12px;
+			}
+			.progress span {
+				flex: 1;
+				height: 4px;
+				border-radius: 2px;
+				background: var(--line);
+			}
+			.progress span.done {
+				background: var(--sage-700);
+			}
+			.field-group {
+				margin-top: 20px;
+			}
+			.field-group label {
+				display: block;
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--ink-2);
+				margin-bottom: 8px;
+			}
+			.anchor-grid {
+				display: grid;
+				grid-template-columns: repeat(4, 1fr);
+				gap: 8px;
+			}
+			.anchor {
+				background: var(--surface);
+				border: 1.5px solid var(--line-strong);
+				border-radius: 12px;
+				padding: 12px 6px;
+				text-align: center;
+			}
+			.anchor.active {
+				background: var(--sage-100);
+				border-color: var(--sage-700);
+			}
+			.anchor svg {
+				width: 22px;
+				height: 22px;
+				color: var(--sage-700);
+			}
+			.anchor span {
+				display: block;
+				font-size: 11px;
+				margin-top: 4px;
+			}
+			.segmented {
+				display: flex;
+				background: var(--surface-sunk);
+				border-radius: var(--r-input);
+				padding: 4px;
+			}
+			.segmented button {
+				flex: 1;
+				min-height: 40px;
+				border: none;
+				border-radius: 8px;
+				background: transparent;
+				font-size: 13px;
+				font-weight: 600;
+				color: var(--ink-2);
+			}
+			.segmented button.active {
+				background: var(--surface);
+				color: var(--sage-800);
+				box-shadow: var(--shadow-1);
+			}
+			.stepper {
+				display: flex;
+				align-items: center;
+				gap: 14px;
+				background: var(--surface);
+				border-radius: var(--r-input);
+				padding: 12px 16px;
+				box-shadow: var(--shadow-1);
+			}
+			.stepper button {
+				width: 40px;
+				height: 40px;
+				border-radius: 10px;
+				border: 1.5px solid var(--line-strong);
+				background: var(--surface);
+				font-size: 18px;
+				font-weight: 700;
+				color: var(--sage-700);
+			}
+			.glyphs {
+				display: flex;
+				gap: 3px;
+				color: var(--sage-700);
+				margin-left: auto;
+			}
+			.glyphs svg {
+				width: 20px;
+				height: 20px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone">
+			<div class="phone-status"><span>9:41</span><span>Add medicine</span></div>
+			<div class="phone-body">
+				<div class="progress">
+					<span class="done"></span><span class="done"></span><span class="done"></span
+					><span class="done"></span><span></span>
+				</div>
+				<h2 class="t-title" style="font-size: 22px">When do you take it?</h2>
 
-    <div class="progress"><span class="done"></span><span class="done"></span><span class="done"></span><span class="done"></span><span></span></div>
-    <h2 class="t-title" style="font-size:22px">When do you take it?</h2>
+				<div class="field-group">
+					<label>Time of day</label>
+					<div class="anchor-grid">
+						<div class="anchor active">
+							<svg><use href="../pictograms.svg#pic-sunrise" /></svg><span>Morning</span>
+						</div>
+						<div class="anchor">
+							<svg><use href="../pictograms.svg#pic-sun" /></svg><span>Afternoon</span>
+						</div>
+						<div class="anchor active">
+							<svg><use href="../pictograms.svg#pic-sunset" /></svg><span>Evening</span>
+						</div>
+						<div class="anchor">
+							<svg><use href="../pictograms.svg#pic-moon" /></svg><span>Night</span>
+						</div>
+					</div>
+				</div>
 
-    <div class="field-group">
-      <label>Time of day</label>
-      <div class="anchor-grid">
-        <div class="anchor active"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span>Morning</span></div>
-        <div class="anchor"><svg><use href="../pictograms.svg#pic-sun"/></svg><span>Afternoon</span></div>
-        <div class="anchor active"><svg><use href="../pictograms.svg#pic-sunset"/></svg><span>Evening</span></div>
-        <div class="anchor"><svg><use href="../pictograms.svg#pic-moon"/></svg><span>Night</span></div>
-      </div>
-    </div>
+				<div class="field-group">
+					<label>Repeat</label>
+					<div class="segmented">
+						<button class="active">Every day</button><button>Every N days</button
+						><button>Weekdays</button>
+					</div>
+				</div>
 
-    <div class="field-group">
-      <label>Repeat</label>
-      <div class="segmented"><button class="active">Every day</button><button>Every N days</button><button>Weekdays</button></div>
-    </div>
+				<div class="field-group">
+					<label>Dose per intake</label>
+					<div class="stepper">
+						<button>–</button><span class="t-title" style="font-size: 20px">2</span
+						><button>+</button>
+						<div class="glyphs">
+							<svg><use href="../pictograms.svg#glyph-tablet" /></svg
+							><svg><use href="../pictograms.svg#glyph-tablet" /></svg>
+						</div>
+					</div>
+				</div>
 
-    <div class="field-group">
-      <label>Dose per intake</label>
-      <div class="stepper">
-        <button>–</button><span class="t-title" style="font-size:20px">2</span><button>+</button>
-        <div class="glyphs"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" style="margin-top:24px">Continue</button>
-
-  </div>
-</div>
-</body></html>
+				<button class="btn btn-primary" style="margin-top: 24px">Continue</button>
+			</div>
+		</div>
+	</body>
+</html>

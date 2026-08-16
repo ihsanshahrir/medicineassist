@@ -1,29 +1,97 @@
 <!doctype html>
 <!-- @dsCard group="Foundations" name="Type Scale" subtitle="Inter · 18px floor · tabular numerals · Grade-6 voice" viewport="720x520" -->
-<html><head><meta charset="utf-8">
-<link rel="stylesheet" href="../colors_and_type.css">
-<link rel="stylesheet" href="_card.css">
-<style>
-  .wrap { width: 680px; display: flex; flex-direction: column; gap: 14px; }
-  .row { display: flex; align-items: baseline; gap: 16px; border-bottom: 1px solid var(--line); padding-bottom: 12px; }
-  .tag { flex: 0 0 130px; font: 600 11px var(--font-sans); color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; }
-  .spec { flex: 0 0 90px; font: 500 11px monospace; color: var(--ink-3); }
-</style>
-</head>
-<body><div class="card"><div class="wrap">
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				width: 680px;
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+			}
+			.row {
+				display: flex;
+				align-items: baseline;
+				gap: 16px;
+				border-bottom: 1px solid var(--line);
+				padding-bottom: 12px;
+			}
+			.tag {
+				flex: 0 0 130px;
+				font: 600 11px var(--font-sans);
+				color: var(--ink-3);
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+			}
+			.spec {
+				flex: 0 0 90px;
+				font: 500 11px monospace;
+				color: var(--ink-3);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div class="row">
+					<div class="tag">Display</div>
+					<div class="spec">40 / 44 · 700</div>
+					<div class="t-display">8:00 AM</div>
+				</div>
+				<div class="row">
+					<div class="tag">Title</div>
+					<div class="spec">28 / 34 · 600</div>
+					<div class="t-title">Metformin</div>
+				</div>
+				<div class="row">
+					<div class="tag">H2</div>
+					<div class="spec">22 / 28 · 600</div>
+					<div class="t-h2">How to take it</div>
+				</div>
+				<div class="row">
+					<div class="tag">Body Large</div>
+					<div class="spec">20 / 30 · 400</div>
+					<div class="t-body-lg">Take with food, in the morning.</div>
+				</div>
+				<div class="row">
+					<div class="tag">Body — floor</div>
+					<div class="spec">18 / 28 · 400</div>
+					<div class="t-body">Nothing in this product renders smaller than this line.</div>
+				</div>
+				<div class="row">
+					<div class="tag">Label</div>
+					<div class="spec">16 / 22 · 500</div>
+					<div class="t-label">Times per day</div>
+				</div>
+				<div class="row" style="border-bottom: none">
+					<div class="tag">Caption</div>
+					<div class="spec">15 / 20 · 400</div>
+					<div class="t-caption">Used sparingly — supply counts, timestamps.</div>
+				</div>
 
-  <div class="row"><div class="tag">Display</div><div class="spec">40 / 44 · 700</div><div class="t-display">8:00 AM</div></div>
-  <div class="row"><div class="tag">Title</div><div class="spec">28 / 34 · 600</div><div class="t-title">Metformin</div></div>
-  <div class="row"><div class="tag">H2</div><div class="spec">22 / 28 · 600</div><div class="t-h2">How to take it</div></div>
-  <div class="row"><div class="tag">Body Large</div><div class="spec">20 / 30 · 400</div><div class="t-body-lg">Take with food, in the morning.</div></div>
-  <div class="row"><div class="tag">Body — floor</div><div class="spec">18 / 28 · 400</div><div class="t-body">Nothing in this product renders smaller than this line.</div></div>
-  <div class="row"><div class="tag">Label</div><div class="spec">16 / 22 · 500</div><div class="t-label">Times per day</div></div>
-  <div class="row" style="border-bottom:none"><div class="tag">Caption</div><div class="spec">15 / 20 · 400</div><div class="t-caption">Used sparingly — supply counts, timestamps.</div></div>
-
-  <div style="margin-top:6px;padding:14px 16px;background:var(--surface);border:1.5px solid var(--sage-200);border-radius:14px;font-size:13px;color:var(--ink-2)">
-    <strong style="color:var(--ink)">Tabular numerals everywhere a number changes:</strong>
-    <span class="t-body tabular" style="font-size:16px">08:00&nbsp;&nbsp;12:30&nbsp;&nbsp;19:45</span> — digits stay aligned as they update, which matters when a countdown or supply count is glanced at, not read.
-    All sizes are set in <code>rem</code> so OS text scaling to 200% works without a layout break (see Screens → Today at 200%).
-  </div>
-
-</div></div></body></html>
+				<div
+					style="
+						margin-top: 6px;
+						padding: 14px 16px;
+						background: var(--surface);
+						border: 1.5px solid var(--sage-200);
+						border-radius: 14px;
+						font-size: 13px;
+						color: var(--ink-2);
+					"
+				>
+					<strong style="color: var(--ink)">Tabular numerals everywhere a number changes:</strong>
+					<span class="t-body tabular" style="font-size: 16px"
+						>08:00&nbsp;&nbsp;12:30&nbsp;&nbsp;19:45</span
+					>
+					— digits stay aligned as they update, which matters when a countdown or supply count is
+					glanced at, not read. All sizes are set in <code>rem</code> so OS text scaling to 200%
+					works without a layout break (see Screens → Today at 200%).
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

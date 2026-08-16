@@ -1,0 +1,13 @@
+# Copy to .dev.vars (gitignored) and fill in for local development.
+# `wrangler dev` / `vite dev` (via adapter-cloudflare) read this automatically —
+# no need to declare these in wrangler.jsonc, and they're never committed.
+#
+# Generate a real local SESSION_SECRET with:
+#   node -e "console.log(crypto.randomUUID()+crypto.randomUUID())"
+
+SESSION_SECRET=replace-with-a-long-random-string
+
+# Optional for local dev — if unset, OTP codes are logged to the terminal
+# instead of emailed (see src/lib/server/email.ts). Only needed to actually
+# test real email delivery.
+RESEND_API_KEY=

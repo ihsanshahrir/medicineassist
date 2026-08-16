@@ -1,33 +1,54 @@
 /* Shared specimen frame for Design System pane cards. */
-html, body { height: 100%; }
+html,
 body {
-  display: flex; align-items: center; justify-content: center;
-  padding: 20px;
+	height: 100%;
+}
+body {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 20px;
 }
 .card {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  background: var(--ground);
+	width: 100%;
+	height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background: var(--ground);
 }
 .eyebrow {
-  color: var(--ink-3);
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+	color: var(--ink-3);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
 }
 /* Phone-frame utility for screen specimens */
 .phone {
-  width: 390px; min-height: 780px;
-  background: var(--ground);
-  border-radius: 44px;
-  box-shadow: var(--shadow-3), 0 0 0 8px #0E1512;
-  overflow: hidden;
-  display: flex; flex-direction: column;
-  position: relative;
+	width: 390px;
+	min-height: 780px;
+	background: var(--ground);
+	border-radius: 44px;
+	box-shadow:
+		var(--shadow-3),
+		0 0 0 8px #0e1512;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	position: relative;
 }
 .phone-status {
-  height: 44px; flex: 0 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 0 24px;
-  font-size: 13px; font-weight: 600; color: var(--ink);
+	height: 44px;
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 0 24px;
+	font-size: 13px;
+	font-weight: 600;
+	color: var(--ink);
 }
-.phone-body { flex: 1 1 auto; overflow-y: auto; padding: 0 20px 32px; }
+.phone-body {
+	flex: 1 1 auto;
+	overflow-y: auto;
+	padding: 0 20px 32px;
+}
