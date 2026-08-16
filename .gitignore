@@ -1,0 +1,6 @@
+# Claude Design local sync — packaging wrapper only, not the artifacts themselves.
+# Pull out what's useful (e.g. DESIGN.md → repo root, icons → design/assets/)
+# and let this folder regenerate untracked on each sync.
+design/design_handoff/
+
+.DS_Store
