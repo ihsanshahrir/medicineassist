@@ -1,0 +1,43 @@
+<!doctype html>
+<!-- @dsCard group="Foundations" name="Dose Glyph" subtitle="Countable shapes beside every numeral — never a bare number" viewport="720x300" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 680px; display: flex; flex-direction: column; gap: 16px; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 14px 16px; background: var(--surface); border-radius: 14px; box-shadow: var(--shadow-1); }
+  .glyphs { display: flex; gap: 4px; color: var(--sage-700); flex: 0 0 auto; }
+  .glyphs svg { width: 22px; height: 22px; }
+  .lbl { flex: 1; }
+  .lbl b { display:block; font-size: 16px; }
+  .lbl span { font-size: 13px; color: var(--ink-2); }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div class="row">
+    <div class="glyphs"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
+    <div class="lbl"><b>2 tablets</b><span>Numerals alone are a known weak point for low-numeracy users — the shape count removes ambiguity.</span></div>
+  </div>
+
+  <div class="row">
+    <div class="glyphs"><svg><use href="../pictograms.svg#glyph-half-tablet"/></svg></div>
+    <div class="lbl"><b>Half a tablet</b><span>Split dose shown as a half-filled circle, not "0.5".</span></div>
+  </div>
+
+  <div class="row">
+    <div class="glyphs"><svg><use href="../pictograms.svg#glyph-capsule"/></svg></div>
+    <div class="lbl"><b>1 capsule</b><span>Capsule glyph is visually distinct from the tablet glyph — matches the pill photo's real silhouette.</span></div>
+  </div>
+
+  <div class="row">
+    <div class="glyphs"><svg><use href="../pictograms.svg#glyph-syrup"/></svg></div>
+    <div class="lbl"><b>10 mL</b><span>Syrup shows a marked measuring cup with the fill line, not just a volume number.</span></div>
+  </div>
+
+  <div class="row">
+    <div class="glyphs"><svg><use href="../pictograms.svg#glyph-inhaler"/></svg></div>
+    <div class="lbl"><b>2 puffs</b><span>Screen readers announce dose amounts as words — "two tablets" — never the glyph count.</span></div>
+  </div>
+
+</div></div></body></html>

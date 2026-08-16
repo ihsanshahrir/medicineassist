@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- @dsCard group="Screens" name="Today — 200% Text Scale" subtitle="PRD acceptance test: OS text scaling to 200%, no clipping, no horizontal scroll" viewport="460x1400" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  /* Simulates the OS "largest text" accessibility setting. All type tokens
+     are in rem, so this single line is the whole test — nothing else changes. */
+  html { font-size: 200%; }
+  body { align-items: flex-start; padding-top: 20px; }
+  .phone { width: 390px; } /* fixed device width held constant on purpose */
+  .now-card { background: var(--state-now-bg); border: 2px solid var(--sage-700); border-radius: var(--r-card); padding: 18px; margin-top: 10px; }
+  .now-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+  .now-head svg { width: 24px; height: 24px; color: var(--sage-700); flex-shrink: 0; }
+  .med-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sage-200); }
+  .med-photo { width: 46px; height: 46px; border-radius: 11px; flex: 0 0 auto; display:flex;align-items:center;justify-content:center; }
+  .med-photo svg { width: 24px; height: 24px; color: var(--sage-800); }
+  .med-info { min-width: 0; }
+  .med-info b { display: block; font-size: 15px; overflow-wrap: break-word; }
+  .med-info .dose { display: flex; align-items: center; gap: 3px; color: var(--sage-700); font-size: 12.5px; margin-top: 1px; flex-wrap: wrap; }
+  .med-info .dose svg { width: 14px; height: 14px; flex-shrink: 0; }
+  .sub-actions { display: flex; justify-content: center; gap: 18px; margin-top: 8px; flex-wrap: wrap; }
+  .sub-actions span { font-size: 13px; font-weight: 600; color: var(--sage-700); }
+  .note { background: var(--surface); border: 1.5px solid var(--sage-200); border-radius: 14px; padding: 12px 14px; font-size: 12px !important; color: var(--ink-2); margin-bottom: 4px; }
+  .note b { font-size: 12px !important; color: var(--ink); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="phone-status" style="font-size:13px"><span>9:41</span><span>MedsAssist</span></div>
+  <div class="phone-body">
+
+    <div class="note"><b>200% OS text scale applied to this whole screen.</b> Card padding and touch targets hold their size; only type grows. Result: text wraps, nothing clips, no horizontal scrollbar appears.</div>
+
+    <div class="now-card">
+      <div class="now-head"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span class="t-title" style="font-size:20px">8:00 AM · Morning</span></div>
+
+      <div class="med-row">
+        <div class="med-photo" style="background:var(--accent-1)"><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
+        <div class="med-info"><b>Metformin 500mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg>2 tablets</div></div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:14px">Taken</button>
+      <div class="sub-actions"><span>Snooze 15 min</span><span style="color:var(--ink-2)">Skip</span></div>
+    </div>
+
+  </div>
+</div>
+</body></html>

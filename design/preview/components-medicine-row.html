@@ -1,0 +1,48 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Medicine Timeline Row" subtitle="Done / Now / Upcoming / Missed — state via icon + label + color together" viewport="740x360" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 700px; display: flex; flex-direction: column; gap: 2px; background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow-1); overflow: hidden; }
+  .row { display: flex; align-items: center; gap: 14px; padding: 14px 18px; border-bottom: 1px solid var(--line); }
+  .row:last-child { border-bottom: none; }
+  .row.now { background: var(--state-now-bg); }
+  .icon-badge { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; font-size: 15px; font-weight: 700; }
+  .icon-badge.done { background: var(--state-done-bg); color: var(--state-done); }
+  .icon-badge.now { background: var(--sage-700); color: #fff; }
+  .icon-badge.upcoming { background: var(--surface-sunk); color: var(--ink-3); }
+  .icon-badge.missed { background: var(--state-missed-bg); color: var(--state-missed-text); }
+  .info { flex: 1; }
+  .info b { font-size: 15px; display: block; }
+  .info span { font-size: 12.5px; color: var(--ink-2); }
+  .tag { font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; padding: 4px 10px; border-radius: 999px; }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div class="row">
+    <div class="icon-badge done">✓</div>
+    <div class="info"><b>6:00 AM · Vitamin D</b><span>1 tablet · taken at 6:04 AM</span></div>
+    <div class="tag chip-done">Done</div>
+  </div>
+
+  <div class="row now">
+    <div class="icon-badge now">●</div>
+    <div class="info"><b>8:00 AM · Metformin, Amlodipine</b><span>2 tablets + 1 capsule</span></div>
+    <div class="tag chip-now">Now</div>
+  </div>
+
+  <div class="row">
+    <div class="icon-badge upcoming">○</div>
+    <div class="info"><b>2:00 PM · Metformin</b><span>2 tablets</span></div>
+    <div class="tag" style="background:var(--surface-sunk);color:var(--ink-2)">Upcoming</div>
+  </div>
+
+  <div class="row">
+    <div class="icon-badge missed">–</div>
+    <div class="info"><b>10:00 PM · Amlodipine</b><span>Not marked</span></div>
+    <div class="tag chip-missed">Missed</div>
+  </div>
+
+</div></div></body></html>

@@ -1,0 +1,40 @@
+<!doctype html>
+<!-- @dsCard group="Foundations" name="Elevation & Touch Targets" subtitle="Soft tinted shadows · 48px floor, 56px primary" viewport="740x320" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 700px; display: flex; gap: 40px; }
+  .col { flex: 1; }
+  .e-box { width: 96px; height: 64px; background: var(--surface); border-radius: 14px; display: flex; align-items: center; justify-content: center; font: 600 11px monospace; color: var(--ink-2); }
+  .e-row { display: flex; gap: 18px; margin-top: 10px; }
+  .tgt { display: flex; align-items: center; gap: 12px; margin-top: 12px; }
+  .tgt-box { background: var(--sage-100); border: 2px dashed var(--sage-700); border-radius: 10px; display: flex; align-items: center; justify-content: center; font: 700 11px monospace; color: var(--sage-800); }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div class="col">
+    <div class="eyebrow" style="font-size:12px;margin-bottom:6px">Elevation — tinted, never pure black</div>
+    <div class="e-row">
+      <div class="e-box" style="box-shadow:var(--shadow-1)">shadow-1</div>
+      <div class="e-box" style="box-shadow:var(--shadow-2)">shadow-2</div>
+      <div class="e-box" style="box-shadow:var(--shadow-3)">shadow-3</div>
+    </div>
+    <p class="t-caption" style="max-width:280px;margin-top:16px">shadow-1 for resting rows, shadow-2 for the Now card, shadow-3 for sheets/modals. Tint is <code>rgba(20,32,28,…)</code> — sage-black, not neutral black — so shadows read warm.</p>
+  </div>
+
+  <div class="col">
+    <div class="eyebrow" style="font-size:12px;margin-bottom:6px">Touch targets — measured, not assumed</div>
+    <div class="tgt"><div class="tgt-box" style="width:48px;height:48px">48</div><span class="t-caption">Minimum — every interactive element</span></div>
+    <div class="tgt"><div class="tgt-box" style="width:56px;height:56px">56</div><span class="t-caption">Primary CTA (Taken button)</span></div>
+    <div class="tgt" style="align-items:flex-start">
+      <div style="display:flex;gap:8px">
+        <div class="tgt-box" style="width:48px;height:48px;font-size:9px">48</div>
+        <div class="tgt-box" style="width:48px;height:48px;font-size:9px">48</div>
+      </div>
+      <span class="t-caption">8px minimum gap between adjacent targets</span>
+    </div>
+  </div>
+
+</div></div></body></html>

@@ -1,0 +1,46 @@
+<!doctype html>
+<!-- @dsCard group="Screens" name="Add Medicine — OCR Confirm" subtitle="Extracted fields, unverified until tapped — the safety-critical screen" viewport="460x940" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { align-items: flex-start; padding-top: 20px; }
+  .label-thumb { width: 100%; height: 130px; border-radius: 16px; background: var(--surface-sunk); border: 1.5px dashed var(--line-strong); display: flex; align-items: center; justify-content: center; margin-top: 8px; color: var(--ink-3); font-size: 13px; }
+  .field { border-radius: var(--r-input); padding: 12px 14px; display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+  .field.unverified { background: var(--warn-bg); border: 1.5px dashed var(--warn-border); }
+  .field.accepted { background: var(--state-done-bg); }
+  .field.low-conf { background: var(--danger-bg); border: 1.5px solid #E3A79E; }
+  .field-body { flex: 1; }
+  .field-label { font-size: 10.5px; font-weight: 700; text-transform: uppercase; color: var(--ink-2); }
+  .field-val { font-size: 15.5px; margin-top: 1px; }
+  .field-tag { font-size: 10px; font-weight: 700; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+  .tag-unverified { background: var(--warn-border); color: #fff; }
+  .tag-accepted { background: var(--state-done); color: #fff; }
+  .tag-low { background: var(--danger-text); color: #fff; }
+  .progress { display: flex; gap: 4px; margin-bottom: 12px; }
+  .progress span { flex: 1; height: 4px; border-radius: 2px; background: var(--line); }
+  .progress span.done { background: var(--sage-700); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="phone-status"><span>9:41</span><span>Add medicine</span></div>
+  <div class="phone-body">
+
+    <div class="progress"><span class="done"></span><span class="done"></span><span></span><span></span><span></span></div>
+    <h2 class="t-title" style="font-size:22px">Confirm the details</h2>
+    <p class="t-caption">Tap each field to confirm it's correct</p>
+
+    <div class="label-thumb">📷 Pharmacy label photo</div>
+
+    <div class="field unverified"><div class="field-body"><div class="field-label">Medicine name</div><div class="field-val">Metformin 500mg</div></div><div class="field-tag tag-unverified">Confirm</div></div>
+    <div class="field accepted"><div class="field-body"><div class="field-label">Form</div><div class="field-val">Tablet</div></div><div class="field-tag tag-accepted">✓</div></div>
+    <div class="field low-conf"><div class="field-body"><div class="field-label">Instructions — low confidence</div><div class="field-val">Take twi[ce?] daily w[ith] food</div></div><div class="field-tag tag-low">Check</div></div>
+    <div class="field unverified"><div class="field-body"><div class="field-label">Frequency</div><div class="field-val">2 times a day</div></div><div class="field-tag tag-unverified">Confirm</div></div>
+
+    <button class="btn btn-primary" style="margin-top:22px">Continue</button>
+    <button class="btn btn-text" style="width:100%;justify-content:center">Type it in instead</button>
+
+  </div>
+</div>
+</body></html>

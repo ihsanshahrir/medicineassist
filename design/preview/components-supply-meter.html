@@ -1,0 +1,45 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Supply Meter & Refill" subtitle="Days remaining · 7d/2d warnings · course progress" viewport="740x460" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 700px; display: flex; flex-direction: column; gap: 16px; }
+  .meter-card { background: var(--surface); border-radius: var(--r-card); padding: 16px 18px; box-shadow: var(--shadow-1); }
+  .meter-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 8px; }
+  .meter-top b { font-size: 16px; }
+  .meter-top span { font-size: 13px; color: var(--ink-2); }
+  .meter-track { height: 10px; background: var(--surface-sunk); border-radius: 999px; overflow: hidden; }
+  .meter-fill { height: 100%; border-radius: 999px; }
+  .banner { display: flex; align-items: center; gap: 12px; border-radius: var(--r-input); padding: 12px 16px; }
+  .banner.warn { background: var(--warn-bg); border: 1px solid var(--warn-border); }
+  .banner b { font-size: 14.5px; display: block; }
+  .banner span { font-size: 12.5px; color: var(--ink-2); }
+  .refill-btn { margin-left: auto; }
+  .course { background: var(--surface); border-radius: var(--r-card); padding: 16px 18px; box-shadow: var(--shadow-1); }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div class="meter-card">
+    <div class="meter-top"><b>Metformin 500mg</b><span class="tabular">18 tablets left · ~9 days</span></div>
+    <div class="meter-track"><div class="meter-fill" style="width:60%;background:var(--sage-700)"></div></div>
+  </div>
+
+  <div class="banner warn">
+    <div><b>Time to arrange a refill</b><span>7 days of Amlodipine remaining</span></div>
+    <button class="btn btn-secondary refill-btn" style="min-height:40px;padding:0 16px">I got a refill</button>
+  </div>
+
+  <div class="banner warn" style="background:var(--danger-bg);border-color:#E3A79E">
+    <div><b style="color:var(--danger-text)">Running out Thursday</b><span>2 days of Vitamin D remaining</span></div>
+    <button class="btn btn-secondary refill-btn" style="min-height:40px;padding:0 16px">I got a refill</button>
+  </div>
+
+  <div class="course">
+    <div class="meter-top"><b>Amoxicillin — 7-day course</b><span class="tabular">Day 3 of 7</span></div>
+    <div class="meter-track"><div class="meter-fill" style="width:43%;background:var(--sage-700)"></div></div>
+    <p class="t-caption" style="margin-top:8px">Finish all 21 tablets even if you feel better</p>
+  </div>
+
+</div></div></body></html>

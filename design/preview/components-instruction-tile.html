@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Instruction Tile" subtitle="Pictogram + short-text pair — row and grid layouts" viewport="740x360" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 700px; display: flex; flex-direction: column; gap: 20px; }
+  .grid-tiles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .tile { background: var(--surface); border-radius: 14px; padding: 14px; box-shadow: var(--shadow-1); display: flex; flex-direction: column; align-items: center; gap: 6px; text-align: center; }
+  .tile svg { width: 34px; height: 34px; color: var(--sage-700); }
+  .tile span { font-size: 13px; font-weight: 600; }
+  .list-tile { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: 12px; padding: 12px 14px; box-shadow: var(--shadow-1); }
+  .list-tile svg { width: 28px; height: 28px; color: var(--sage-700); flex: 0 0 auto; }
+  .list-tile span { font-size: 15px; }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div>
+    <div class="eyebrow" style="font-size:11px;margin-bottom:8px">Grid layout — Medicine Detail "How to take it"</div>
+    <div class="grid-tiles">
+      <div class="tile"><svg><use href="../pictograms.svg#pic-with-food"/></svg><span>With food</span></div>
+      <div class="tile"><svg><use href="../pictograms.svg#pic-swallow-whole"/></svg><span>Swallow whole</span></div>
+      <div class="tile"><svg><use href="../pictograms.svg#pic-do-not-crush"/></svg><span>Do not crush</span></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="eyebrow" style="font-size:11px;margin-bottom:8px">Row layout — used inside longer instruction lists</div>
+    <div style="display:flex;flex-direction:column;gap:8px">
+      <div class="list-tile"><svg><use href="../pictograms.svg#pic-before-food"/></svg><span>Take 30 minutes before eating</span></div>
+      <div class="list-tile"><svg><use href="../pictograms.svg#pic-drowsiness"/></svg><span>May cause drowsiness — avoid driving after taking</span></div>
+    </div>
+  </div>
+
+</div></div></body></html>

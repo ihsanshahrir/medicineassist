@@ -1,0 +1,65 @@
+<!doctype html>
+<!-- @dsCard group="Screens" name="Today" subtitle="The app always opens here — Now card, timeline, supply warning" viewport="460x900" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  body { align-items: flex-start; padding-top: 20px; }
+  .now-card { background: var(--state-now-bg); border: 2px solid var(--sage-700); border-radius: var(--r-card); padding: 18px; margin-top: 10px; }
+  .now-head { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; }
+  .now-head svg { width: 24px; height: 24px; color: var(--sage-700); }
+  .med-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--sage-200); }
+  .med-row:last-of-type { border-bottom: none; }
+  .med-photo { width: 46px; height: 46px; border-radius: 11px; flex: 0 0 auto; display:flex;align-items:center;justify-content:center; }
+  .med-photo svg { width: 24px; height: 24px; color: var(--sage-800); }
+  .med-info b { display: block; font-size: 15px; }
+  .med-info .dose { display: flex; align-items: center; gap: 3px; color: var(--sage-700); font-size: 12.5px; margin-top: 1px; }
+  .med-info .dose svg { width: 14px; height: 14px; }
+  .sub-actions { display: flex; justify-content: center; gap: 18px; margin-top: 8px; }
+  .sub-actions span { font-size: 13px; font-weight: 600; color: var(--sage-700); }
+  .sub-actions span:last-child { color: var(--ink-2); }
+  .section-title { font-size: 13px; font-weight: 700; color: var(--ink-3); text-transform: uppercase; letter-spacing: .05em; margin: 20px 0 8px; }
+  .tl-row { display: flex; align-items: center; gap: 12px; background: var(--surface); border-radius: 14px; padding: 12px 14px; margin-bottom: 8px; box-shadow: var(--shadow-1); }
+  .badge { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; flex: 0 0 auto; }
+  .badge.done { background: var(--state-done-bg); color: var(--state-done); }
+  .badge.upcoming { background: var(--surface-sunk); color: var(--ink-3); }
+  .badge.missed { background: var(--state-missed-bg); color: var(--state-missed-text); }
+  .tl-row b { font-size: 14px; display: block; }
+  .tl-row span { font-size: 12px; color: var(--ink-2); }
+  .warn-banner { display: flex; align-items: center; gap: 10px; background: var(--warn-bg); border: 1px solid var(--warn-border); border-radius: 14px; padding: 12px 14px; margin-top: 4px; }
+  .warn-banner b { font-size: 13.5px; display: block; color: var(--warn-text); }
+  .warn-banner span { font-size: 11.5px; color: var(--ink-2); }
+</style>
+</head>
+<body>
+<div class="phone">
+  <div class="phone-status"><span>9:41</span><span>MedsAssist</span></div>
+  <div class="phone-body">
+
+    <div class="now-card">
+      <div class="now-head"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span class="t-title" style="font-size:20px">8:00 AM · Morning</span></div>
+
+      <div class="med-row">
+        <div class="med-photo" style="background:var(--accent-1)"><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
+        <div class="med-info"><b>Metformin 500mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg>2 tablets</div></div>
+      </div>
+      <div class="med-row">
+        <div class="med-photo" style="background:var(--accent-5)"><svg><use href="../pictograms.svg#glyph-capsule"/></svg></div>
+        <div class="med-info"><b>Amlodipine 5mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-capsule"/></svg>1 capsule</div></div>
+      </div>
+
+      <button class="btn btn-primary" style="margin-top:14px">Taken all</button>
+      <div class="sub-actions"><span>Snooze 15 min</span><span>Skip</span></div>
+    </div>
+
+    <div class="section-title">Today</div>
+
+    <div class="tl-row"><div class="badge done">✓</div><div><b>6:00 AM · Vitamin D</b><span>Taken at 6:04 AM</span></div></div>
+    <div class="tl-row"><div class="badge upcoming">○</div><div><b>2:00 PM · Metformin</b><span>2 tablets</span></div></div>
+    <div class="tl-row"><div class="badge missed">–</div><div><b>10:00 PM · Amlodipine</b><span>Not marked</span></div></div>
+
+    <div class="warn-banner"><svg style="width:22px;height:22px;color:var(--warn-text)"><use href="../pictograms.svg#pic-keep-refrigerated"/></svg><div><b>Amlodipine running low</b><span>2 days remaining</span></div></div>
+
+  </div>
+</div>
+</body></html>

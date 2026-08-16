@@ -1,0 +1,6 @@
+{
+  "projectId": "264ec566-cb8c-4eaa-9043-4a066c5efa9e",
+  "projectName": "MedsAssist Design System",
+  "shape": "hand-authored",
+  "note": "No package.json/build in this repo — design/ is a static HTML/CSS/SVG specimen bundle uploaded directly via DesignSync write_files, not the package/storybook converter pipeline. Cards self-index from each file's @dsCard first-line marker."
+}

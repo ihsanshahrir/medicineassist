@@ -1,0 +1,70 @@
+<!doctype html>
+<!-- @dsCard group="Foundations" name="Color" subtitle="Surfaces, brand, semantic state, medicine accents" viewport="760x520" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 720px; display: flex; flex-direction: column; gap: 20px; }
+  .row-label { font: 600 13px var(--font-sans); color: var(--ink-2); text-transform: uppercase; letter-spacing: .06em; margin-bottom: 8px; }
+  .swatches { display: flex; gap: 10px; flex-wrap: wrap; }
+  .sw { width: 96px; }
+  .sw-box { height: 56px; border-radius: 12px; border: 1px solid var(--line); display: flex; align-items: flex-end; padding: 6px; }
+  .sw-label { font-size: 11px; color: var(--ink-2); margin-top: 4px; font-family: var(--font-mono, monospace); }
+  .sw-ratio { font-size: 10px; color: var(--ink-3); }
+  .callout { background: var(--surface); border: 1.5px solid var(--sage-200); border-radius: 14px; padding: 14px 16px; font-size: 13px; color: var(--ink-2); }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div>
+    <div class="row-label">Surfaces &amp; Ink</div>
+    <div class="swatches">
+      <div class="sw"><div class="sw-box" style="background:var(--ground);border-color:var(--line-strong)"></div><div class="sw-label">ground</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--surface);border-color:var(--line-strong)"></div><div class="sw-label">surface</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--surface-sunk);border-color:var(--line-strong)"></div><div class="sw-label">surface-sunk</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--ink)"></div><div class="sw-label">ink</div><div class="sw-ratio">16.5:1 on ground</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--ink-2)"></div><div class="sw-label">ink-2</div><div class="sw-ratio">8.8:1 on white</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--ink-3)"></div><div class="sw-label">ink-3 · non-text</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="row-label">Brand — Sage</div>
+    <div class="swatches">
+      <div class="sw"><div class="sw-box" style="background:var(--sage-100)"></div><div class="sw-label">sage-100</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--sage-200)"></div><div class="sw-label">sage-200</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--sage-600)"></div><div class="sw-label">sage-600 hover</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--sage-700);color:#fff;justify-content:center;align-items:center;font-size:11px;font-weight:600">Aa 7.8:1</div><div class="sw-label">sage-700 primary</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--sage-800)"></div><div class="sw-label">sage-800 press</div></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="row-label">Semantic State</div>
+    <div class="swatches">
+      <div class="sw"><div class="sw-box" style="background:var(--state-now-bg);border-color:var(--sage-700);border-width:2px"></div><div class="sw-label">now</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--state-done-bg)"></div><div class="sw-label">done</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--state-missed-bg)"></div><div class="sw-label">missed</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--warn-bg);border-color:var(--warn-border)"></div><div class="sw-label">supply-low</div></div>
+      <div class="sw"><div class="sw-box" style="background:var(--danger-bg)"></div><div class="sw-label">destructive</div></div>
+    </div>
+    <div class="callout" style="margin-top:10px">
+      <strong style="color:var(--ink)">Missed is deliberately neutral, not red.</strong> A missed dose uses the same flat grey as "not marked yet" — design principle 8 forbids alarm styling here. There is no red/error token for adherence anywhere in this system; red exists only for destructive actions like delete.
+    </div>
+  </div>
+
+  <div>
+    <div class="row-label">Medicine Accents · assigned round-robin, never sole carrier of meaning</div>
+    <div class="swatches">
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-1)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-2)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-3)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-4)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-5)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-6)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-7)"></div></div>
+      <div class="sw" style="width:64px"><div class="sw-box" style="height:40px;background:var(--accent-8)"></div></div>
+    </div>
+  </div>
+
+</div></div></body></html>

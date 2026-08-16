@@ -1,0 +1,85 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Dose Card" subtitle="Now / grouped / taken / missed — the signature component" viewport="820x680" -->
+<html><head><meta charset="utf-8">
+<link rel="stylesheet" href="../colors_and_type.css">
+<link rel="stylesheet" href="_card.css">
+<style>
+  .wrap { width: 780px; display: grid; grid-template-columns: 1fr 1fr; gap: 18px; align-items: start; }
+  .dose-card { background: var(--surface); border-radius: var(--r-card); box-shadow: var(--shadow-2); padding: 20px; }
+  .dose-card.now { border: 2px solid var(--sage-700); background: var(--state-now-bg); }
+  .dose-head { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .dose-head svg { width: 26px; height: 26px; color: var(--sage-700); }
+  .med-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; }
+  .med-photo { width: 52px; height: 52px; border-radius: 12px; background: var(--accent-1); flex: 0 0 auto; display:flex;align-items:center;justify-content:center; color: var(--sage-800); }
+  .med-photo svg { width: 28px; height: 28px; }
+  .med-info { flex: 1; }
+  .med-info b { display: block; font-size: 16px; }
+  .med-info .dose { display: flex; align-items: center; gap: 4px; margin-top: 2px; color: var(--sage-700); font-size: 13.5px; }
+  .med-info .dose svg { width: 16px; height: 16px; }
+  .checkbox { width: 26px; height: 26px; border-radius: 8px; border: 2px solid var(--line-strong); flex: 0 0 auto; }
+  .checkbox.checked { background: var(--state-done); border-color: var(--state-done); position: relative; }
+  .checkbox.checked::after { content: "✓"; color: #fff; font-size: 15px; font-weight: 700; position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+  .actions { margin-top: 16px; }
+  .sub-actions { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+  .label { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--ink-3); margin-bottom: 10px; }
+  .taken-card { background: var(--state-done-bg); border-radius: var(--r-card); padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+  .taken-card .check { width: 32px; height: 32px; border-radius: 50%; background: var(--state-done); color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+  .undo { margin-left: auto; font-size: 13px; font-weight: 700; color: var(--sage-700); }
+  .missed-row { background: var(--state-missed-bg); border-radius: var(--r-card); padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+  .missed-row .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--ink-3); }
+  .missed-row .txt b { display: block; font-size: 14px; color: var(--ink); }
+  .missed-row .txt span { font-size: 12.5px; color: var(--state-missed-text); }
+</style>
+</head>
+<body><div class="card"><div class="wrap">
+
+  <div>
+    <div class="label">Now — single medicine</div>
+    <div class="dose-card now">
+      <div class="dose-head"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span class="t-display" style="font-size:22px">8:00 AM · Morning</span></div>
+      <div class="med-row">
+        <div class="med-photo"><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
+        <div class="med-info"><b>Metformin 500mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg> 2 tablets</div></div>
+      </div>
+      <div class="actions"><button class="btn btn-primary">Taken</button></div>
+      <div class="sub-actions"><button class="btn-text" style="background:none;border:none;font-size:13px;color:var(--sage-700);font-weight:600">Snooze 15 min</button><button class="btn-text" style="background:none;border:none;font-size:13px;color:var(--ink-2);font-weight:600">Skip</button></div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">Now — grouped (30-min window)</div>
+    <div class="dose-card now">
+      <div class="dose-head"><svg><use href="../pictograms.svg#pic-sunrise"/></svg><span class="t-display" style="font-size:22px">8:00 AM · Morning</span></div>
+      <div class="med-row" style="border-bottom:1px solid var(--sage-200)">
+        <div class="checkbox"></div>
+        <div class="med-photo"><svg><use href="../pictograms.svg#glyph-tablet"/></svg></div>
+        <div class="med-info"><b>Metformin 500mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-tablet"/></svg><svg><use href="../pictograms.svg#glyph-tablet"/></svg> 2 tablets</div></div>
+      </div>
+      <div class="med-row">
+        <div class="checkbox checked"></div>
+        <div class="med-photo" style="background:var(--accent-5)"><svg><use href="../pictograms.svg#glyph-capsule"/></svg></div>
+        <div class="med-info"><b>Amlodipine 5mg</b><div class="dose"><svg><use href="../pictograms.svg#glyph-capsule"/></svg> 1 capsule</div></div>
+      </div>
+      <div class="actions"><button class="btn btn-primary">Taken all</button></div>
+      <p class="t-caption" style="text-align:center;margin-top:8px">Per-medicine checkboxes allow partial completion</p>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">Taken — collapsed, 10s undo</div>
+    <div class="taken-card">
+      <div class="check">✓</div>
+      <div><b style="font-size:15px">8:00 AM · Morning</b><div class="t-caption" style="margin:0">Metformin + Amlodipine marked taken</div></div>
+      <div class="undo">Undo</div>
+    </div>
+  </div>
+
+  <div>
+    <div class="label">Missed — neutral, never alarming</div>
+    <div class="missed-row">
+      <div class="dot"></div>
+      <div class="txt"><b>2:00 PM · Afternoon</b><span>Not marked · Metformin</span></div>
+    </div>
+  </div>
+
+</div></div></body></html>
