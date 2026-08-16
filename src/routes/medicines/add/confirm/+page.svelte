@@ -6,7 +6,7 @@
 -->
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { SvelteURLSearchParams } from 'svelte/reactivity';
+	import { SvelteSet, SvelteURLSearchParams } from 'svelte/reactivity';
 	import OcrConfirmRow from '$lib/components/OcrConfirmRow.svelte';
 	import WizardProgress from '$lib/components/WizardProgress.svelte';
 	import Pictogram from '$lib/components/Pictogram.svelte';
@@ -51,8 +51,14 @@
 	let doseUnit = $state('');
 	let frequencyPerDay = $state('');
 	let instructionsText = $state('');
-	let instructionTags = $state(new Set<string>());
-	let warningTags = $state(new Set<string>());
+	// SvelteSet, not a plain Set — $state() doesn't deep-proxy a native Set,
+	// so in-place .add()/.delete() from toggleTag() wouldn't re-render.
+	// SvelteSet is reactive on its own, so it's deliberately not also
+	// wrapped in $state() — load() below repopulates these in place
+	// (clear + add) rather than reassigning, since a wholesale reassignment
+	// of a non-$state variable wouldn't be picked up by the template.
+	let instructionTags = new SvelteSet<string>();
+	let warningTags = new SvelteSet<string>();
 
 	function toggleTag(set: Set<string>, tag: string) {
 		if (set.has(tag)) set.delete(tag);
@@ -83,8 +89,10 @@
 			frequencyPerDay = e.frequencyPerDay?.value != null ? String(e.frequencyPerDay.value) : '';
 			instructionsText = e.instructionsText?.value ?? '';
 			lowConf = new Set(result.lowConfidenceFields);
-			instructionTags = new Set(result.instructionTagsSuggested);
-			warningTags = new Set(result.warningTagsSuggested);
+			instructionTags.clear();
+			for (const tag of result.instructionTagsSuggested) instructionTags.add(tag);
+			warningTags.clear();
+			for (const tag of result.warningTagsSuggested) warningTags.add(tag);
 		} catch (err) {
 			loadError = err instanceof Error ? err.message : 'Could not read that label.';
 		} finally {

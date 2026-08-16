@@ -36,6 +36,7 @@
 
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import Pictogram from './Pictogram.svelte';
 	import { apiFetch } from '$lib/client/api';
 	import {
@@ -103,8 +104,14 @@
 	let whatFor = $state(seed.whatFor);
 	let instructionsText = $state(seed.instructionsText);
 	let notes = $state(seed.notes);
-	let instructionTags = $state(new Set<string>(seed.instructionTags));
-	let warningTags = $state(new Set<string>(seed.warningTags));
+	// SvelteSet, not a plain Set — $state() only deep-proxies plain
+	// objects/arrays, so in-place .add()/.delete() on a native Set wouldn't
+	// trigger a re-render (matches the SvelteSet already used for pendingKeys
+	// in today/+page.svelte). SvelteSet is reactive on its own, so it's
+	// deliberately NOT also wrapped in $state() — never reassigned wholesale,
+	// only mutated via toggleTag().
+	let instructionTags = new SvelteSet<string>(seed.instructionTags);
+	let warningTags = new SvelteSet<string>(seed.warningTags);
 	let supplyCount = $state<number | null>(seed.supplyCount);
 
 	let doseAmount = $state(seed.doseAmount);
@@ -120,7 +127,7 @@
 			.map((t) => t.anchorLabel)
 			.filter((a): a is Anchor => !!a && a in DEFAULT_ANCHOR_TIMES)
 	);
-	let selectedAnchors = $state(new Set<Anchor>(initialAnchors.size ? initialAnchors : ['morning']));
+	let selectedAnchors = new SvelteSet<Anchor>(initialAnchors.size ? initialAnchors : ['morning']);
 	let anchorTimes = $state<AnchorTimes>({ ...DEFAULT_ANCHOR_TIMES });
 	for (const t of seed.times) {
 		if (t.anchorLabel && t.anchorLabel in anchorTimes) {
@@ -416,6 +423,7 @@
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
 		gap: var(--sp-2);
+		margin-top: var(--sp-3);
 	}
 	.tag-chip {
 		display: flex;
@@ -464,41 +472,6 @@
 		border-radius: var(--r-input);
 		background: var(--surface);
 		padding: 0 var(--sp-2);
-		font-family: var(--font-sans);
-	}
-	.anchor-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-		gap: var(--sp-2);
-	}
-	.anchor {
-		display: flex;
-		flex-direction: column;
-		gap: var(--sp-1);
-	}
-	.anchor-toggle {
-		background: var(--surface);
-		border: 1.5px solid var(--line-strong);
-		border-radius: var(--r-inner);
-		padding: var(--sp-3) var(--sp-1);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
-		cursor: pointer;
-		color: var(--sage-700);
-		min-height: var(--tap-min);
-		width: 100%;
-	}
-	.anchor.active .anchor-toggle {
-		background: var(--sage-100);
-		border-color: var(--sage-700);
-	}
-	.time-input {
-		min-height: var(--tap-min);
-		border-radius: var(--r-chip);
-		border: 1.5px solid var(--line-strong);
-		text-align: center;
 		font-family: var(--font-sans);
 	}
 	.n-days {

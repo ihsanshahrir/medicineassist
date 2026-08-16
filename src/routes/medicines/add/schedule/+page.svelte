@@ -8,6 +8,7 @@
 -->
 <script lang="ts">
 	import { untrack } from 'svelte';
+	import { SvelteSet } from 'svelte/reactivity';
 	import WizardProgress from '$lib/components/WizardProgress.svelte';
 	import Pictogram from '$lib/components/Pictogram.svelte';
 	import { apiFetch } from '$lib/client/api';
@@ -59,7 +60,11 @@
 	let repeatIntervalDays = $state(2);
 	let weekdaysMask = $state(0b0011111);
 	let startDate = $state(today);
-	let selectedAnchors = $state(new Set<Anchor>(seed.anchors));
+	// SvelteSet, not a plain Set — $state() doesn't deep-proxy a native Set,
+	// so in-place .add()/.delete() from toggleAnchor() wouldn't re-render.
+	// SvelteSet is reactive on its own, so it's deliberately not also
+	// wrapped in $state() — never reassigned, only mutated.
+	let selectedAnchors = new SvelteSet<Anchor>(seed.anchors);
 	let anchorTimes = $state<AnchorTimes>({ ...DEFAULT_ANCHOR_TIMES });
 
 	function toggleAnchor(a: Anchor) {
@@ -238,41 +243,6 @@
 		border-radius: var(--r-input);
 		background: var(--surface);
 		padding: 0 var(--sp-2);
-		font-family: var(--font-sans);
-	}
-	.anchor-grid {
-		display: grid;
-		grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
-		gap: var(--sp-2);
-	}
-	.anchor {
-		display: flex;
-		flex-direction: column;
-		gap: var(--sp-1);
-	}
-	.anchor-toggle {
-		background: var(--surface);
-		border: 1.5px solid var(--line-strong);
-		border-radius: var(--r-inner);
-		padding: var(--sp-3) var(--sp-1);
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		gap: 4px;
-		cursor: pointer;
-		color: var(--sage-700);
-		min-height: var(--tap-min);
-		width: 100%;
-	}
-	.anchor.active .anchor-toggle {
-		background: var(--sage-100);
-		border-color: var(--sage-700);
-	}
-	.time-input {
-		min-height: var(--tap-min);
-		border-radius: var(--r-chip);
-		border: 1.5px solid var(--line-strong);
-		text-align: center;
 		font-family: var(--font-sans);
 	}
 	.n-days {
