@@ -38,8 +38,7 @@ Secrets (never committed — set per-environment):
 
 ```bash
 npx wrangler secret put SESSION_SECRET
-npx wrangler secret put SENDGRID_API_KEY
-npx wrangler secret put SENDGRID_FROM_EMAIL
+npx wrangler secret put RESEND_API_KEY
 npx wrangler secret put VAPID_PRIVATE_JWK
 npx wrangler secret put VAPID_PUBLIC_KEY
 ```
