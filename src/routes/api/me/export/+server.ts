@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { staleSession } from '$lib/server/auth/guard';
 import { listAllDoseLogsForExport } from '$lib/server/db/queries/doseLogs';
 import { listAllMedicinesForExport } from '$lib/server/db/queries/medicines';
 import { listAllPushSubscriptionsForExport } from '$lib/server/db/queries/pushSubscriptions';
@@ -10,7 +11,7 @@ import type { RequestHandler } from './$types';
 // logged) — "export my data" means all of it, not just what the app
 // currently surfaces. Push subscription endpoints/keys are included since
 // they're the user's own data too, not a secret from them.
-export const GET: RequestHandler = async ({ locals, platform }) => {
+export const GET: RequestHandler = async ({ locals, platform, cookies }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
 	const db = platform!.env.DB;
 
@@ -21,7 +22,7 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 		listAllDoseLogsForExport(db, locals.user.id),
 		listAllPushSubscriptionsForExport(db, locals.user.id)
 	]);
-	if (!user) return json({ error: 'not_found' }, { status: 404 });
+	if (!user) return staleSession(cookies);
 
 	return json(
 		{

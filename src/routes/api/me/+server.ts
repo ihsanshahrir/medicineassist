@@ -1,4 +1,5 @@
 import { json } from '@sveltejs/kit';
+import { staleSession } from '$lib/server/auth/guard';
 import { lastPushDeliveredAt } from '$lib/server/db/queries/doseLogs';
 import {
 	anyPushSubscriptionInstalledAsPwa,
@@ -8,12 +9,12 @@ import { deleteUser, getUserById, updateUserSettings } from '$lib/server/db/quer
 import { deleteAllUserPhotos } from '$lib/server/photos';
 import type { RequestHandler } from './$types';
 
-export const GET: RequestHandler = async ({ locals, platform }) => {
+export const GET: RequestHandler = async ({ locals, platform, cookies }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
 	const db = platform!.env.DB;
 
 	const user = await getUserById(db, locals.user.id);
-	if (!user) return json({ error: 'not_found' }, { status: 404 });
+	if (!user) return staleSession(cookies);
 
 	const [hasSubscription, installedAsPwa, lastDeliveredAt] = await Promise.all([
 		hasPushSubscription(db, user.id),
@@ -39,7 +40,7 @@ interface UpdateMeBody {
 	quietHours?: { startLocal?: unknown; endLocal?: unknown } | null;
 }
 
-export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
+export const PATCH: RequestHandler = async ({ request, locals, platform, cookies }) => {
 	if (!locals.user) return json({ error: 'unauthorized' }, { status: 401 });
 
 	const body = (await request.json().catch(() => null)) as UpdateMeBody | null;
@@ -74,7 +75,7 @@ export const PATCH: RequestHandler = async ({ request, locals, platform }) => {
 		textSize: body.textSize as 'normal' | 'large' | 'xl' | undefined,
 		quietHours
 	});
-	if (!updated) return json({ error: 'not_found' }, { status: 404 });
+	if (!updated) return staleSession(cookies);
 	return json({ ok: true });
 };
 
