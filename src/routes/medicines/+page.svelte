@@ -16,12 +16,19 @@
 
 	let loading = $state(true);
 	let medicines = $state<MedicineRow[]>([]);
+	let loadError = $state('');
 
 	async function load() {
 		loading = true;
-		const res = await apiFetch<{ medicines: MedicineRow[] }>('/api/medicines');
-		medicines = res.medicines;
-		loading = false;
+		loadError = '';
+		try {
+			const res = await apiFetch<{ medicines: MedicineRow[] }>('/api/medicines');
+			medicines = res.medicines;
+		} catch (err) {
+			loadError = err instanceof Error ? err.message : 'Could not load medicines.';
+		} finally {
+			loading = false;
+		}
 	}
 	onMount(load);
 </script>
@@ -38,6 +45,11 @@
 
 	{#if loading}
 		<p class="t-body loading">Loading…</p>
+	{:else if loadError}
+		<div class="load-error">
+			<p class="t-body">{loadError}</p>
+			<button class="btn btn-secondary" onclick={load}>Try again</button>
+		</div>
 	{:else if medicines.length === 0}
 		<div class="empty">
 			<p class="t-body-lg">No medicines yet.</p>
@@ -81,6 +93,21 @@
 		text-align: center;
 		color: var(--ink-2);
 		padding: var(--sp-10) 0;
+	}
+	.load-error {
+		text-align: center;
+		padding: var(--sp-10) var(--sp-4);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--sp-4);
+	}
+	.load-error p {
+		color: var(--ink-2);
+	}
+	.load-error .btn {
+		width: auto;
+		padding: 0 var(--sp-6);
 	}
 	.empty {
 		text-align: center;

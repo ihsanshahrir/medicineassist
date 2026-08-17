@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import { registerSW } from 'virtual:pwa-register';
 	import '../app.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { loadUserSettings, userSettings } from '$lib/stores/userSettings.svelte';
@@ -12,6 +13,11 @@
 	let { children } = $props();
 
 	onMount(loadUserSettings);
+
+	// Registers sw.ts at root scope ('/') so it can control both the
+	// marketing page and the app routes. vite-plugin-pwa's registerType:
+	// 'autoUpdate' (vite.config.ts) handles the update-check loop from here.
+	onMount(() => registerSW({ immediate: true }));
 
 	// Mirrors the loaded preference onto <html> — app.css's
 	// [data-text-size='large'|'xl'] overrides key off this attribute, so

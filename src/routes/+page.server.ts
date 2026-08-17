@@ -1,7 +1,7 @@
-import { redirect } from '@sveltejs/kit';
+import type { PageServerLoad } from './$types';
 
-// The app always opens to Today — matches the PWA manifest's start_url and
-// the PRD's "the app always opens here" requirement for the home screen.
-export function load() {
-	redirect(307, '/today');
-}
+// Public marketing page — no auth guard. Signed-in state only changes the
+// hero CTA (see +page.svelte), it never redirects here.
+export const load: PageServerLoad = async ({ locals }) => {
+	return { signedIn: !!locals.user };
+};

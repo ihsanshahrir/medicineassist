@@ -30,6 +30,7 @@
 
 	let loading = $state(true);
 	let data = $state<TodayResponse | null>(null);
+	let loadError = $state('');
 	let pendingKeys = new SvelteSet<string>(); // in-flight actions, disables their controls
 
 	const key = (o: Pick<Occurrence, 'medicineId' | 'scheduledAt'>) =>
@@ -37,8 +38,14 @@
 
 	async function load() {
 		loading = true;
-		data = await apiFetch<TodayResponse>('/api/today');
-		loading = false;
+		loadError = '';
+		try {
+			data = await apiFetch<TodayResponse>('/api/today');
+		} catch (err) {
+			loadError = err instanceof Error ? err.message : 'Could not load today.';
+		} finally {
+			loading = false;
+		}
 	}
 
 	async function act(o: Occurrence, action: 'take' | 'skip' | 'snooze' | 'undo') {
@@ -93,6 +100,11 @@
 
 	{#if loading}
 		<p class="t-body loading">Loading…</p>
+	{:else if loadError}
+		<div class="load-error">
+			<p class="t-body">{loadError}</p>
+			<button class="btn btn-secondary" onclick={load}>Try again</button>
+		</div>
 	{:else if data}
 		{#if pushStatus === 'unsubscribed'}
 			<div class="push-banner">
@@ -200,6 +212,21 @@
 		text-align: center;
 		color: var(--ink-2);
 		padding: var(--sp-10) 0;
+	}
+	.load-error {
+		text-align: center;
+		padding: var(--sp-10) var(--sp-4);
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: var(--sp-4);
+	}
+	.load-error p {
+		color: var(--ink-2);
+	}
+	.load-error .btn {
+		width: auto;
+		padding: 0 var(--sp-6);
 	}
 	.section-title {
 		margin: var(--sp-6) 0 var(--sp-2);
