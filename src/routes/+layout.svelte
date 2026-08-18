@@ -2,7 +2,6 @@
 	import { onMount } from 'svelte';
 	import { registerSW } from 'virtual:pwa-register';
 	import '../app.css';
-	import favicon from '$lib/assets/favicon.svg';
 	import { loadUserSettings, userSettings } from '$lib/stores/userSettings.svelte';
 	import { page } from '$app/state';
 	import { resolve } from '$app/paths';
@@ -70,7 +69,7 @@
 </script>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" type="image/png" href="/icons/icon-192.png" />
 </svelte:head>
 
 {#if backTo}
