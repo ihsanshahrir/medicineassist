@@ -40,6 +40,7 @@
 	let quietSaving = $state(false);
 
 	let deleting = $state(false);
+	let loggingOut = $state(false);
 
 	async function load() {
 		loading = true;
@@ -108,6 +109,16 @@
 
 	function exportData() {
 		window.location.href = '/api/me/export';
+	}
+
+	async function logOut() {
+		loggingOut = true;
+		try {
+			await apiFetch('/api/auth/logout', { method: 'POST' });
+			window.location.href = '/sign-in';
+		} catch {
+			loggingOut = false;
+		}
 	}
 
 	async function deleteAccount() {
@@ -273,10 +284,10 @@
 
 		<section class="section">
 			<h3 class="t-caption label">Account</h3>
-			<div class="row">
-				<span class="lbl">Signed in</span>
+			<button type="button" class="row row-button" onclick={logOut} disabled={loggingOut}>
+				<span class="lbl">{loggingOut ? 'Signing out…' : 'Log out'}</span>
 				<span class="val">{me.email}</span>
-			</div>
+			</button>
 			<button type="button" class="row row-button" onclick={exportData}>
 				<span class="lbl">Export my data</span>
 			</button>
