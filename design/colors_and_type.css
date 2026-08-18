@@ -340,6 +340,11 @@ select {
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(88px, 1fr));
 	gap: var(--sp-2);
+	/* Without this, grid's default row-stretch makes every tile in a row
+	   match the tallest one — so an active tile's time-input row (Morning
+	   below) silently inflates its still-inactive row-mates (Afternoon,
+	   Evening) even though they have nothing to show there. */
+	align-items: start;
 }
 .anchor {
 	display: flex;
@@ -376,6 +381,10 @@ select {
 	text-align: center;
 	font-family: var(--font-sans);
 	width: 100%;
+	/* The browser reserves its own clock-icon width on the right of a
+	   type="time" input, which text-align: center doesn't account for —
+	   without this, the digits sit visibly left of center. */
+	padding-right: 22px;
 }
 .anchor.active .time-input {
 	border-top-color: var(--sage-700);

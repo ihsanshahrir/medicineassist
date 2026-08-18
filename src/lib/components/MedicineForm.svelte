@@ -313,7 +313,14 @@
 						<span class="t-caption">{a[0].toUpperCase() + a.slice(1)}</span>
 					</button>
 					{#if selectedAnchors.has(a)}
-						<input type="time" class="time-input" bind:value={anchorTimes[a]} />
+						<input
+							type="time"
+							class="time-input"
+							bind:value={anchorTimes[a]}
+							onchange={() => {
+								if (!anchorTimes[a]) anchorTimes[a] = DEFAULT_ANCHOR_TIMES[a];
+							}}
+						/>
 					{/if}
 				</div>
 			{/each}
@@ -374,11 +381,16 @@
 		<label class="t-label" for="supply">How many do you have? (optional)</label>
 		<input
 			id="supply"
-			type="number"
+			type="text"
+			inputmode="numeric"
+			pattern="[0-9]*"
 			class="text-input"
-			min="0"
 			value={supplyCount ?? ''}
-			oninput={(e) => (supplyCount = e.currentTarget.value ? Number(e.currentTarget.value) : null)}
+			oninput={(e) => {
+				const digits = e.currentTarget.value.replace(/\D/g, '');
+				e.currentTarget.value = digits;
+				supplyCount = digits ? Number(digits) : null;
+			}}
 		/>
 	</section>
 

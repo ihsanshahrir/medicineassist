@@ -147,7 +147,14 @@
 						<span class="t-caption">{a[0].toUpperCase() + a.slice(1)}</span>
 					</button>
 					{#if selectedAnchors.has(a)}
-						<input type="time" class="time-input" bind:value={anchorTimes[a]} />
+						<input
+							type="time"
+							class="time-input"
+							bind:value={anchorTimes[a]}
+							onchange={() => {
+								if (!anchorTimes[a]) anchorTimes[a] = DEFAULT_ANCHOR_TIMES[a];
+							}}
+						/>
 					{/if}
 				</div>
 			{/each}
