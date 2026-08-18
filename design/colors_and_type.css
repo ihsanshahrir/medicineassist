@@ -123,6 +123,15 @@ body {
 	font-family: var(--font-sans);
 	-webkit-font-smoothing: antialiased;
 }
+/* Skips the ~300ms double-tap-to-zoom wait mobile browsers otherwise impose
+   before firing click on any tap — the cause of "laggy" buttons in the PWA.
+   Pinch-zoom stays available (this only opts out of the double-tap gesture),
+   so it doesn't trade away the accessibility zoom affordance. */
+button,
+a,
+[role='button'] {
+	touch-action: manipulation;
+}
 button,
 input,
 select {

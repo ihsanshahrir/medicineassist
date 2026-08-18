@@ -149,6 +149,9 @@
 		{#if JSON.parse(medicine.instruction_tags).length > 0 || medicine.instructions_text}
 			<div class="section">
 				<h3 class="t-caption label">How to take it</h3>
+				{#if medicine.instructions_text}
+					<p class="t-body free-text surface-card">{medicine.instructions_text}</p>
+				{/if}
 				{#if JSON.parse(medicine.instruction_tags).length > 0}
 					<div class="tile-grid">
 						{#each JSON.parse(medicine.instruction_tags) as tag (tag)}
@@ -161,9 +164,6 @@
 							{/if}
 						{/each}
 					</div>
-				{/if}
-				{#if medicine.instructions_text}
-					<p class="t-body free-text">{medicine.instructions_text}</p>
 				{/if}
 			</div>
 		{/if}
@@ -343,8 +343,10 @@
 		overflow-wrap: anywhere;
 	}
 	.free-text {
-		margin-top: var(--sp-2);
+		margin: 0 0 var(--sp-2);
+		padding: var(--sp-4);
 		color: var(--ink-2);
+		overflow-wrap: anywhere;
 	}
 	.warn-panel {
 		background: var(--warn-bg);
