@@ -16,13 +16,15 @@ design/
     _card.css             ← shared specimen frame + phone frame
     foundations-*.html    ← 5 cards: color, type, spacing/radius, elevation/targets, dose glyph
     pictograms-*.html     ← 4 cards: how-to-take, warnings, time-of-day, construction spec
-    components-*.html     ← 9 cards: buttons, dose card, medicine row, instruction tile,
-                             OCR confirm row, form controls, supply meter, feedback, navigation
-    screens-*.html        ← 6 cards: Today, Medicine Detail, Add–OCR Confirm, Add–Schedule,
-                             Settings, and a 200%-text-scale proof of Today
+    components-*.html     ← 10 cards: buttons, dose card, medicine row, instruction tile,
+                             OCR confirm row, form controls, supply meter, feedback, navigation,
+                             install to Home Screen
+    screens-*.html        ← 8 cards: Landing Page, Sign In, Today, Medicine Detail,
+                             Add–OCR Confirm, Add–Schedule, Settings, and a 200%-text-scale
+                             proof of Today
 ```
 
-24 preview files total. Every file's first line is an `@dsCard` comment
+27 preview files total. Every file's first line is an `@dsCard` comment
 (`group`, `name`, `subtitle`, `viewport`) — that's what builds the Claude Design pane
 index, so no manual asset registration is needed.
 
@@ -88,6 +90,22 @@ applies `html { font-size: 200% }` to the assembled Today screen as a direct pro
 the PRD's acceptance criterion — card padding and button sizing hold, text wraps, and
 nothing clips or forces horizontal scroll.
 
+## The public surface
+
+`screens-landing.html` and `screens-sign-in.html` cover the two pages an unauthenticated
+visitor sees. They were added after the fact: the landing page shipped with ad-hoc
+`.hero` / `.how-card` styles and hardcoded rgba hairlines because it had no specimen to
+build against — the one screen in the product that had drifted from the system. Both
+now compose entirely from the tokens, with no marketing-only classes promoted into
+`colors_and_type.css` (only these two routes use that layout).
+
+`components-install.html` covers "Add to Home Screen", which is load-bearing rather than
+cosmetic: on iOS, Web Push only works from an installed icon, so an uninstalled iPhone
+user receives no reminders at all. The card documents the button, the dismissible in-app
+banner, the iOS instruction sheet, and the platform states — including that
+"one tap works here" is only ever claimed from a captured `beforeinstallprompt` event,
+never inferred from a user-agent string. Its sheet is the first consumer of `--r-sheet`.
+
 ## Known follow-ups (not blocking this build)
 
 - **Font**: `--font-sans` lists `'Inter'` first with a faithful system-font fallback.
@@ -101,3 +119,7 @@ nothing clips or forces horizontal scroll.
   block that redefines the same token names; nothing here should need renaming.
 - **Pill photos are placeholder swatches** (accent color + glyph) in every screen —
   no real photography was in scope for this pass.
+- **No share / add-to-home / menu pictogram exists.** The iOS instruction sheet names
+  those controls in words instead ("tap **Share** — the square with an arrow pointing
+  up"). `pic-share-ios`, `pic-add-to-home` and `pic-menu-kebab` are the marks to draw
+  next; per DESIGN.md rule 8 they should come from here, not be improvised in app code.

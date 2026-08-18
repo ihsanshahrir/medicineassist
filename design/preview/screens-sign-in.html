@@ -1,0 +1,173 @@
+<!doctype html>
+<!-- @dsCard group="Screens" name="Sign In" subtitle="Passwordless — email step, then 6-digit code; wordmark is the way back" viewport="820x620" -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				display: flex;
+				gap: 24px;
+			}
+			.frame {
+				width: 360px;
+				border-radius: 20px;
+				overflow: hidden;
+				background: var(--ground);
+				box-shadow: var(--shadow-2);
+			}
+			.site-header {
+				background: var(--surface);
+				border-bottom: 1px solid var(--line);
+				padding: 10px 16px;
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.mark {
+				width: 28px;
+				height: 28px;
+				border-radius: var(--r-chip);
+				background: var(--sage-700);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.mark svg {
+				width: 16px;
+				height: 16px;
+				color: #fff;
+			}
+			.wordmark {
+				font-weight: 700;
+				font-size: 16px;
+				color: var(--sage-700);
+				letter-spacing: -0.01em;
+			}
+			.body {
+				padding: 24px 16px;
+			}
+			.card-inner {
+				background: var(--surface);
+				border-radius: var(--r-card);
+				box-shadow: var(--shadow-2);
+				padding: 24px 20px;
+			}
+			.card-inner h1 {
+				margin: 0;
+				font-size: 22px;
+				font-weight: 600;
+			}
+			.intro {
+				color: var(--ink-2);
+				font-size: 14px;
+				line-height: 20px;
+				margin: 10px 0 20px;
+			}
+			label {
+				display: block;
+				font-size: 14px;
+				font-weight: 500;
+				margin-bottom: 4px;
+			}
+			.text-input {
+				margin-bottom: 16px;
+				min-height: 44px;
+				font-size: 15px;
+				display: flex;
+				align-items: center;
+				color: var(--ink-3);
+			}
+			.code-input {
+				justify-content: center;
+				font-size: 26px;
+				letter-spacing: 0.3em;
+				color: var(--ink);
+				font-variant-numeric: tabular-nums;
+			}
+			.btn {
+				min-height: 48px;
+				font-size: 15px;
+			}
+			.back-link {
+				display: block;
+				text-align: center;
+				color: var(--sage-700);
+				font-weight: 600;
+				font-size: 14px;
+				margin-top: 12px;
+			}
+			.reassure {
+				margin: 20px 0 0;
+				padding-top: 14px;
+				border-top: 1px solid var(--line);
+				font-size: 12.5px;
+				line-height: 18px;
+				color: var(--ink-2);
+			}
+			.eyebrow {
+				font-size: 11px;
+				margin-bottom: 8px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div>
+					<div class="eyebrow">Step 1 — email</div>
+					<div class="frame">
+						<div class="site-header">
+							<div class="mark">
+								<svg><use href="../pictograms.svg#glyph-capsule" /></svg>
+							</div>
+							<span class="wordmark">MedsAssist</span>
+						</div>
+						<div class="body">
+							<div class="card-inner">
+								<h1>Log in</h1>
+								<p class="intro">
+									Enter your email and we'll send you a 6-digit code — no password needed.
+								</p>
+								<label>Email</label>
+								<div class="text-input">siti@example.com</div>
+								<div class="btn btn-primary">Send code</div>
+								<p class="reassure">
+									We only use your email to sign you in. No password to create, and nothing else is
+									sent to you.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="eyebrow">Step 2 — 6-digit code</div>
+					<div class="frame">
+						<div class="site-header">
+							<div class="mark">
+								<svg><use href="../pictograms.svg#glyph-capsule" /></svg>
+							</div>
+							<span class="wordmark">MedsAssist</span>
+						</div>
+						<div class="body">
+							<div class="card-inner">
+								<h1>Log in</h1>
+								<p class="intro">Enter the 6-digit code we sent to <b>siti@example.com</b>.</p>
+								<label>Code</label>
+								<div class="text-input code-input">418302</div>
+								<div class="btn btn-primary">Continue</div>
+								<span class="back-link">Use a different email</span>
+								<p class="reassure">
+									We only use your email to sign you in. No password to create, and nothing else is
+									sent to you.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>

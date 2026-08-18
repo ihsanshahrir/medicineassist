@@ -1,0 +1,77 @@
+<!doctype html>
+<!-- Capture source for static/screenshots/medicines-narrow.png. Must stay the
+     same 390x844 viewport as today.html: Chromium silently drops the whole
+     screenshots set if the narrow entries don't share one aspect ratio. -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>My Medicines — capture</title>
+		<link rel="stylesheet" href="../../design/colors_and_type.css" />
+		<link rel="stylesheet" href="_screen.css" />
+	</head>
+	<body>
+		<div class="status-bar"><span>9:41</span><span>MedsAssist</span></div>
+
+		<div class="screen">
+			<h1 class="t-title screen-title">My medicines</h1>
+
+			<div class="med-card">
+				<div class="med-photo" style="background: var(--accent-1)">
+					<svg><use href="../../design/pictograms.svg#glyph-tablet" /></svg>
+				</div>
+				<div>
+					<b>Metformin 500mg</b>
+					<span class="meta">2 tablets · morning and afternoon</span>
+					<span class="meta">28 days left</span>
+				</div>
+			</div>
+
+			<div class="med-card">
+				<div class="med-photo" style="background: var(--accent-5)">
+					<svg><use href="../../design/pictograms.svg#glyph-capsule" /></svg>
+				</div>
+				<div>
+					<b>Amlodipine 5mg</b>
+					<span class="meta">1 capsule · morning and night</span>
+					<span class="meta">2 days left</span>
+				</div>
+			</div>
+
+			<div class="med-card">
+				<div class="med-photo" style="background: var(--accent-2)">
+					<svg><use href="../../design/pictograms.svg#glyph-syrup" /></svg>
+				</div>
+				<div>
+					<b>Vitamin D 1000IU</b>
+					<span class="meta">1 spoon · morning</span>
+					<span class="meta">40 days left</span>
+				</div>
+			</div>
+
+			<div class="med-card">
+				<div class="med-photo" style="background: var(--accent-7)">
+					<svg><use href="../../design/pictograms.svg#glyph-inhaler" /></svg>
+				</div>
+				<div>
+					<b>Salbutamol inhaler</b>
+					<span class="meta">2 puffs · when needed</span>
+					<span class="meta">Shake before use</span>
+				</div>
+			</div>
+
+			<button class="btn btn-primary" style="margin-top: var(--sp-4)">Add a medicine</button>
+		</div>
+
+		<div class="tabbar">
+			<div>
+				<svg><use href="../../design/pictograms.svg#nav-today" /></svg>Today
+			</div>
+			<div class="active">
+				<svg><use href="../../design/pictograms.svg#nav-medicines" /></svg>Medicines
+			</div>
+			<div>
+				<svg><use href="../../design/pictograms.svg#nav-settings" /></svg>Settings
+			</div>
+		</div>
+	</body>
+</html>

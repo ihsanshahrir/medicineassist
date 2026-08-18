@@ -1,0 +1,306 @@
+<!doctype html>
+<!-- @dsCard group="Screens" name="Landing Page" subtitle="The public marketing page — hero, how it works, trust & safety, disclaimer" viewport="460x1700" -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			body {
+				align-items: flex-start;
+				padding-top: 20px;
+			}
+			.phone-body {
+				padding: 0;
+			}
+			.site-header {
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				background: var(--surface);
+				border-bottom: 1px solid var(--line);
+				padding: 12px 20px;
+			}
+			.brand {
+				display: flex;
+				align-items: center;
+				gap: 10px;
+			}
+			.brand .mark {
+				width: 30px;
+				height: 30px;
+				border-radius: var(--r-chip);
+				background: var(--sage-700);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			.brand .mark svg {
+				width: 18px;
+				height: 18px;
+				color: #fff;
+			}
+			.wordmark {
+				font-weight: 700;
+				font-size: 17px;
+				color: var(--sage-700);
+				letter-spacing: -0.01em;
+			}
+			.login {
+				font-weight: 600;
+				font-size: 15px;
+				color: var(--sage-700);
+			}
+			section {
+				padding: 28px 20px;
+			}
+			.hero {
+				background: var(--surface);
+				border-bottom: 1px solid var(--line);
+			}
+			.hero h1 {
+				margin: 0 0 10px;
+				font-size: 30px;
+				line-height: 34px;
+				font-weight: 700;
+				letter-spacing: -0.01em;
+			}
+			.hero p {
+				margin: 0 0 16px;
+				color: var(--ink-2);
+				font-size: 15px;
+				line-height: 22px;
+			}
+			.hero-actions {
+				display: flex;
+				gap: var(--tap-gap);
+				margin-bottom: 8px;
+			}
+			.hero-actions .btn {
+				flex: 1;
+				min-height: 44px;
+				font-size: 14px;
+				padding: 0 12px;
+				width: auto;
+			}
+			.hero-note {
+				font-size: 12px;
+				color: var(--ink-2);
+				margin: 0;
+			}
+			.shot {
+				margin-top: 20px;
+				height: 150px;
+				border-radius: 18px 18px 0 0;
+				background: var(--ground);
+				box-shadow:
+					var(--shadow-2),
+					0 0 0 5px #0e1512;
+				padding: 12px;
+				overflow: hidden;
+			}
+			.mini-now {
+				background: var(--state-now-bg);
+				border: 1.5px solid var(--sage-700);
+				border-radius: 14px;
+				padding: 10px;
+			}
+			.mini-now .t {
+				display: flex;
+				align-items: center;
+				gap: 6px;
+				color: var(--sage-700);
+				font-weight: 600;
+				font-size: 13px;
+				margin-bottom: 8px;
+			}
+			.mini-now .t svg {
+				width: 16px;
+				height: 16px;
+			}
+			.mini-row {
+				display: flex;
+				align-items: center;
+				gap: 8px;
+				margin-bottom: 6px;
+			}
+			.mini-row .sw {
+				width: 26px;
+				height: 26px;
+				border-radius: 8px;
+				flex: 0 0 auto;
+			}
+			.mini-row b {
+				font-size: 12.5px;
+			}
+			h2.sec {
+				margin: 0 0 6px;
+				font-size: 20px;
+				font-weight: 700;
+			}
+			.sec-lede {
+				margin: 0 0 16px;
+				color: var(--ink-2);
+				font-size: 14px;
+			}
+			.how-card {
+				background: var(--surface);
+				border-radius: var(--r-card);
+				box-shadow: var(--shadow-2);
+				padding: 16px;
+				margin-bottom: 10px;
+			}
+			.step-num {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 30px;
+				height: 30px;
+				border-radius: var(--r-pill);
+				background: var(--sage-100);
+				color: var(--sage-800);
+				font-weight: 700;
+				font-size: 15px;
+				margin-bottom: 8px;
+			}
+			.how-card h3 {
+				margin: 0 0 4px;
+				font-size: 16px;
+				font-weight: 600;
+			}
+			.how-card p,
+			.trust-item p {
+				margin: 0;
+				color: var(--ink-2);
+				font-size: 13.5px;
+				line-height: 19px;
+			}
+			.trust {
+				background: var(--sage-100);
+			}
+			.trust-item {
+				background: var(--surface);
+				border-radius: var(--r-card);
+				padding: 14px 16px;
+				margin-bottom: 10px;
+			}
+			.trust-item h3 {
+				margin: 0 0 3px;
+				font-size: 15px;
+				font-weight: 600;
+				color: var(--sage-800);
+			}
+			.site-footer {
+				background: var(--surface);
+				border-top: 1px solid var(--line);
+				padding: 20px;
+			}
+			.site-footer .wordmark {
+				display: block;
+				margin-bottom: 8px;
+				font-size: 15px;
+			}
+			.site-footer p {
+				margin: 0 0 4px;
+				font-size: 12px;
+				line-height: 17px;
+				color: var(--ink-2);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone">
+			<div class="phone-body">
+				<div class="site-header">
+					<div class="brand">
+						<div class="mark">
+							<svg><use href="../pictograms.svg#glyph-capsule" /></svg>
+						</div>
+						<span class="wordmark">MedsAssist</span>
+					</div>
+					<span class="login">Log in</span>
+				</div>
+
+				<section class="hero">
+					<h1>What to take, right now.</h1>
+					<p>
+						MedsAssist shows today's doses with a photo of the actual pill — so you're never
+						guessing which one, or whether you already took it.
+					</p>
+					<div class="hero-actions">
+						<span class="btn btn-primary">Get started</span>
+						<span class="btn btn-secondary">Add to Home Screen</span>
+					</div>
+					<p class="hero-note">Free to use. No password to remember.</p>
+
+					<div class="shot">
+						<div class="mini-now">
+							<div class="t">
+								<svg><use href="../pictograms.svg#pic-sunrise" /></svg>8:00 AM · Morning
+							</div>
+							<div class="mini-row">
+								<div class="sw" style="background: var(--accent-1)"></div>
+								<b>Metformin 500mg</b>
+							</div>
+							<div class="mini-row">
+								<div class="sw" style="background: var(--accent-5)"></div>
+								<b>Amlodipine 5mg</b>
+							</div>
+						</div>
+					</div>
+				</section>
+
+				<section>
+					<h2 class="sec">How it works</h2>
+					<div class="how-card">
+						<span class="step-num">1</span>
+						<h3>Add your medicines</h3>
+						<p>Photograph the label and the pill. MedsAssist reads the label — you just confirm.</p>
+					</div>
+					<div class="how-card">
+						<span class="step-num">2</span>
+						<h3>See today's schedule</h3>
+						<p>One clear list: what's due now, what's coming later, and what was missed.</p>
+					</div>
+					<div class="how-card">
+						<span class="step-num">3</span>
+						<h3>Never guess again</h3>
+						<p>Every dose shows a photo of the actual pill, at the moment you need it.</p>
+					</div>
+				</section>
+
+				<section class="trust">
+					<h2 class="sec">Built to be trusted with this</h2>
+					<p class="sec-lede">
+						A medicine list is sensitive. Here is exactly how MedsAssist treats it.
+					</p>
+					<div class="trust-item">
+						<h3>Your records stay yours</h3>
+						<p>Export everything at any time, and delete your account and its data outright.</p>
+					</div>
+					<div class="trust-item">
+						<h3>Works without a signal</h3>
+						<p>Today's doses stay readable offline, so a dead zone never hides your schedule.</p>
+					</div>
+					<div class="trust-item">
+						<h3>No ads, nothing sold</h3>
+						<p>MedsAssist does not sell or share your medicine list. No advertising anywhere.</p>
+					</div>
+					<div class="trust-item">
+						<h3>Not a substitute for your doctor</h3>
+						<p>It helps you follow the plan you were given — it does not diagnose or prescribe.</p>
+					</div>
+				</section>
+
+				<div class="site-footer">
+					<span class="wordmark">MedsAssist</span>
+					<p>
+						MedsAssist is a medicine reminder and comprehension tool. It is not medical advice —
+						always follow the instructions from your doctor or pharmacist.
+					</p>
+					<p>© 2026 MedsAssist</p>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
