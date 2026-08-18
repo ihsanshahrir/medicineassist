@@ -5,12 +5,27 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="text-scale" content="scale" />
 		<link rel="manifest" href="/manifest.webmanifest" />
-		<link rel="apple-touch-icon" href="/icons/icon-192.png" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/icons/icon-180.png" />
 		<meta name="theme-color" content="#0F5D4E" />
 		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<meta name="mobile-web-app-capable" content="yes" />
 		<meta name="apple-mobile-web-app-status-bar-style" content="default" />
 		<meta name="apple-mobile-web-app-title" content="MedsAssist" />
+		<script>
+			/* Captured here rather than in the bundle: beforeinstallprompt fires
+			   once per page load, can land before the app JS has parsed, and is
+			   unrecoverable if missed. $lib/stores/installPrompt.svelte.ts adopts
+			   whatever this leaves behind. */
+			window.__maInstallEvent = null;
+			addEventListener('beforeinstallprompt', function (e) {
+				e.preventDefault();
+				window.__maInstallEvent = e;
+			});
+			addEventListener('appinstalled', function () {
+				window.__maInstallEvent = null;
+				window.__maInstalled = true;
+			});
+		</script>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover">

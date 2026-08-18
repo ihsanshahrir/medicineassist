@@ -1,0 +1,261 @@
+/* Layout for the capture pages that produce static/screenshots/* (the manifest
+   install dialog) and static/marketing/* (the landing-page hero).
+
+   These deliberately do NOT use design/preview/_card.css: a specimen card is a
+   spec sheet with its own chrome, and shipping one into a Play-Store-style
+   install dialog would look like documentation, not an app. Here the screen is
+   rendered at real device width with real token sizes — the specimen cards
+   shrink their type to fit a 460px card, which would misrepresent the 18px
+   body floor the app actually holds to.
+
+   Everything below composes from design/colors_and_type.css. No new values. */
+
+/* Pinned to an exact device frame, and deliberately free of position:fixed:
+   headless Chrome's screenshot viewport is not the same width as this body, so
+   a fixed-position tab bar would size itself to the viewport and run off the
+   captured region. Everything here lays out inside the 390x844 box instead. */
+html,
+body {
+	margin: 0;
+	width: 390px;
+	height: 844px;
+	overflow: hidden;
+}
+body {
+	background: var(--ground);
+	display: flex;
+	flex-direction: column;
+}
+
+.screen {
+	flex: 1 1 auto;
+	min-height: 0;
+	overflow: hidden;
+	padding: var(--sp-4) var(--sp-4) var(--sp-8);
+}
+
+.status-bar {
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	height: 44px;
+	padding: 0 var(--sp-2);
+	font-size: var(--t-caption-size);
+	font-weight: 600;
+	color: var(--ink);
+}
+
+.screen-title {
+	margin: var(--sp-2) 0 var(--sp-4);
+}
+
+/* ---------- Now card — mirrors DoseCard.svelte ---------- */
+.now-card {
+	background: var(--state-now-bg);
+	border: 2px solid var(--sage-700);
+	border-radius: var(--r-card);
+	padding: var(--sp-5);
+}
+.now-head {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-2);
+	margin-bottom: var(--sp-4);
+	color: var(--sage-700);
+}
+.now-head svg {
+	width: 26px;
+	height: 26px;
+	flex: 0 0 auto;
+}
+.med-row {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-3);
+	padding: var(--sp-3) 0;
+	border-bottom: 1px solid var(--sage-200);
+}
+.med-row:last-of-type {
+	border-bottom: none;
+}
+.med-photo {
+	width: 56px;
+	height: 56px;
+	border-radius: var(--r-inner);
+	flex: 0 0 auto;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.med-photo svg {
+	width: 30px;
+	height: 30px;
+	color: var(--sage-800);
+}
+.med-info b {
+	display: block;
+	font-size: var(--t-body-size);
+	line-height: var(--t-body-line);
+}
+.med-info .dose {
+	display: flex;
+	align-items: center;
+	gap: 3px;
+	color: var(--sage-700);
+	font-size: var(--t-caption-size);
+	font-weight: 600;
+}
+.med-info .dose svg {
+	width: 16px;
+	height: 16px;
+}
+.now-card .btn-primary {
+	margin-top: var(--sp-4);
+}
+.sub-actions {
+	display: flex;
+	justify-content: center;
+	gap: var(--sp-6);
+	margin-top: var(--sp-3);
+}
+.sub-actions span {
+	font-size: var(--t-label-size);
+	font-weight: 600;
+	color: var(--sage-700);
+	min-height: var(--tap-min);
+	display: inline-flex;
+	align-items: center;
+}
+.sub-actions span:last-child {
+	color: var(--ink-2);
+}
+
+/* ---------- Timeline / list rows — mirrors MedicineRow.svelte ---------- */
+.section-title {
+	margin: var(--sp-6) 0 var(--sp-2);
+	color: var(--ink-2);
+}
+.tl-row {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-3);
+	background: var(--surface);
+	border-radius: var(--r-inner);
+	padding: var(--sp-3) var(--sp-4);
+	margin-bottom: var(--sp-2);
+	box-shadow: var(--shadow-1);
+	min-height: var(--tap-min);
+}
+.badge {
+	width: 36px;
+	height: 36px;
+	border-radius: var(--r-pill);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--t-label-size);
+	font-weight: 700;
+	flex: 0 0 auto;
+}
+.badge.done {
+	background: var(--state-done-bg);
+	color: var(--state-done);
+}
+.badge.upcoming {
+	background: var(--surface-sunk);
+	color: var(--ink-2);
+}
+.badge.missed {
+	background: var(--state-missed-bg);
+	color: var(--state-missed-text);
+}
+.tl-row b {
+	display: block;
+	font-size: var(--t-body-size);
+	line-height: var(--t-body-line);
+}
+.tl-row span {
+	font-size: var(--t-caption-size);
+	color: var(--ink-2);
+}
+
+.warn-banner {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-3);
+	background: var(--warn-bg);
+	border: 1px solid var(--warn-border);
+	border-radius: var(--r-inner);
+	padding: var(--sp-3) var(--sp-4);
+	margin-top: var(--sp-3);
+}
+.warn-banner svg {
+	width: 24px;
+	height: 24px;
+	color: var(--warn-text);
+	flex: 0 0 auto;
+}
+.warn-banner b {
+	display: block;
+	font-size: var(--t-body-size);
+	color: var(--warn-text);
+}
+.warn-banner span {
+	font-size: var(--t-caption-size);
+	color: var(--ink-2);
+}
+
+/* ---------- Medicines list ---------- */
+.med-card {
+	display: flex;
+	align-items: center;
+	gap: var(--sp-4);
+	background: var(--surface);
+	border-radius: var(--r-card);
+	box-shadow: var(--shadow-1);
+	padding: var(--sp-4);
+	margin-bottom: var(--sp-3);
+}
+.med-card .med-photo {
+	width: 64px;
+	height: 64px;
+}
+.med-card b {
+	display: block;
+	font-size: var(--t-body-lg-size);
+	line-height: var(--t-body-lg-line);
+}
+.med-card .meta {
+	display: block;
+	font-size: var(--t-caption-size);
+	color: var(--ink-2);
+}
+
+/* ---------- Bottom tab bar — mirrors BottomNav.svelte ---------- */
+.tabbar {
+	flex: 0 0 auto;
+	display: flex;
+	background: var(--surface);
+	box-shadow: var(--shadow-2);
+}
+.tabbar div {
+	flex: 1;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 2px;
+	min-height: var(--tap-primary);
+	padding: var(--sp-1) 0;
+	color: var(--ink-3);
+	font-size: var(--t-caption-size);
+	font-weight: 600;
+}
+.tabbar div svg {
+	width: 24px;
+	height: 24px;
+}
+.tabbar div.active {
+	color: var(--sage-700);
+}

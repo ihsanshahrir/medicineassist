@@ -1,0 +1,88 @@
+<!doctype html>
+<!-- Capture source for static/screenshots/today-narrow.png and the landing
+     hero. Rendered at 390px device width with real token sizes — see
+     _screen.css for why this isn't design/preview/screens-today.html. -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Today — capture</title>
+		<link rel="stylesheet" href="../../design/colors_and_type.css" />
+		<link rel="stylesheet" href="_screen.css" />
+	</head>
+	<body>
+		<div class="status-bar"><span>9:41</span><span>MedsAssist</span></div>
+
+		<div class="screen">
+			<h1 class="t-title screen-title">Today</h1>
+
+			<div class="now-card">
+				<div class="now-head">
+					<svg><use href="../../design/pictograms.svg#pic-sunrise" /></svg>
+					<span class="t-h2">8:00 AM · Morning</span>
+				</div>
+
+				<div class="med-row">
+					<div class="med-photo" style="background: var(--accent-1)">
+						<svg><use href="../../design/pictograms.svg#glyph-tablet" /></svg>
+					</div>
+					<div class="med-info">
+						<b>Metformin 500mg</b>
+						<div class="dose">
+							<svg><use href="../../design/pictograms.svg#glyph-tablet" /></svg>
+							<svg><use href="../../design/pictograms.svg#glyph-tablet" /></svg>
+							2 tablets
+						</div>
+					</div>
+				</div>
+
+				<div class="med-row">
+					<div class="med-photo" style="background: var(--accent-5)">
+						<svg><use href="../../design/pictograms.svg#glyph-capsule" /></svg>
+					</div>
+					<div class="med-info">
+						<b>Amlodipine 5mg</b>
+						<div class="dose">
+							<svg><use href="../../design/pictograms.svg#glyph-capsule" /></svg>
+							1 capsule
+						</div>
+					</div>
+				</div>
+
+				<button class="btn btn-primary">Taken all</button>
+				<div class="sub-actions"><span>Snooze 15 min</span><span>Skip</span></div>
+			</div>
+
+			<h2 class="t-label section-title">Later today</h2>
+
+			<div class="tl-row">
+				<div class="badge done">✓</div>
+				<div><b>6:00 AM · Vitamin D</b><span>Taken at 6:04 AM</span></div>
+			</div>
+			<div class="tl-row">
+				<div class="badge upcoming">○</div>
+				<div><b>2:00 PM · Metformin</b><span>2 tablets</span></div>
+			</div>
+			<div class="tl-row">
+				<div class="badge missed">–</div>
+				<div><b>10:00 PM · Amlodipine</b><span>Not marked</span></div>
+			</div>
+
+			<div class="warn-banner">
+				<svg><use href="../../design/pictograms.svg#pic-keep-refrigerated" /></svg>
+				<div><b>Amlodipine running low</b><span>2 days remaining</span></div>
+			</div>
+		</div>
+
+		<div class="tabbar">
+			<div class="active">
+				<svg><use href="../../design/pictograms.svg#nav-today" /></svg>Today
+			</div>
+			<div>
+				<svg><use href="../../design/pictograms.svg#nav-medicines" /></svg>Medicines
+			</div>
+			<div>
+				<svg><use href="../../design/pictograms.svg#nav-settings" /></svg>Settings
+			</div>
+		</div>
+	</body>
+</html>

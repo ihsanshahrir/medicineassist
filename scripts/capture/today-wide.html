@@ -1,0 +1,76 @@
+<!doctype html>
+<!-- Capture source for static/screenshots/today-wide.png. Chromium needs at
+     least one form_factor:"wide" entry to show the rich install dialog on
+     desktop; MedsAssist is portrait-only, so the wide frame presents the phone
+     rather than pretending a desktop layout exists. -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Today, wide — capture</title>
+		<link rel="stylesheet" href="../../design/colors_and_type.css" />
+		<style>
+			html,
+			body {
+				margin: 0;
+				width: 960px;
+				height: 540px;
+				overflow: hidden;
+			}
+			body {
+				background: var(--sage-100);
+				display: flex;
+				align-items: flex-end;
+				justify-content: center;
+				gap: var(--sp-16);
+				padding: 0 var(--sp-16);
+				box-sizing: border-box;
+			}
+			.copy {
+				max-width: 380px;
+				align-self: center;
+			}
+			.copy h1 {
+				margin: 0 0 var(--sp-4);
+				color: var(--ink);
+			}
+			.copy p {
+				margin: 0;
+				color: var(--ink-2);
+			}
+			/* The phone is taller than the 540px frame, so it's anchored to the
+			   bottom edge and allowed to bleed off it rather than being scaled
+			   down until the 18px body text stops being legible. */
+			.phone {
+				width: 320px;
+				height: 692px;
+				margin-bottom: -212px;
+				flex: 0 0 auto;
+				border-radius: 36px;
+				box-shadow:
+					var(--shadow-3),
+					0 0 0 7px #0e1512;
+				overflow: hidden;
+				background: var(--ground);
+			}
+			/* Scaled rather than re-laid-out, so the wide shot shows exactly the
+			   same screen as the narrow ones. */
+			iframe {
+				width: 390px;
+				height: 844px;
+				border: none;
+				display: block;
+				transform: scale(0.8205);
+				transform-origin: top left;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="copy">
+			<h1 class="t-display">What to take, right now.</h1>
+			<p class="t-body-lg">
+				Every dose shows a photo of the actual pill — so there's never any guessing.
+			</p>
+		</div>
+		<div class="phone"><iframe src="today.html" title="MedsAssist Today screen"></iframe></div>
+	</body>
+</html>

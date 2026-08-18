@@ -1,0 +1,49 @@
+<!doctype html>
+<!-- Capture source for static/marketing/today-hero.png — the landing-page
+     hero image. Transparent background (Chrome is launched with
+     --default-background-color=00000000) so the phone sits on any section
+     colour without a seam.
+
+     today.html is embedded rather than duplicated, so the hero and the
+     manifest screenshot can never drift apart. -->
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<title>Hero phone — capture</title>
+		<link rel="stylesheet" href="../../design/colors_and_type.css" />
+		<style>
+			html,
+			body {
+				background: transparent;
+			}
+			body {
+				margin: 0;
+				width: 446px;
+				height: 900px;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+			}
+			/* Same bezel geometry as .phone in design/preview/_card.css. */
+			.phone {
+				width: 390px;
+				height: 844px;
+				border-radius: 44px;
+				box-shadow:
+					var(--shadow-3),
+					0 0 0 8px #0e1512;
+				overflow: hidden;
+				background: var(--ground);
+			}
+			iframe {
+				width: 390px;
+				height: 844px;
+				border: none;
+				display: block;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="phone"><iframe src="today.html" title="MedsAssist Today screen"></iframe></div>
+	</body>
+</html>
