@@ -2,6 +2,7 @@
 // browser/device to Web Push and registers it with the server. Sending is
 // entirely workers/reminder-engine's job (cron scan -> queue -> VAPID push);
 // this file never talks to the push service directly.
+import { isStandalone } from './platform';
 import { apiFetch } from './api';
 
 export type PushStatus = 'unsupported' | 'denied' | 'unsubscribed' | 'subscribed';
@@ -30,13 +31,6 @@ function base64UrlToUint8Array(base64Url: string): Uint8Array<ArrayBuffer> {
 	return new Uint8Array(Array.from(raw, (c) => c.charCodeAt(0)));
 }
 
-function isInstalledAsPwa(): boolean {
-	return (
-		window.matchMedia('(display-mode: standalone)').matches ||
-		(navigator as Navigator & { standalone?: boolean }).standalone === true
-	);
-}
-
 export async function enableReminders(): Promise<void> {
 	if (!isPushSupported()) throw new Error('Push notifications are not supported on this browser.');
 
@@ -56,7 +50,14 @@ export async function enableReminders(): Promise<void> {
 		body: JSON.stringify({
 			endpoint: json.endpoint,
 			keys: json.keys,
-			installedAsPwa: isInstalledAsPwa()
+			// Evaluated at subscribe time, on purpose — this records how the app
+			// was running when the subscription was created. Shares
+			// platform.ts's check with the marketing page, which also fixes a
+			// bug: the local copy this replaced omitted the fullscreen and
+			// minimal-ui display modes, so an app launched that way reported
+			// itself as not installed and Settings then warned a correctly
+			// installed user that reminders might not arrive.
+			installedAsPwa: isStandalone()
 		})
 	});
 }

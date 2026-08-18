@@ -75,9 +75,19 @@
 	<title>Sign in · MedsAssist</title>
 </svelte:head>
 
+<!-- Shares the marketing page's header so the two public screens read as one
+     site — and so this page has a way back to `/` (DESIGN.md rule 10); it had
+     neither before. -->
+<header class="site-header">
+	<a class="brand" href={resolve('/')}>
+		<img src="/icons/icon-192.png" alt="" width="32" height="32" />
+		<span class="wordmark">MedsAssist</span>
+	</a>
+</header>
+
 <main>
 	<div class="card">
-		<h1 class="t-title">MedsAssist</h1>
+		<h1 class="t-title">Log in</h1>
 
 		{#if step === 'email'}
 			<p class="t-body intro">
@@ -127,12 +137,39 @@
 				</button>
 			</form>
 		{/if}
+
+		<p class="t-caption reassure">
+			We only use your email to sign you in. No password to create, and nothing else is sent to you.
+		</p>
 	</div>
 </main>
 
 <style>
+	.site-header {
+		background: var(--surface);
+		border-bottom: 1px solid var(--line);
+		padding: 0 var(--sp-5);
+	}
+	.brand {
+		display: inline-flex;
+		align-items: center;
+		gap: var(--sp-3);
+		text-decoration: none;
+		min-height: 64px;
+	}
+	.brand img {
+		border-radius: var(--r-chip);
+		display: block;
+	}
+	.wordmark {
+		font-weight: 700;
+		font-size: var(--t-h2-size);
+		line-height: var(--t-h2-line);
+		color: var(--sage-700);
+		letter-spacing: -0.01em;
+	}
 	main {
-		min-height: 100vh;
+		min-height: calc(100vh - 64px);
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -176,5 +213,10 @@
 	}
 	.back-btn {
 		align-self: center;
+	}
+	.reassure {
+		margin: var(--sp-5) 0 0;
+		padding-top: var(--sp-4);
+		border-top: 1px solid var(--line);
 	}
 </style>

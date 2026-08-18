@@ -8,10 +8,17 @@
 	import type { ResolvedPathname } from '$app/types';
 	import BottomNav from '$lib/components/BottomNav.svelte';
 	import AppBar from '$lib/components/AppBar.svelte';
+	import InstallBanner from '$lib/components/InstallBanner.svelte';
+	import { initInstallPrompt } from '$lib/stores/installPrompt.svelte';
 
 	let { children } = $props();
 
 	onMount(loadUserSettings);
+
+	// Adopts the beforeinstallprompt event stashed by the inline script in
+	// app.html and takes over the listeners from here. Returning the teardown
+	// straight from onMount is enough — Svelte calls it on destroy.
+	onMount(initInstallPrompt);
 
 	// Registers sw.ts at root scope ('/') so it can control both the
 	// marketing page and the app routes. vite-plugin-pwa's registerType:
@@ -79,6 +86,10 @@
 {@render children()}
 
 {#if showBottomNav}
+	<!-- Below the page content, not above it: `prompt-ready` can arrive a
+	     second after load on Android Chrome, and a banner mounting at the top
+	     would shove the "due now" dose card down under the user's thumb. -->
+	<InstallBanner />
 	<div class="nav-spacer"></div>
 	<BottomNav />
 {/if}

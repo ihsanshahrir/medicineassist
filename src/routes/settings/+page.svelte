@@ -13,6 +13,7 @@
 	} from '$lib/client/push';
 	import { formatTimeLabel } from '$lib/shared/formatTime';
 	import { userSettings } from '$lib/stores/userSettings.svelte';
+	import InstallAction from '$lib/components/InstallAction.svelte';
 
 	interface MeResponse {
 		email: string;
@@ -159,6 +160,12 @@
 					</div>
 				</div>
 			{/if}
+
+			<!-- The permanent way back to installing. The in-app banner can be
+			     dismissed for good after three snoozes, so silencing it stays
+			     safe only because this button never goes away. Renders nothing
+			     once the app is installed. -->
+			<div class="install-slot"><InstallAction class="btn btn-secondary reminder-btn" /></div>
 
 			<button class="btn btn-secondary reminder-btn" onclick={toggleReminders} disabled={pushBusy}>
 				{pushBusy
@@ -356,6 +363,12 @@
 	}
 	.reminder-btn {
 		width: 100%;
+	}
+	/* InstallAction renders its own <button>, so the scoped .reminder-btn
+	   above never lands on it — match it through the wrapper instead. */
+	.install-slot :global(.reminder-btn) {
+		width: 100%;
+		margin-bottom: var(--sp-2);
 	}
 	.error {
 		color: var(--danger-text);

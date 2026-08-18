@@ -20,6 +20,14 @@ declare global {
 		// interface PageData {}
 		// interface PageState {}
 	}
+
+	interface Window {
+		/** Stashed by the inline capture script in src/app.html, adopted by
+		 *  $lib/stores/installPrompt.svelte.ts. `beforeinstallprompt` fires
+		 *  once per page load and can land before this bundle parses. */
+		__maInstallEvent: Event | null;
+		__maInstalled?: boolean;
+	}
 }
 
 export {};

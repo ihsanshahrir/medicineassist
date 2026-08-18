@@ -11,9 +11,9 @@ consistent with the design system instead of drifting.
   already has a token; use the CSS variable.
 - Icons: `design/pictograms.svg` (sprite) — reference via `<use href="pictograms.svg#id"/>`,
   never redraw or inline-duplicate a symbol.
-- Live specimens: `design/preview/*.html` (23 cards — foundations, pictograms,
-  components, full screens). When unsure how something should look, check the
-  matching card before inventing a pattern.
+- Live specimens: `design/preview/*.html` (27 cards — foundations, pictograms,
+  components, full screens, plus the two public pages). When unsure how something
+  should look, check the matching card before inventing a pattern.
 - Full rationale: `design/README.md` (contrast verification, touch-target rules,
   text-scaling proof, known follow-ups).
 
@@ -42,7 +42,19 @@ consistent with the design system instead of drifting.
    is also true of every other `.btn-*` variant.
 10. **Every sub-page needs a way back.** Top-level screens (`/today`, `/medicines`,
     `/settings`) get the bottom tab bar; everything else gets the sticky back app bar
-    — see `components-navigation.html`. A screen with neither is a dead end.
+    — see `components-navigation.html`. A screen with neither is a dead end. The two
+    public pages (`/`, `/sign-in`) use the site header instead, whose wordmark links
+    home — see `screens-landing.html` / `screens-sign-in.html`.
+11. **The public pages are part of the system too.** `/` and `/sign-in` compose from
+    the same tokens as the app; their layout stays in the route's scoped `<style>`
+    rather than being promoted into `colors_and_type.css`, since nothing else uses it.
+    Never hardcode a hairline as `rgba(20, 32, 28, 0.08)` — that's `var(--line)`.
+12. **Install UI never claims one-tap from a user agent.** "Add to Home Screen" is
+    only a one-tap button when a `beforeinstallprompt` event was actually captured;
+    every other platform gets the instruction sheet. See `components-install.html`
+    and `src/lib/client/platform.ts`. This matters clinically, not cosmetically: on
+    iOS, Web Push only works from an installed icon, so an uninstalled iPhone user
+    gets no reminders at all.
 
 ## When the design system changes upstream
 

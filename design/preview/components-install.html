@@ -1,0 +1,228 @@
+<!doctype html>
+<!-- @dsCard group="Components" name="Install to Home Screen" subtitle="Hero button · dismissible in-app banner · iOS instruction sheet" viewport="800x620" -->
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="stylesheet" href="../colors_and_type.css" />
+		<link rel="stylesheet" href="_card.css" />
+		<style>
+			.wrap {
+				width: 760px;
+				display: grid;
+				grid-template-columns: 1fr 300px;
+				gap: 20px;
+				align-items: start;
+			}
+			.col {
+				display: flex;
+				flex-direction: column;
+				gap: 16px;
+			}
+			.eyebrow {
+				font-size: 11px;
+				margin-bottom: 8px;
+			}
+			.btn-row {
+				display: flex;
+				gap: var(--tap-gap);
+			}
+			.btn-row .btn {
+				width: auto;
+				min-height: var(--tap-primary);
+				padding: 0 24px;
+			}
+
+			/* In-app banner — same shape as the Today screen's reminder banner
+			   (components-feedback.html), so the two read as one pattern. */
+			.install-banner {
+				display: flex;
+				align-items: center;
+				gap: var(--sp-3);
+				background: var(--surface);
+				box-shadow: var(--shadow-1);
+				border-radius: var(--r-card);
+				padding: var(--sp-4);
+			}
+			.install-banner .copy {
+				flex: 1 1 auto;
+			}
+			.install-banner b {
+				display: block;
+				font-size: 15px;
+			}
+			.install-banner span {
+				display: block;
+				font-size: 12.5px;
+				color: var(--ink-2);
+				margin-top: 2px;
+			}
+			.install-banner .add {
+				flex: 0 0 auto;
+				width: auto;
+				min-height: 44px;
+				padding: 0 16px;
+				font-size: 14px;
+			}
+			.install-banner .dismiss {
+				flex: 0 0 auto;
+				width: 44px;
+				height: 44px;
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: var(--r-chip);
+				color: var(--ink-2);
+			}
+			.install-banner .dismiss svg {
+				width: 18px;
+				height: 18px;
+			}
+
+			/* iOS instruction sheet — the only path on a platform with no
+			   beforeinstallprompt. First consumer of --r-sheet. */
+			.sheet-frame {
+				position: relative;
+				height: 470px;
+				border-radius: 24px;
+				overflow: hidden;
+				background: var(--ground);
+				box-shadow: var(--shadow-2);
+				display: flex;
+				align-items: flex-end;
+			}
+			.scrim {
+				position: absolute;
+				inset: 0;
+				background: rgba(20, 32, 28, 0.5);
+			}
+			.sheet {
+				position: relative;
+				width: 100%;
+				background: var(--surface);
+				border-radius: var(--r-sheet) var(--r-sheet) 0 0;
+				box-shadow: var(--shadow-3);
+				padding: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 14px;
+			}
+			.sheet h2 {
+				margin: 0;
+				font-size: 18px;
+				font-weight: 600;
+			}
+			.sheet ol {
+				margin: 0;
+				padding-left: 20px;
+				display: flex;
+				flex-direction: column;
+				gap: 10px;
+				font-size: 14px;
+				line-height: 20px;
+			}
+			.sheet .why {
+				margin: 0;
+				font-size: 12.5px;
+				color: var(--ink-2);
+			}
+			.sheet .btn {
+				width: 100%;
+				min-height: var(--tap-primary);
+			}
+			.states {
+				display: grid;
+				grid-template-columns: 1fr 1fr;
+				gap: 8px;
+				font-size: 12.5px;
+			}
+			.state {
+				background: var(--surface);
+				border-radius: var(--r-input);
+				padding: 10px 12px;
+				box-shadow: var(--shadow-1);
+			}
+			.state b {
+				display: block;
+				color: var(--sage-800);
+			}
+			.state span {
+				color: var(--ink-2);
+			}
+		</style>
+	</head>
+	<body>
+		<div class="card">
+			<div class="wrap">
+				<div class="col">
+					<div>
+						<div class="eyebrow">Landing hero — one tap where the platform allows it</div>
+						<div class="btn-row">
+							<span class="btn btn-primary">Get started</span>
+							<span class="btn btn-secondary">Add to Home Screen</span>
+						</div>
+					</div>
+
+					<div>
+						<div class="eyebrow">In-app banner — dismissible, 7d → 30d → never</div>
+						<div class="install-banner">
+							<div class="copy">
+								<b>Add MedsAssist to your Home Screen</b>
+								<span
+									>Reminders only arrive reliably from the Home Screen icon — on iPhone it's
+									required.</span
+								>
+							</div>
+							<span class="btn btn-secondary add">Add</span>
+							<span class="dismiss">
+								<svg viewBox="0 0 24 24">
+									<path
+										d="M6 6l12 12M18 6L6 18"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="2.5"
+										stroke-linecap="round"
+									/>
+								</svg>
+							</span>
+						</div>
+					</div>
+
+					<div>
+						<div class="eyebrow">Platform states — never inferred from the user agent</div>
+						<div class="states">
+							<div class="state">
+								<b>prompt-ready</b><span>beforeinstallprompt captured → one tap</span>
+							</div>
+							<div class="state">
+								<b>ios-safari</b><span>Share → Add to Home Screen sheet</span>
+							</div>
+							<div class="state">
+								<b>installed / unavailable</b><span>Nothing renders at all</span>
+							</div>
+							<div class="state"><b>manual-menu</b><span>Browser-menu instructions</span></div>
+						</div>
+					</div>
+				</div>
+
+				<div>
+					<div class="eyebrow">iOS instruction sheet — --r-sheet, 56px close</div>
+					<div class="sheet-frame">
+						<div class="scrim"></div>
+						<div class="sheet">
+							<h2>Add MedsAssist to your Home Screen</h2>
+							<ol>
+								<li>Tap <b>Share</b> — the square with an arrow pointing up.</li>
+								<li>Scroll down and tap <b>Add to Home Screen</b>.</li>
+								<li>Tap <b>Add</b> in the top corner.</li>
+							</ol>
+							<p class="why">
+								Reminders only arrive reliably from the Home Screen icon — on iPhone it's required.
+							</p>
+							<span class="btn btn-secondary">Close</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+</html>
