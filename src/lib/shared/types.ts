@@ -67,20 +67,34 @@ export interface DoseLog {
 	snoozedUntil: string | null;
 }
 
-// A dose_log joined with enough medicine fields to render a Dose Card/timeline
-// row without a second round trip — what GET /api/today actually returns.
-export interface DueDose {
-	doseLog: DoseLog;
-	medicine: Pick<Medicine, 'id' | 'name' | 'strength' | 'form' | 'accentIndex' | 'pillPhotoKey'>;
+// One scheduled dose occurrence for today, flattened with the medicine fields a
+// Dose Card / timeline row needs — what GET /api/today actually returns. Mirrors
+// TodayOccurrence in src/lib/server/db/queries/doseLogs.ts.
+export interface TodayOccurrence {
+	medicineId: string;
+	medicineName: string;
+	medicineStrength: string | null;
+	accentIndex: number;
+	doseAmount: number;
+	doseUnit: DoseUnit;
+	scheduledAt: string; // ISO UTC
+	anchorLabel: string | null;
+	status: DoseLogStatus;
+	takenAt: string | null;
+	snoozedUntil: string | null;
+	snoozeCount: number;
 }
 
 export interface TodayResponse {
-	now: DueDose[]; // due within the current ~30-min window, grouped
-	timeline: DueDose[]; // rest of today, in order
+	// Flat and unsorted into groups on purpose — the client re-derives now vs.
+	// timeline from its own ticking clock (see $lib/shared/doseState), so the
+	// split cannot go stale between fetches. Sorted by scheduledAt ascending.
+	occurrences: TodayOccurrence[];
+	tzOffsetMinutes: number; // the offset `occurrences` were computed against
+	serverNow: string; // ISO UTC, for correcting a skewed device clock
 	supplyWarnings: Array<{
 		medicineId: string;
 		medicineName: string;
 		daysRemaining: number;
-		threshold: 7 | 2;
 	}>;
 }

@@ -15,9 +15,9 @@ import {
 	sweepMissedDoseLogs,
 	wakeSnoozedDose
 } from './db';
+import { MISSED_AFTER_MS } from '../../../src/lib/shared/doseState';
 import type { QueueMessage } from './types';
 
-const MISSED_AFTER_MS = 3 * 60 * 60 * 1000;
 const FOLLOWUP_WINDOW_MS = 30 * 60 * 1000; // "30-31 min old" per the plan — a 1-tick-wide catch window
 const FOLLOWUP_WINDOW_WIDTH_MS = 60 * 1000;
 
@@ -128,7 +128,7 @@ async function scanSnoozeWakeups(
 
 async function scanMissed(db: D1Database, now: Date): Promise<void> {
 	const threshold = new Date(now.getTime() - MISSED_AFTER_MS).toISOString();
-	await sweepMissedDoseLogs(db, threshold);
+	await sweepMissedDoseLogs(db, threshold, now.toISOString());
 }
 
 export async function runScan(env: Env): Promise<void> {

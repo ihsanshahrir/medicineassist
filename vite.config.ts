@@ -36,7 +36,7 @@ export default defineConfig({
 				lang: 'en',
 				dir: 'ltr',
 				orientation: 'portrait',
-				description: 'What to take, right now — with a photo of the actual pill.',
+				description: 'Know what to take, right now — with a photo of the actual pill.',
 				start_url: '/today',
 				scope: '/',
 				display: 'standalone',

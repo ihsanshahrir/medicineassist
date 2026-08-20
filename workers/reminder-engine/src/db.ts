@@ -170,14 +170,23 @@ export async function wakeSnoozedDose(db: D1Database, doseLogId: string): Promis
 		.run();
 }
 
-/** Query 4 — bounds the "open" set; anything more recent is still live for the app's own Today computation to treat as missed. */
-export async function sweepMissedDoseLogs(db: D1Database, thresholdIso: string): Promise<number> {
+/** Query 4 — bounds the "open" set; anything more recent is still live for the app's own Today computation to treat as missed.
+ *  A snooze whose snoozed_until has not elapsed is still running and must survive
+ *  the sweep — otherwise snoozing a dose near the 3h threshold marked it missed
+ *  while its 15-minute snooze was still counting down. scanSnoozeWakeups runs
+ *  before this in runScan, so any elapsed snooze is already back to 'pending'. */
+export async function sweepMissedDoseLogs(
+	db: D1Database,
+	thresholdIso: string,
+	nowIso: string
+): Promise<number> {
 	const result = await db
 		.prepare(
 			`UPDATE dose_logs SET status = 'missed', updated_at = datetime('now')
-			 WHERE status IN ('pending', 'snoozed') AND scheduled_at < ?`
+			 WHERE status IN ('pending', 'snoozed') AND scheduled_at < ?
+			   AND (snoozed_until IS NULL OR snoozed_until <= ?)`
 		)
-		.bind(thresholdIso)
+		.bind(thresholdIso, nowIso)
 		.run();
 	return result.meta.changes;
 }

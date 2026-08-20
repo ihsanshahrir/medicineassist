@@ -15,15 +15,6 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 
 	const occurrences = await computeTodayOccurrences(db, locals.user.id, tzOffsetMinutes);
 
-	const nowMs = Date.now();
-	const NOW_WINDOW_MS = 30 * 60_000;
-	const now = occurrences.filter(
-		(o) =>
-			o.status === 'pending' && Math.abs(new Date(o.scheduledAt).getTime() - nowMs) <= NOW_WINDOW_MS
-	);
-	const nowKeys = new Set(now.map((o) => `${o.medicineId}:${o.scheduledAt}`));
-	const timeline = occurrences.filter((o) => !nowKeys.has(`${o.medicineId}:${o.scheduledAt}`));
-
 	const medicines = await listMedicinesForUser(db, locals.user.id);
 	const schedules = await listSchedulesForUser(db, locals.user.id);
 	const supplyWarnings = medicines
@@ -44,5 +35,17 @@ export const GET: RequestHandler = async ({ locals, platform }) => {
 		})
 		.filter((w) => w.daysRemaining <= 7);
 
-	return json({ now, timeline, supplyWarnings });
+	// Deliberately a FLAT list, not pre-split into now/timeline. Which group a
+	// dose belongs to is a function of the clock, so splitting it here would
+	// freeze the answer at fetch time — the page's local ticking clock re-derives
+	// it every 30s via deriveDoseState() instead, and a dose crosses from
+	// upcoming to due to overdue with no round trip. serverNow lets the client
+	// correct for a skewed device clock; tzOffsetMinutes is what the occurrence
+	// times were computed against, so labels must be rendered with it too.
+	return json({
+		occurrences,
+		tzOffsetMinutes,
+		serverNow: new Date().toISOString(),
+		supplyWarnings
+	});
 };
