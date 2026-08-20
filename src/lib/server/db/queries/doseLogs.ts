@@ -3,6 +3,7 @@ import {
 	localDateTimeToUtcIso,
 	todayLocalDateStr
 } from '$lib/shared/scheduleOccurrence';
+import { MISSED_AFTER_MS, SNOOZE_MAX, SNOOZE_MINUTES, UNDO_GRACE_MS } from '$lib/shared/doseState';
 import { listMedicinesForUser, decrementSupply } from './medicines';
 import { listSchedulesForUser, toScheduleLike } from './schedules';
 import type { ScheduleRow } from './schedules';
@@ -40,10 +41,11 @@ export interface DoseLogRow {
 	followup_sent: number;
 }
 
-const MISSED_AFTER_MS = 3 * 60 * 60 * 1000; // matches the plan's cron "missed sweep" threshold
-const SNOOZE_MINUTES = 15;
-const SNOOZE_MAX = 2;
-const UNDO_GRACE_MS = 30_000; // generous vs the PRD's 10s UI affordance, to absorb request latency
+// How far back the on-read sweep reaches. workers/reminder-engine's cron sweeps
+// globally every minute, so this path is only a safety net for a user whose
+// doses went stale while the cron was down — without the bound, every Today
+// load rewrites the user's entire dose history.
+const SWEEP_LOOKBACK_MS = 48 * 60 * 60 * 1000;
 
 export interface TodayOccurrence {
 	medicineId: string;
@@ -56,6 +58,8 @@ export interface TodayOccurrence {
 	anchorLabel: string | null;
 	status: DoseLogRow['status'];
 	takenAt: string | null;
+	snoozedUntil: string | null;
+	snoozeCount: number;
 }
 
 async function getDoseLog(
@@ -68,6 +72,29 @@ async function getDoseLog(
 		.bind(medicineId, scheduledAt)
 		.first<DoseLogRow>();
 	return row ?? null;
+}
+
+const logKey = (medicineId: string, scheduledAt: string) => `${medicineId}::${scheduledAt}`;
+
+/** Every dose_log covering the given local day, in one query — the per-slot
+ *  getDoseLog it replaces ran once per medicine per time-of-day. Bounded by the
+ *  day window rather than an IN (...) list so the bind-parameter count stays
+ *  constant no matter how many medicines the user takes. */
+async function getDoseLogsForLocalDate(
+	db: D1Database,
+	userId: string,
+	localDate: string,
+	tzOffsetMinutes: number
+): Promise<Map<string, DoseLogRow>> {
+	const dayStart = localDateTimeToUtcIso(localDate, '00:00', tzOffsetMinutes);
+	const dayEnd = new Date(new Date(dayStart).getTime() + 24 * 60 * 60 * 1000).toISOString();
+
+	const { results } = await db
+		.prepare('SELECT * FROM dose_logs WHERE user_id = ? AND scheduled_at >= ? AND scheduled_at < ?')
+		.bind(userId, dayStart, dayEnd)
+		.all<DoseLogRow>();
+
+	return new Map(results.map((r) => [logKey(r.medicine_id, r.scheduled_at), r]));
 }
 
 async function materializeDueOccurrences(
@@ -109,24 +136,37 @@ async function materializeDueOccurrences(
 		}
 	}
 
-	// Missed sweep, inlined here since no cron exists yet — identical rule to
-	// the one workers/reminder-engine will run continuously in M4.
-	await db
-		.prepare(
-			`UPDATE dose_logs SET status = 'missed', updated_at = datetime('now')
-			 WHERE user_id = ? AND status IN ('pending', 'snoozed') AND scheduled_at < ?`
-		)
-		.bind(userId, new Date(nowMs - MISSED_AFTER_MS).toISOString())
-		.run();
+	const nowIso = new Date(nowMs).toISOString();
 
-	// Snooze wake-up: an elapsed snooze goes back to pending so it resurfaces
-	// in the Now group, same as the cron's query 3.
+	// Snooze wake-up runs FIRST. An elapsed snooze goes back to pending so it
+	// resurfaces in the Now group (same as the cron's query 3) — if the missed
+	// sweep ran first it would flip such a row to 'missed', and this query's
+	// `status = 'snoozed'` predicate would then no longer match it.
 	await db
 		.prepare(
 			`UPDATE dose_logs SET status = 'pending', updated_at = datetime('now')
 			 WHERE user_id = ? AND status = 'snoozed' AND snoozed_until <= ?`
 		)
-		.bind(userId, new Date(nowMs).toISOString())
+		.bind(userId, nowIso)
+		.run();
+
+	// Missed sweep — identical rule to workers/reminder-engine's query 4.
+	// A snooze that has NOT elapsed is still live and must survive the sweep:
+	// without the snoozed_until guard, snoozing a dose at the 2h59m mark marked
+	// it missed a minute later, while its 15-minute snooze was still running.
+	await db
+		.prepare(
+			`UPDATE dose_logs SET status = 'missed', updated_at = datetime('now')
+			 WHERE user_id = ? AND status IN ('pending', 'snoozed')
+			   AND scheduled_at < ? AND scheduled_at >= ?
+			   AND (snoozed_until IS NULL OR snoozed_until <= ?)`
+		)
+		.bind(
+			userId,
+			new Date(nowMs - MISSED_AFTER_MS).toISOString(),
+			new Date(nowMs - SWEEP_LOOKBACK_MS).toISOString(),
+			nowIso
+		)
 		.run();
 }
 
@@ -141,6 +181,7 @@ export async function computeTodayOccurrences(
 	const medicines = await listMedicinesForUser(db, userId);
 	const medicineById = new Map(medicines.map((m) => [m.id, m]));
 	const schedules = await listSchedulesForUser(db, userId);
+	const logs = await getDoseLogsForLocalDate(db, userId, localDate, tzOffsetMinutes);
 
 	const occurrences: TodayOccurrence[] = [];
 
@@ -151,7 +192,7 @@ export async function computeTodayOccurrences(
 
 		for (const time of schedule.times) {
 			const scheduledAt = localDateTimeToUtcIso(localDate, time.time_local, tzOffsetMinutes);
-			const log = await getDoseLog(db, medicine.id, scheduledAt);
+			const log = logs.get(logKey(medicine.id, scheduledAt)) ?? null;
 			const m = medicineById.get(medicine.id)!;
 
 			occurrences.push({
@@ -164,7 +205,9 @@ export async function computeTodayOccurrences(
 				scheduledAt,
 				anchorLabel: time.anchor_label,
 				status: log?.status ?? 'pending',
-				takenAt: log?.taken_at ?? null
+				takenAt: log?.taken_at ?? null,
+				snoozedUntil: log?.snoozed_until ?? null,
+				snoozeCount: log?.snooze_count ?? 0
 			});
 		}
 	}
@@ -232,7 +275,10 @@ export async function actOnDoseLog(
 			)
 			.bind(takenAt, log.id)
 			.run();
-		await decrementSupply(db, medicineId, log.dose_amount);
+		// Only a transition INTO 'taken' consumes supply. Re-taking an already
+		// taken dose (double tap, a retried request, an offline replay) must not
+		// decrement a second time — undoDoseLog is the only thing that puts it back.
+		if (log.status !== 'taken') await decrementSupply(db, medicineId, log.dose_amount);
 	} else if (action === 'skip') {
 		await db
 			.prepare(`UPDATE dose_logs SET status = 'skipped', updated_at = datetime('now') WHERE id = ?`)

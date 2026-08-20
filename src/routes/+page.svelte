@@ -88,7 +88,7 @@
 		<section class="hero">
 			<div class="wrap hero-row">
 				<div class="hero-copy">
-					<h1 class="t-display">What to take, right now.</h1>
+					<h1 class="t-display">Know what to take, right now.</h1>
 					<p class="t-body-lg hero-sub">
 						MedsAssist shows today's doses with a photo of the actual pill — so you're never
 						guessing which one, or whether you already took it.
